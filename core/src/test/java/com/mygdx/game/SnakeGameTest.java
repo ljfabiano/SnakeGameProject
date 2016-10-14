@@ -9,6 +9,12 @@ import static org.junit.Assert.*;
  */
 public class SnakeGameTest {
     @Test
+    public void movePerGridCell() throws Exception {
+
+
+    }
+
+    @Test
     public void create() throws Exception {
 
     }
@@ -49,5 +55,7 @@ public class SnakeGameTest {
         assertEquals(20, testCell.getX());
         assertEquals(30, testCell.getY());
     }
+
+
 
 }

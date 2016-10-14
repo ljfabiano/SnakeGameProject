@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,11 @@ public class SnakeGame extends ApplicationAdapter {
 	ScreenGrid playGrid;
     Stage stage;
 	ShapeRenderer myShape;
+	Cell myCell;
+	int xPosition = 0;
+	int yPosition = 0;
+	int xDirectionalMovement = 0;
+	int yDirectionalMovement = 0;
     //Actor gridActor;
 	
 	@Override
@@ -25,6 +31,7 @@ public class SnakeGame extends ApplicationAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 		myShape = new ShapeRenderer();
+		myCell = createTestCell(0, 0);
         //gridActor = new Actor();
         //gridActor.setBounds(x, y, width, height);
         //stage.addActor(gridActor);
@@ -35,6 +42,7 @@ public class SnakeGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
+		movePerGridCell();
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
@@ -47,9 +55,9 @@ public class SnakeGame extends ApplicationAdapter {
 		//int drawPositionY = playGrid.getScreenHeight() - lastTouchedPositionY;
 		//myShape.rect(lastTouchedPositionX, drawPositionY, 100, 100);
 
-		Cell myCell = createTestCell(20, 30);
+
 		//myShape.rect(myCell.getX(), myCell.getY(), myCell.getCellSize(), myCell.getCellSize());
-		myShape.rect(20, 30, 50, 50);
+		myShape.rect(myCell.getX(), myCell.getY(), myCell.getCellSize(), myCell.getCellSize());
 		myShape.end();
 
 
@@ -73,6 +81,51 @@ public class SnakeGame extends ApplicationAdapter {
         return gridCell;
     }
 
-
-
+	void movePerPixel() {
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			xDirectionalMovement = 0;
+			yDirectionalMovement = 1;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			xDirectionalMovement = 0;
+			yDirectionalMovement = -1;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			xDirectionalMovement = 1;
+			yDirectionalMovement = 0;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			xDirectionalMovement = -1;
+			yDirectionalMovement = 0;
+		}
+		xPosition += xDirectionalMovement;
+		yPosition += yDirectionalMovement;
+	}
+	void movePerGridCell()
+	{
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			xDirectionalMovement = 0;
+			yDirectionalMovement = 1;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			xDirectionalMovement = 0;
+			yDirectionalMovement = -1;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			xDirectionalMovement = 1;
+			yDirectionalMovement = 0;
+		}
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			xDirectionalMovement = -1;
+			yDirectionalMovement = 0;
+		}
+		xPosition += xDirectionalMovement;
+		yPosition += yDirectionalMovement;
+		if(xPosition == myCell.getX() + myCell.getCellSize() || xPosition == myCell.getX() - myCell.getCellSize()) {
+			myCell.setX(xPosition);
+		}
+		if(yPosition == myCell.getY() + myCell.getCellSize() || yPosition == myCell.getY() - myCell.getCellSize()) {
+			myCell.setY(yPosition);
+		}
+	}
 }
