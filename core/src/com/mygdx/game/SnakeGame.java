@@ -136,5 +136,9 @@ public class SnakeGame extends ApplicationAdapter {
             myCell.setY(myCell.getY() - myCell.getCellSize());
         }
 	}
+    void moveInGridCell()
+    {
+
+    }
 
 }

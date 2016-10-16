@@ -15,7 +15,8 @@ public class ScreenGrid {
     int screenHeight;
 
     int dimensionOfCell = 10;
-    boolean[][] coordinateGrid;
+    boolean[][] coordinateGridBool;
+    Cell[][] coordinateGrid;
 //    Array[] xCoordinate = new Array[screenWidth/dimensionOfCell];
 //    Array[] yCoordinate = new Array[screenHeight/dimensionOfCell];
 //    Array[] xCoordinate;
@@ -31,7 +32,8 @@ public class ScreenGrid {
     {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        coordinateGrid = new boolean[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
+        //coordinateGrid = new boolean[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
+        coordinateGrid = new Cell[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
     }
 
     public int getScreenHeight() {
@@ -66,16 +68,16 @@ public class ScreenGrid {
 //        this.yCoordinate = yCoordinate;
 //    }
 
-    public boolean[][] getCoordinateGrid() {
+    public Cell[][] getCoordinateGrid() {
         return coordinateGrid;
     }
 
-    public void setCoordinateGrid(boolean[][] coordinateGrid) {
+    public void setCoordinateGrid(Cell[][] coordinateGrid) {
         this.coordinateGrid = coordinateGrid;
 
     }
     public void setCoordinateGrid() {
-        coordinateGrid = new boolean[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
+        coordinateGrid = new Cell[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
 
     }
 //    public void setCoordinateGrid() {
@@ -96,12 +98,12 @@ public class ScreenGrid {
             System.out.println("y length of grid = " + coordinateGrid[index].length);
         }
         System.out.println("x = " + myCoordinates.getX() + " y = " + myCoordinates.getY());
-        coordinateGrid[myCoordinates.getX()][myCoordinates.getY()] = true;
+        coordinateGridBool[myCoordinates.getX()][myCoordinates.getY()] = true;
     }
 
     public void setFalseCellLocation(Coordinates myCoordinates)
     {
-        coordinateGrid[myCoordinates.getX()][myCoordinates.getY()] = false;
+        coordinateGridBool[myCoordinates.getX()][myCoordinates.getY()] = false;
     }
 
     public Coordinates getTrueCellLocation()
@@ -110,7 +112,7 @@ public class ScreenGrid {
         {
             for(int yIndex = 0; yIndex < coordinateGrid[xIndex].length; yIndex++)
             {
-                if(coordinateGrid[xIndex][yIndex] == true)
+                if(coordinateGridBool[xIndex][yIndex] == true)
                 {
                     Coordinates trueCoordinates = new Coordinates(xIndex, yIndex);
                     return trueCoordinates;
@@ -139,10 +141,34 @@ public class ScreenGrid {
         gridCell.setY(y);
         return gridCell;
     }
-
-    void createGridCell()
+    //The method is used to move an object in the grid(object/cell) to another location in the grid
+    void moveGridCellUp(Cell myCell)
     {
-
+        coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
+        coordinateGrid[myCell.getX()][myCell.getY()] = null;
+        myCell.setY(myCell.getY() + 1);
+    }
+    void moveGridCellDown(Cell myCell)
+    {
+        coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
+        coordinateGrid[myCell.getX()][myCell.getY()] = null;
+        myCell.setY(myCell.getY() - 1);
+    }
+    void moveGridCellLeft(Cell myCell)
+    {
+        coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
+        coordinateGrid[myCell.getX()][myCell.getY()] = null;
+        myCell.setX(myCell.getX() - 1);
+    }
+    void moveGridCellRight(Cell myCell)
+    {
+        coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
+        coordinateGrid[myCell.getX()][myCell.getY()] = null;
+        myCell.setX(myCell.getX() + 1);
+    }
+    public void addCellToGrid(Cell myCell)
+    {
+        coordinateGrid[myCell.getX()][myCell.getY()] = myCell;
     }
 
 }
