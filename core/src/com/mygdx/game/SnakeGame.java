@@ -80,7 +80,7 @@ public class SnakeGame extends ApplicationAdapter {
 		gridCell.setY(y);
         return gridCell;
     }
-
+    //Per pixel movement method
 	void movePerPixel() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
 			xDirectionalMovement = 0;
@@ -101,6 +101,7 @@ public class SnakeGame extends ApplicationAdapter {
 		xPosition += xDirectionalMovement;
 		yPosition += yDirectionalMovement;
 	}
+	//Per pixel movement, but the image is updated once the length of the cell + the previous position is reached(simulating the grid)
 	void movePerGridCell()
 	{
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -121,11 +122,19 @@ public class SnakeGame extends ApplicationAdapter {
 		}
 		xPosition += xDirectionalMovement;
 		yPosition += yDirectionalMovement;
-		if(xPosition == myCell.getX() + myCell.getCellSize() || xPosition == myCell.getX() - myCell.getCellSize()) {
+        // || xPosition > myCell.getX()
+		if(xPosition == myCell.getX() + myCell.getCellSize()) {
 			myCell.setX(xPosition);
 		}
-		if(yPosition == myCell.getY() + myCell.getCellSize() || yPosition == myCell.getY() - myCell.getCellSize()) {
+		if(yPosition == myCell.getY() + myCell.getCellSize()) {
 			myCell.setY(yPosition);
 		}
+        if(xPosition < myCell.getX()) {
+            myCell.setX(myCell.getX() - myCell.getCellSize());
+        }
+        if(yPosition < myCell.getY()) {
+            myCell.setY(myCell.getY() - myCell.getCellSize());
+        }
 	}
+
 }
