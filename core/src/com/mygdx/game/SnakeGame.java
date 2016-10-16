@@ -32,6 +32,9 @@ public class SnakeGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(stage);
 		myShape = new ShapeRenderer();
 		myCell = createTestCell(0, 0);
+        playGrid.setScreenHeight(Gdx.graphics.getHeight());
+    	playGrid.setScreenWidth(Gdx.graphics.getWidth());
+        playGrid.setCoordinateGrid();
         //gridActor = new Actor();
         //gridActor.setBounds(x, y, width, height);
         //stage.addActor(gridActor);
@@ -42,22 +45,29 @@ public class SnakeGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		movePerGridCell();
+		//movePerGridCell();
+        try
+        {
+            moveInGridCell();
+        }
+        catch(ArrayIndexOutOfBoundsException e)
+        {
+
+            return;
+        }
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		ShapeRenderer myShape = new ShapeRenderer();
 		myShape.begin(ShapeRenderer.ShapeType.Filled);
 		myShape.setColor(0, 1, 0, 1);
-		playGrid.setScreenHeight(Gdx.graphics.getHeight());
-		playGrid.setScreenWidth(Gdx.graphics.getWidth());
-
+//		playGrid.setScreenHeight(Gdx.graphics.getHeight());
+//		playGrid.setScreenWidth(Gdx.graphics.getWidth());
 		//int drawPositionY = playGrid.getScreenHeight() - lastTouchedPositionY;
 		//myShape.rect(lastTouchedPositionX, drawPositionY, 100, 100);
 
-
 		//myShape.rect(myCell.getX(), myCell.getY(), myCell.getCellSize(), myCell.getCellSize());
-		myShape.rect(myCell.getX(), myCell.getY(), myCell.getCellSize(), myCell.getCellSize());
+        myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
 		myShape.end();
 
 
@@ -69,7 +79,9 @@ public class SnakeGame extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+        System.out.println("game over!");
+        batch.dispose();
+        myShape.dispose();
 		//img.dispose();
 	}
 
@@ -136,8 +148,88 @@ public class SnakeGame extends ApplicationAdapter {
             myCell.setY(myCell.getY() - myCell.getCellSize());
         }
 	}
-    void moveInGridCell()
+    void moveInGridCell()throws ArrayIndexOutOfBoundsException
     {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if(yDirectionalMovement == -1)
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = -1;
+            }
+            else
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = 1;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if(yDirectionalMovement == 1)
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = 1;
+            }
+            else
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = -1;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if(xDirectionalMovement == -1)
+            {
+                xDirectionalMovement = -1;
+                yDirectionalMovement = 0;
+            }
+            else
+            {
+                xDirectionalMovement = 1;
+                yDirectionalMovement = 0;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if(xDirectionalMovement == 1)
+            {
+                xDirectionalMovement = 1;
+                yDirectionalMovement = 0;
+            }
+            else
+            {
+                xDirectionalMovement = -1;
+                yDirectionalMovement = 0;
+            }
+        }
+        xPosition += xDirectionalMovement;
+        yPosition += yDirectionalMovement;
+        if(yDirectionalMovement == 1)
+        {
+
+                playGrid.moveGridCellUp(myCell);
+
+        }
+        if(yDirectionalMovement == -1)
+        {
+//            try
+//            {
+                playGrid.moveGridCellDown(myCell);
+//            }
+//            catch(ArrayIndexOutOfBoundsException e)
+//            {
+//
+//            }
+
+        }
+        if(xDirectionalMovement == 1)
+        {
+
+                playGrid.moveGridCellRight(myCell);
+
+        }
+        if(xDirectionalMovement == -1)
+        {
+
+                playGrid.moveGridCellLeft(myCell);
+
+        }
 
     }
 

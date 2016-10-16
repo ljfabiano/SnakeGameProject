@@ -142,29 +142,57 @@ public class ScreenGrid {
         return gridCell;
     }
     //The method is used to move an object in the grid(object/cell) to another location in the grid
-    void moveGridCellUp(Cell myCell)
+    void moveGridCellUp(Cell myCell)throws ArrayIndexOutOfBoundsException
     {
-        coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
-        coordinateGrid[myCell.getX()][myCell.getY()] = null;
-        myCell.setY(myCell.getY() + 1);
+//        if(myCell.getY() == coordinateGrid[myCell.getX()].length)
+//        {
+//            ArrayIndexOutOfBoundsException e;
+//        }
+//        else
+//        {
+            coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
+            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            myCell.setY(myCell.getY() + 1);
+//        }
     }
-    void moveGridCellDown(Cell myCell)
+    void moveGridCellDown(Cell myCell)throws ArrayIndexOutOfBoundsException
     {
-        coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
-        coordinateGrid[myCell.getX()][myCell.getY()] = null;
-        myCell.setY(myCell.getY() - 1);
+//        if(myCell.getY() == 0)
+//        {
+//            ArrayIndexOutOfBoundsException e;
+//        }
+//        else
+//        {
+            coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
+            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            myCell.setY(myCell.getY() - 1);
+//        }
     }
-    void moveGridCellLeft(Cell myCell)
+    void moveGridCellLeft(Cell myCell)throws ArrayIndexOutOfBoundsException
     {
-        coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
-        coordinateGrid[myCell.getX()][myCell.getY()] = null;
-        myCell.setX(myCell.getX() - 1);
+//        if(myCell.getX() < 0)
+//        {
+//            ArrayIndexOutOfBoundsException e;
+//        }
+//        else
+//        {
+            coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
+            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            myCell.setX(myCell.getX() - 1);
+//        }
     }
-    void moveGridCellRight(Cell myCell)
-    {
-        coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
-        coordinateGrid[myCell.getX()][myCell.getY()] = null;
-        myCell.setX(myCell.getX() + 1);
+    void moveGridCellRight(Cell myCell)throws ArrayIndexOutOfBoundsException {
+//        if(myCell.getX() > coordinateGrid.length)
+//        {
+//            ArrayIndexOutOfBoundsException e;
+//        }
+//        else
+//        {
+            coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
+            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            myCell.setX(myCell.getX() + 1);
+//        }
+
     }
     public void addCellToGrid(Cell myCell)
     {
