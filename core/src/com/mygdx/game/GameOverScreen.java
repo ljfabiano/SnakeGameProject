@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import javafx.scene.text.*;
 
 import java.awt.*;
@@ -21,6 +22,9 @@ public class GameOverScreen implements Screen
     BitmapFont yourBitmapFontName;
     private Game game;
     Stage stage;
+    TextButton button;
+    TextButton.TextButtonStyle textButtonStyle;
+    BitmapFont font;
     public GameOverScreen(Game game)
     {
         this.game = game;
@@ -30,6 +34,15 @@ public class GameOverScreen implements Screen
         batch = new SpriteBatch();
         //font = new BitmapFont(Gdx.files.internal("font.fnt"));
         stage = new Stage();
+        font = new BitmapFont();
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        button = new TextButton("Button1", textButtonStyle);
+        button.setPosition(75, 0);
+        stage.addActor(button);
+        Gdx.input.setInputProcessor(stage);
+
+
     }
 
         //batch = new SpriteBatch();
@@ -48,13 +61,14 @@ public class GameOverScreen implements Screen
     {
 
     }
-    //@Override
+    @Override
     public void render(float f)
     {
         batch.begin();
         yourBitmapFontName.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         yourBitmapFontName.draw(batch, "Game Over", 25, 100);
         batch.end();
+        stage.draw();
     }
 
     public void pause()
