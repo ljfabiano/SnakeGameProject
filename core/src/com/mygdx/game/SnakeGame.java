@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,8 +11,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class SnakeGame extends ApplicationAdapter {
-	SpriteBatch batch;
+public class SnakeGame extends Game {
+	Game game;
+    SpriteBatch batch;
 	Texture img;
 	ScreenGrid playGrid;
     Stage stage;
@@ -22,6 +24,11 @@ public class SnakeGame extends ApplicationAdapter {
 	int xDirectionalMovement = 0;
 	int yDirectionalMovement = 0;
     //Actor gridActor;
+
+    public SnakeGame()
+    {
+        game = this;
+    }
 	
 	@Override
 	public void create () {
@@ -53,8 +60,15 @@ public class SnakeGame extends ApplicationAdapter {
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
+            System.out.println("game over!");
+            //GameOverScreen gameOver = new GameOverScreen();
+            //this.setScreen(new GameOverScreen(this.screen));
+            game.setScreen(new GameOverScreen(game));
+            //dispose();
+            //exit();
+            //return;
+            //game.getScreen();
 
-            return;
         }
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -75,12 +89,11 @@ public class SnakeGame extends ApplicationAdapter {
 		//batch.draw(img, 0, 0);
 		batch.end();
 
-		super.render();
+		//super.render();
 	}
 	
 	@Override
 	public void dispose () {
-        System.out.println("game over!");
         batch.dispose();
         myShape.dispose();
 		//img.dispose();
@@ -273,11 +286,11 @@ public class SnakeGame extends ApplicationAdapter {
         xPosition += xDirectionalMovement;
         yPosition += yDirectionalMovement;
         // || xPosition > myCell.getX()
-        if(xPosition == myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
+        if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
             //myCell.setX(xPosition);
             playGrid.moveGridCellRight(myCell);
         }
-        if(yPosition == myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
+        if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
             //myCell.setY(yPosition);
             playGrid.moveGridCellUp(myCell);
         }
@@ -289,6 +302,10 @@ public class SnakeGame extends ApplicationAdapter {
             //myCell.setY(myCell.getY() - myCell.getCellSize());
             playGrid.moveGridCellDown(myCell);
         }
+    }
+    public void exit()
+    {
+        this.exit();
     }
 
 }
