@@ -40,4 +40,12 @@ public class Cell {
     public void setCellSize(int cellSize) {
         this.cellSize = cellSize;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

@@ -32,6 +32,7 @@ public class SnakeGame extends Game {
 
 	ShapeRenderer myShape;
 	Cell myCell;
+    Cell myFood;
 	int xPosition;
 	int yPosition;
 	int xDirectionalMovement;
@@ -56,7 +57,11 @@ public class SnakeGame extends Game {
         playGrid.setScreenHeight(Gdx.graphics.getHeight());
         playGrid.setScreenWidth(Gdx.graphics.getWidth());
         playGrid.setCoordinateGrid();
-        myCell = createTestCell(0, 0);
+        myCell = new Cell("head");
+        myCell.setX(0);
+        myCell.setY(0);
+        myFood = new Cell("food");
+        playGrid.addFoodCellToGrid(myFood);
         xPosition = 0;
         yPosition = 0;
         xDirectionalMovement = 0;
@@ -150,8 +155,10 @@ public class SnakeGame extends Game {
                 try {
                     //moveInGridCell();
                     moveCellGrid();
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("game over!");
+                }
+                catch (ArrayIndexOutOfBoundsException e)
+                {
+                    System.out.println("game over! Hit a wall!");
                     gameOver = true;
                     //GameOverScreen gameOver = new GameOverScreen();
                     //this.setScreen(new GameOverScreen(this.screen));
@@ -160,13 +167,18 @@ public class SnakeGame extends Game {
                     //exit();
                     //return;
                     //game.getScreen();
-
-
+                }
+                catch (Exception ex)
+                {
+                    System.out.println("game over! Hit a snake head or body!");
+                    gameOver = true;
                 }
                 ShapeRenderer myShape = new ShapeRenderer();
                 myShape.begin(ShapeRenderer.ShapeType.Filled);
                 myShape.setColor(0, 1, 0, 1);
                 myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                myShape.setColor(0, 0, 1, 1);
+                myShape.rect(myFood.getX() * myFood.getCellSize(), myFood.getY() * myFood.getCellSize(), myFood.getCellSize(), myFood.getCellSize());
                 myShape.end();
             }
             //myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
@@ -186,13 +198,13 @@ public class SnakeGame extends Game {
 		//img.dispose();
 	}
 
-    Cell createTestCell(int x, int y)
-    {
-        Cell gridCell = new Cell();
-		gridCell.setX(x);
-		gridCell.setY(y);
-        return gridCell;
-    }
+//    Cell createTestCell(int x, int y)
+//    {
+//        Cell gridCell = new Cell();
+//		gridCell.setX(x);
+//		gridCell.setY(y);
+//        return gridCell;
+//    }
     //Per pixel movement method
 	void movePerPixel() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -249,7 +261,7 @@ public class SnakeGame extends Game {
             myCell.setY(myCell.getY() - myCell.getCellSize());
         }
 	}
-    void moveInGridCell()throws ArrayIndexOutOfBoundsException
+    void moveInGridCell()throws Exception//ArrayIndexOutOfBoundsException
     {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if(yDirectionalMovement == -1)
@@ -320,7 +332,7 @@ public class SnakeGame extends Game {
 
     }
 
-    void moveCellGrid()throws ArrayIndexOutOfBoundsException
+    void moveCellGrid()throws Exception//ArrayIndexOutOfBoundsException
     {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if(yDirectionalMovement == -1)
