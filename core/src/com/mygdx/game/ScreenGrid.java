@@ -289,7 +289,7 @@ public class ScreenGrid {
         return coordinateIsFood;
     }
 
-    public void addFoodCellToGrid(Cell myCell)
+    public void addFoodCellToGrid(Cell foodCell)
     {
         double x, y;
         do {
@@ -299,9 +299,9 @@ public class ScreenGrid {
         while(coordinateGrid[(int)x][(int)y] != null);
 //        x = Math.random() * coordinateGrid.length;
 //        y = Math.random() * coordinateGrid[0].length;
-        myCell.setX((int)x);
-        myCell.setY((int)y);
-        coordinateGrid[myCell.getX()][myCell.getY()] = myCell;
+        foodCell.setX((int)x);
+        foodCell.setY((int)y);
+        coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;
     }
 
 }

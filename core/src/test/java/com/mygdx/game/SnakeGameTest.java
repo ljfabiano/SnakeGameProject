@@ -28,8 +28,8 @@ public class SnakeGameTest {
     public void createTestCell() throws Exception
     {
         SnakeGame testGame = new SnakeGame();
-        //ScreenGrid testGrid = new ScreenGrid();
-        Cell testCell = testGame.createTestCell(20, 30);
+        ScreenGrid testGrid = new ScreenGrid();
+        Cell testCell = testGrid.createTestCell(20, 30);
         assertNotNull(testCell);
         assertEquals(20, testCell.getX());
         assertEquals(30, testCell.getY());

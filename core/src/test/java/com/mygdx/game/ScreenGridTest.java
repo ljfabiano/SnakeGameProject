@@ -8,6 +8,46 @@ import static org.junit.Assert.*;
  * Created by jfabiano on 10/14/2016.
  */
 public class ScreenGridTest {
+    @Test
+    public void isCellFood() throws Exception {
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        boolean isCellFood = testGrid.isCellFood("food");
+        assertNotNull(isCellFood);
+        assertEquals(true, isCellFood);
+    }
+
+    @Test
+    public void isCellFoodNegative() throws Exception {
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        boolean isCellFood = testGrid.isCellFood("head");
+        assertNotNull(isCellFood);
+        assertEquals(false, isCellFood);
+    }
+
+    @Test
+    public void addFoodCellToGrid() throws Exception {
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        Cell testHeadCell = new Cell("head");
+        testHeadCell.setX(0);
+        testHeadCell.setY(0);
+        testGrid.addCellToGrid(testHeadCell);
+        Cell testCell = new Cell("food");
+        testGrid.addFoodCellToGrid(testCell);
+        assertNotNull(testCell);
+        assertNotEquals(0, testCell.getX());
+        assertNotEquals(0, testCell.getY());
+
+    }
+
     //food is there, so true is expected response
     @Test
     public void checkForCell() throws Exception
