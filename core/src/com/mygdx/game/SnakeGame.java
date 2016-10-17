@@ -48,7 +48,8 @@ public class SnakeGame extends ApplicationAdapter {
 		//movePerGridCell();
         try
         {
-            moveInGridCell();
+            //moveInGridCell();
+            moveCellGrid();
         }
         catch(ArrayIndexOutOfBoundsException e)
         {
@@ -202,35 +203,92 @@ public class SnakeGame extends ApplicationAdapter {
         yPosition += yDirectionalMovement;
         if(yDirectionalMovement == 1)
         {
-
                 playGrid.moveGridCellUp(myCell);
-
         }
         if(yDirectionalMovement == -1)
         {
-//            try
-//            {
                 playGrid.moveGridCellDown(myCell);
-//            }
-//            catch(ArrayIndexOutOfBoundsException e)
-//            {
-//
-//            }
-
         }
         if(xDirectionalMovement == 1)
         {
-
                 playGrid.moveGridCellRight(myCell);
-
         }
         if(xDirectionalMovement == -1)
         {
-
                 playGrid.moveGridCellLeft(myCell);
-
         }
 
+    }
+
+    void moveCellGrid()throws ArrayIndexOutOfBoundsException
+    {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if(yDirectionalMovement == -1)
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = -1;
+            }
+            else
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = 1;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if(yDirectionalMovement == 1)
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = 1;
+            }
+            else
+            {
+                xDirectionalMovement = 0;
+                yDirectionalMovement = -1;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if(xDirectionalMovement == -1)
+            {
+                xDirectionalMovement = -1;
+                yDirectionalMovement = 0;
+            }
+            else
+            {
+                xDirectionalMovement = 1;
+                yDirectionalMovement = 0;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if(xDirectionalMovement == 1)
+            {
+                xDirectionalMovement = 1;
+                yDirectionalMovement = 0;
+            }
+            else
+            {
+                xDirectionalMovement = -1;
+                yDirectionalMovement = 0;
+            }
+        }
+        xPosition += xDirectionalMovement;
+        yPosition += yDirectionalMovement;
+        // || xPosition > myCell.getX()
+        if(xPosition == myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
+            //myCell.setX(xPosition);
+            playGrid.moveGridCellRight(myCell);
+        }
+        if(yPosition == myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
+            //myCell.setY(yPosition);
+            playGrid.moveGridCellUp(myCell);
+        }
+        if(xPosition < myCell.getX() * myCell.getCellSize()) {
+            //myCell.setX(myCell.getX() - myCell.getCellSize());
+            playGrid.moveGridCellLeft(myCell);
+        }
+        if(yPosition < myCell.getY() * myCell.getCellSize()) {
+            //myCell.setY(myCell.getY() - myCell.getCellSize());
+            playGrid.moveGridCellDown(myCell);
+        }
     }
 
 }
