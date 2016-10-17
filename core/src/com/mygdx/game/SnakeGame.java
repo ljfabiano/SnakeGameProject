@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -12,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class SnakeGame extends Game {
 	Game game;
@@ -19,15 +19,15 @@ public class SnakeGame extends Game {
 	Texture img;
 	ScreenGrid playGrid;
     Stage stage;
-    TextButton button;
+    TextButton playAgainButton;
     TextButton.TextButtonStyle textButtonStyle;
     BitmapFont font;
 	ShapeRenderer myShape;
 	Cell myCell;
-	int xPosition = 0;
-	int yPosition = 0;
-	int xDirectionalMovement = 0;
-	int yDirectionalMovement = 0;
+	int xPosition;
+	int yPosition;
+	int xDirectionalMovement;
+	int yDirectionalMovement;
     boolean gameOver = false;
     //Actor gridActor;
 
@@ -41,13 +41,17 @@ public class SnakeGame extends Game {
 		batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
 		playGrid = new ScreenGrid();
+        xPosition = 0;
+        yPosition = 0;
+        xDirectionalMovement = 0;
+        yDirectionalMovement = 0;
         stage = new Stage();
         font = new BitmapFont();
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        button = new TextButton("Game Over Man! Game Over!", textButtonStyle);
-        button.setPosition(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        stage.addActor(button);
+        playAgainButton = new TextButton("Click to play again", textButtonStyle);
+        playAgainButton.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 10);
+        stage.addActor(playAgainButton);
         Gdx.input.setInputProcessor(stage);
 		myShape = new ShapeRenderer();
 		myCell = createTestCell(0, 0);
@@ -55,6 +59,16 @@ public class SnakeGame extends Game {
     	playGrid.setScreenWidth(Gdx.graphics.getWidth());
         playGrid.setCoordinateGrid();
 
+        playAgainButton.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+//                buttonSelectCounter++;
+                System.out.println("Button Pressed");
+                gameOver = false;
+                create();
+//                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
+            }
+        });
         //Used to disable the continuous calling of the render method, and requestRendering calls the render method just once.
 //        Gdx.graphics.setContinuousRendering(false);
 //        Gdx.graphics.requestRendering();
