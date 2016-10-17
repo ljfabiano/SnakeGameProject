@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class SnakeGame extends Game {
 	Game game;
@@ -22,6 +25,11 @@ public class SnakeGame extends Game {
     TextButton playAgainButton;
     TextButton.TextButtonStyle textButtonStyle;
     BitmapFont font;
+
+    Stage startGameStage;
+    TextButton beginGame;
+    //TextButton.TextButtonStyle beginGameButtonStyle;
+
 	ShapeRenderer myShape;
 	Cell myCell;
 	int xPosition;
@@ -29,6 +37,7 @@ public class SnakeGame extends Game {
 	int xDirectionalMovement;
 	int yDirectionalMovement;
     boolean gameOver = false;
+    boolean gameStarting = true;
     //Actor gridActor;
 
     public SnakeGame()
@@ -38,13 +47,21 @@ public class SnakeGame extends Game {
 	
 	@Override
 	public void create () {
-		batch = new SpriteBatch();
-		//img = new Texture("badlogic.jpg");
+        //Initialize the SpriteBatch/ShapeRenderer
+        batch = new SpriteBatch();
+        //batch.setColor(0, 0, 1, 1);
+        myShape = new ShapeRenderer();
+        //Initialize the game grid, cell, and movement variables
 		playGrid = new ScreenGrid();
+        playGrid.setScreenHeight(Gdx.graphics.getHeight());
+        playGrid.setScreenWidth(Gdx.graphics.getWidth());
+        playGrid.setCoordinateGrid();
+        myCell = createTestCell(0, 0);
         xPosition = 0;
         yPosition = 0;
         xDirectionalMovement = 0;
         yDirectionalMovement = 0;
+        //Initialize the stage for menus/buttons
         stage = new Stage();
         font = new BitmapFont();
         textButtonStyle = new TextButton.TextButtonStyle();
@@ -52,19 +69,46 @@ public class SnakeGame extends Game {
         playAgainButton = new TextButton("Click to play again", textButtonStyle);
         playAgainButton.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 10);
         stage.addActor(playAgainButton);
-        Gdx.input.setInputProcessor(stage);
-		myShape = new ShapeRenderer();
-		myCell = createTestCell(0, 0);
-        playGrid.setScreenHeight(Gdx.graphics.getHeight());
-    	playGrid.setScreenWidth(Gdx.graphics.getWidth());
-        playGrid.setCoordinateGrid();
 
+        startGameStage = new Stage();
+        font = new BitmapFont();
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.font = font;
+        beginGame = new TextButton("Click to start the game", textButtonStyle);
+        beginGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 10);
+        startGameStage.addActor(beginGame);
+
+//        Drawable myDrawable = new BaseDrawable();
+//        myDrawable.draw(batch, Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60, 80, 30);
+//        beginGameButtonStyle = new Button.ButtonStyle();
+//        beginGame = new Button(beginGameButtonStyle);
+//        beginGame.setPosition(Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60);
+//        stage.addActor(beginGame);
+        if(gameStarting == true)
+        {
+            Gdx.input.setInputProcessor(startGameStage);
+        }
+        else
+        {
+            Gdx.input.setInputProcessor(stage);
+        }
+        //Create a listener for the play again button
         playAgainButton.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
 //                buttonSelectCounter++;
-                System.out.println("Button Pressed");
+                System.out.println("Play again button pressed");
                 gameOver = false;
+                create();
+//                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
+            }
+        });
+        beginGame.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+//                buttonSelectCounter++;
+                System.out.println("Begin game button pressed");
+                gameStarting = false;
                 create();
 //                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
             }
@@ -93,39 +137,40 @@ public class SnakeGame extends Game {
 		//myShape.rect(lastTouchedPositionX, drawPositionY, 100, 100);
 //if else to control what is being drawn/rendered.
 		//myShape.rect(myCell.getX(), myCell.getY(), myCell.getCellSize(), myCell.getCellSize());
-        if(gameOver == true)
+
+        if(gameStarting == true)
         {
-            stage.draw();
+            startGameStage.draw();
         }
-        else
-        {
-            try
-            {
-                //moveInGridCell();
-                moveCellGrid();
-            }
-            catch(ArrayIndexOutOfBoundsException e)
-            {
-                System.out.println("game over!");
-                gameOver = true;
-                //GameOverScreen gameOver = new GameOverScreen();
-                //this.setScreen(new GameOverScreen(this.screen));
-                //game.setScreen(new GameOverScreen(game));
-                //dispose();
-                //exit();
-                //return;
-                //game.getScreen();
+        else {
+
+            if (gameOver == true) {
+                stage.draw();
+            } else {
+                try {
+                    //moveInGridCell();
+                    moveCellGrid();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("game over!");
+                    gameOver = true;
+                    //GameOverScreen gameOver = new GameOverScreen();
+                    //this.setScreen(new GameOverScreen(this.screen));
+                    //game.setScreen(new GameOverScreen(game));
+                    //dispose();
+                    //exit();
+                    //return;
+                    //game.getScreen();
 
 
+                }
+                ShapeRenderer myShape = new ShapeRenderer();
+                myShape.begin(ShapeRenderer.ShapeType.Filled);
+                myShape.setColor(0, 1, 0, 1);
+                myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                myShape.end();
             }
-            ShapeRenderer myShape = new ShapeRenderer();
-            myShape.begin(ShapeRenderer.ShapeType.Filled);
-            myShape.setColor(0, 1, 0, 1);
-            myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
-            myShape.end();
+            //myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
         }
-        //myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
-
 
 
 		//batch.draw(img, 0, 0);
