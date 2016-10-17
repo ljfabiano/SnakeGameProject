@@ -194,9 +194,24 @@ public class ScreenGrid {
 //        }
 
     }
+
     public void addCellToGrid(Cell myCell)
     {
         coordinateGrid[myCell.getX()][myCell.getY()] = myCell;
+    }
+
+    public boolean checkForCell(int x, int y)
+    {
+        boolean coordinateisOccupied;
+        if(coordinateGrid[x][y] != null)
+        {
+            coordinateisOccupied = true;
+        }
+        else
+        {
+            coordinateisOccupied = false;
+        }
+        return coordinateisOccupied;
     }
 
 }

@@ -8,6 +8,86 @@ import static org.junit.Assert.*;
  * Created by jfabiano on 10/14/2016.
  */
 public class ScreenGridTest {
+    //food is there, so true is expected response
+    @Test
+    public void checkForCell() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell for the head
+//        Cell testHead = new Cell();
+//        testHead.setX(0);
+//        testHead.setY(0);
+//        testGrid.addCellToGrid(testHead);
+        //create a cell for the food
+        Cell testFood = new Cell("food");
+        testFood.setX(0);
+        testFood.setY(1);
+        testGrid.addCellToGrid(testFood);
+        //call a move method to move the head to the food
+//        testGrid.moveGridCellUp(testHead);
+        //the boolean should return true if there is food in the coordinate, and false if there is not, so make a test for each of these possibilities
+        boolean response = testGrid.checkForCell(0, 1);
+        assertNotNull(response);
+        assertEquals(true, response);
+    }
+    //a head type cell is there, so false is expected
+    @Test
+    public void checkForCellNegative() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell for the head
+//        Cell testHead = new Cell();
+//        testHead.setX(0);
+//        testHead.setY(0);
+//        testGrid.addCellToGrid(testHead);
+        //create a cell for the food
+        Cell testHead = new Cell("head");
+        testHead.setX(0);
+        testHead.setY(1);
+        testGrid.addCellToGrid(testHead);
+        //call a move method to move the head to the food
+//        testGrid.moveGridCellUp(testHead);
+        //the boolean should return true if there is food in the coordinate, and false if there is not, so make a test for each of these possibilities
+        boolean response = testGrid.checkForCell(0, 1);
+        assertNotNull(response);
+        assertEquals(true, response);
+    }
+    //null is there, so false is expected
+    @Test
+    public void checkForCellNull() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell for the head
+//        Cell testHead = new Cell();
+//        testHead.setX(0);
+//        testHead.setY(0);
+//        testGrid.addCellToGrid(testHead);
+        //create a cell for the food
+//        Cell testHead = new Cell("head");
+//        testHead.setX(0);
+//        testHead.setY(1);
+//        testGrid.addCellToGrid(testHead);
+        //call a move method to move the head to the food
+//        testGrid.moveGridCellUp(testHead);
+        //the boolean should return true if there is food in the coordinate, and false if there is not, so make a test for each of these possibilities
+        boolean response = testGrid.checkForCell(0, 1);
+        assertNotNull(response);
+        assertEquals(false, response);
+
+    }
+
     @Test
     public void moveGridCellUp() throws Exception
     {

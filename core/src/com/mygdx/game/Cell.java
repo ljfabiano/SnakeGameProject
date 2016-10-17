@@ -6,10 +6,15 @@ package com.mygdx.game;
 public class Cell {
     int x, y;
     int cellSize = 10;
+    String type;
 
     public Cell()
     {
 
+    }
+    public Cell(String type)
+    {
+        this.type = type;
     }
 
     public int getX() {
