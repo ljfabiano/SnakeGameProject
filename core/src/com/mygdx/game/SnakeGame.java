@@ -32,7 +32,9 @@ public class SnakeGame extends Game {
 
 	ShapeRenderer myShape;
 	Cell myCell;
+    Cell myBody;
     Cell myFood;
+    Coordinates currentCoordinate;
 	int xPosition;
 	int yPosition;
 	int xDirectionalMovement;
@@ -60,6 +62,7 @@ public class SnakeGame extends Game {
         myCell = new Cell("head");
         myCell.setX(0);
         myCell.setY(0);
+        myBody = new Cell("body");
         myFood = new Cell("food");
         playGrid.addFoodCellToGrid(myFood);
         xPosition = 0;
@@ -170,6 +173,7 @@ public class SnakeGame extends Game {
                 }
                 catch (Exception ex)
                 {
+                    ex.printStackTrace();
                     System.out.println("game over! Hit a snake head or body!");
                     gameOver = true;
                 }
@@ -177,6 +181,12 @@ public class SnakeGame extends Game {
                 myShape.begin(ShapeRenderer.ShapeType.Filled);
                 myShape.setColor(0, 1, 0, 1);
                 myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
+                for (int index = myCell.getLength(); index > 0; index--)
+                //for (int index = 1; index <= myCell.getLength(); index++)
+                {
+                    myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                }
                 myShape.setColor(0, 0, 1, 1);
                 myShape.rect(myFood.getX() * myFood.getCellSize(), myFood.getY() * myFood.getCellSize(), myFood.getCellSize(), myFood.getCellSize());
                 myShape.end();
@@ -387,18 +397,34 @@ public class SnakeGame extends Game {
         // || xPosition > myCell.getX()
         if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
             //myCell.setX(xPosition);
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            //Cell bodyCell = new Cell();
+            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellRight(myCell);
         }
         if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
             //myCell.setY(yPosition);
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            //Cell bodyCell = new Cell();
+            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellUp(myCell);
         }
         if(xPosition < myCell.getX() * myCell.getCellSize()) {
             //myCell.setX(myCell.getX() - myCell.getCellSize());
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            //Cell bodyCell = new Cell();
+            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellLeft(myCell);
         }
         if(yPosition < myCell.getY() * myCell.getCellSize()) {
             //myCell.setY(myCell.getY() - myCell.getCellSize());
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            //Cell bodyCell = new Cell();
+            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellDown(myCell);
         }
     }
