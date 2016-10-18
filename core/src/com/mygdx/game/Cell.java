@@ -66,10 +66,10 @@ public class Cell {
         //logic for adding the crumb to the last index(most recent)
         breadCrumbsList.add(length, latestBreadCrumb);
         //breadCrumbsList.remove(breadCrumbsList.indexOf(latestBreadCrumb) - length);
-        if (length > 1)//may need to change to include length =1 as well so there is not a leaked segment???
-        {
-            breadCrumbsList.remove(length - (length - 1));
-        }
+//        if (length > 1)//may need to change to include length =1 as well so there is not a leaked segment???
+//        {
+//            breadCrumbsList.remove(length - (length - 1));
+//        }
     }
 
     public int getLength() {
@@ -89,14 +89,24 @@ public class Cell {
     }
     public void addBodyCellToList(Cell bodySegment)
     {
-        //logic for adding the crumb to the last index(most recent)
-        bodySegment.setX(breadCrumbsList.get(length).getX());
-        System.out.println("");
-        bodySegment.setY(breadCrumbsList.get(length).getY());
-        bodySegment.setType("body");
-        body.add(length, bodySegment);//changed from length to length -1
-        //breadCrumbsList.remove(breadCrumbsList.indexOf(latestBreadCrumb) - length);
-        //body.remove(length - length);
+
+//        if(breadCrumbsList.size() == 0)
+//        {
+//            bodySegment.setX(x);
+//            //System.out.println("");
+//            bodySegment.setY(y);
+//            bodySegment.setType("body");
+//            body.add(length, bodySegment);//changed from length to length -1
+//        }
+//        else {
+            //logic for adding the crumb to the last index(most recent)
+            bodySegment.setX(breadCrumbsList.get(length).getX());
+            //System.out.println("");
+            bodySegment.setY(breadCrumbsList.get(length).getY());
+            bodySegment.setType("body");
+            body.add(length, bodySegment);//changed from length to length -1
+            //breadCrumbsList.remove(breadCrumbsList.indexOf(latestBreadCrumb) - length);
+            //body.remove(length - length);
 //        if (length > 1)//may need to change to include length =1 as well so there is not a leaked segment???
 //        {
 //            body.remove(length - (length - 1));
@@ -105,6 +115,8 @@ public class Cell {
 //        {
 //            body.remove(length - length);
 //        }
+        //}
+
     }
     public void moveTailToBackOfHead()
     {
@@ -114,9 +126,9 @@ public class Cell {
             Cell tail = body.get(length - length);
 //            tail.setX(body.get(length - 1).getX());
 //            tail.setY(body.get(length - 1).getY());
-            tail.setX(breadCrumbsList.get(length-1).getX());
-            tail.setY(breadCrumbsList.get(length-1).getY());
-            body.add(length-1, tail);
+            tail.setX(breadCrumbsList.get(length).getX());
+            tail.setY(breadCrumbsList.get(length).getY());
+            body.add(length, tail);
 
         }
     }

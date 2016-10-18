@@ -161,6 +161,7 @@ public class SnakeGame extends Game {
                 }
                 catch (ArrayIndexOutOfBoundsException e)
                 {
+                    e.printStackTrace();
                     System.out.println("game over! Hit a wall!");
                     gameOver = true;
                     //GameOverScreen gameOver = new GameOverScreen();

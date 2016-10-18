@@ -153,11 +153,15 @@ public class ScreenGrid {
 
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY() + 1]);
+                //addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY()]);
                 coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
+                //myCell = coordinateGrid[myCell.getX()][myCell.getY() + 1];
+
 
                 Cell newTail = new Cell();
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
+
 //                Cell newTail = new Cell("body");
 //                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
 //                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
@@ -169,7 +173,7 @@ public class ScreenGrid {
             }
             else
             {
-                Exception ex = new Exception("You hit a snake head, or body segment. Sorry... Sorry... We're Sorry... Sorry.");
+                Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
                 throw ex;
             }
         }
@@ -201,10 +205,13 @@ public class ScreenGrid {
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY() - 1]);
                 coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
+                //myCell = coordinateGrid[myCell.getX()][myCell.getY() - 1];
+
 
                 Cell newTail = new Cell();
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
+
 //                Cell newTail = new Cell("body");
 //                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
 //                newTail.setX(myCell.getX());
@@ -217,7 +224,7 @@ public class ScreenGrid {
             }
             else
             {
-                Exception ex = new Exception("You hit a snake head, or body segment. Sorry... Sorry... We're Sorry... Sorry.");
+                Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
                 throw ex;
             }
         }
@@ -247,10 +254,13 @@ public class ScreenGrid {
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX() - 1][myCell.getY()]);
                 coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
+                //myCell = coordinateGrid[myCell.getX() - 1][myCell.getY()];
+
 
                 Cell newTail = new Cell();
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
+
                 //these need to be tied to the breadcrumbs because as of now they are floating in the grid, staying where they are... they are collided with eventually but are not visible...
 //                Cell newTail = new Cell("body");
 //                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
@@ -264,7 +274,7 @@ public class ScreenGrid {
             }
             else
             {
-                Exception ex = new Exception("You hit a snake head, or body segment. Sorry... Sorry... We're Sorry... Sorry.");
+                Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
                 throw ex;
             }
         }
@@ -294,10 +304,14 @@ public class ScreenGrid {
                  //Create another piece of food in the grid
                  addFoodCellToGrid(coordinateGrid[myCell.getX() + 1][myCell.getY()]);
                  coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
+                 //myCell = coordinateGrid[myCell.getX() + 1][myCell.getY()];
+
+
 
                  Cell newTail = new Cell();
                  myCell.addBodyCellToList(newTail);
                  myCell.setLength(myCell.getLength() + 1);
+
 //                 Cell newTail = new Cell("body");
 //                 coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
 //                 newTail.setX(myCell.getX());
@@ -311,7 +325,7 @@ public class ScreenGrid {
              }
              else
              {
-                 Exception ex = new Exception("You hit a snake head, or body segment. Sorry... Sorry... We're Sorry... Sorry.");
+                 Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
                  throw ex;
              }
          }
