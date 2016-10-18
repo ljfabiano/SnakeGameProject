@@ -183,7 +183,10 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
+
         }
     }
     void moveGridCellDown(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
@@ -226,7 +229,10 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
+
         }
     }
     void moveGridCellLeft(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
@@ -270,7 +276,10 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
+
         }
     }
     void moveGridCellRight(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
@@ -314,7 +323,10 @@ public class ScreenGrid {
              if(!myCell.getBody().isEmpty())
              {
                  myCell.moveTailToBackOfHead();
+                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
              }
+
          }
 
     }

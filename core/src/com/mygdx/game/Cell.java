@@ -108,8 +108,16 @@ public class Cell {
     }
     public void moveTailToBackOfHead()
     {
-        Cell tail = body.get(length - length);
-        tail.setX(breadCrumbsList.get(length).getX());
-        tail.setY(breadCrumbsList.get(length).getY());
+        if(length > 0)
+        {
+
+            Cell tail = body.get(length - length);
+//            tail.setX(body.get(length - 1).getX());
+//            tail.setY(body.get(length - 1).getY());
+            tail.setX(breadCrumbsList.get(length-1).getX());
+            tail.setY(breadCrumbsList.get(length-1).getY());
+            body.add(length-1, tail);
+
+        }
     }
 }
