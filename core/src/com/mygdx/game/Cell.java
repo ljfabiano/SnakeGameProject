@@ -61,6 +61,7 @@ public class Cell {
     public void setBreadCrumbsList(ArrayList<Coordinates> breadCrumbsList) {
         this.breadCrumbsList = breadCrumbsList;
     }
+    //called from snake game in the move method every time the head is going to move
     public void addCoordinateToList(Coordinates latestBreadCrumb)
     {
         //logic for adding the crumb to the last index(most recent)
@@ -70,6 +71,12 @@ public class Cell {
             breadCrumbsList.remove(0);
         }
         breadCrumbsList.add(breadCrumbsList.size(), latestBreadCrumb);
+//        if(!breadCrumbsList.isEmpty() && breadCrumbsList.size() > 1)
+//        {
+//            System.out.println("in the if statement in the addcoordinatetolistmethod.");
+//            breadCrumbsList.remove(0);
+//        }
+//        breadCrumbsList.add(breadCrumbsList.size(), latestBreadCrumb);
 
         //breadCrumbsList.remove(breadCrumbsList.indexOf(latestBreadCrumb) - length);
 //        if (length > 1)//may need to change to include length =1 as well so there is not a leaked segment???
@@ -93,6 +100,7 @@ public class Cell {
     public void setBody(ArrayList<Cell> body) {
         this.body = body;
     }
+    //called from the screen grid class if the cell run over by the head is food before length of the head is set.
     public void addBodyCellToList(Cell bodySegment)
     {
 

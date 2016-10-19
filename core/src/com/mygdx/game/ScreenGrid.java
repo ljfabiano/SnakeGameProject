@@ -157,6 +157,7 @@ public class ScreenGrid {
                 addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY() + 1]);
                 //addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY()]);
                 coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
+                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                 //myCell = coordinateGrid[myCell.getX()][myCell.getY() + 1];
 
 
@@ -193,7 +194,10 @@ public class ScreenGrid {
         else
         {
             coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
-            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            if(myCell.getBody().isEmpty())
+            {
+                coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            }
             //coordinateGrid[myCell.getX()][myCell.getY()] = tail;
             //tail = myCell.getY()
             myCell.setY(myCell.getY() + 1);
@@ -224,6 +228,7 @@ public class ScreenGrid {
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY() - 1]);
                 coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
+                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                 //myCell = coordinateGrid[myCell.getX()][myCell.getY() - 1];
 
 
@@ -260,7 +265,10 @@ public class ScreenGrid {
         else
         {
             coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
-            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            if(myCell.getBody().isEmpty())
+            {
+                coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            }
             myCell.setY(myCell.getY() - 1);
             if(!myCell.getBody().isEmpty())
             {
@@ -285,6 +293,7 @@ public class ScreenGrid {
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX() - 1][myCell.getY()]);
                 coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
+                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                 //myCell = coordinateGrid[myCell.getX() - 1][myCell.getY()];
 
 
@@ -323,7 +332,10 @@ public class ScreenGrid {
         else
         {
             coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
-            coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            if(myCell.getBody().isEmpty())
+            {
+                coordinateGrid[myCell.getX()][myCell.getY()] = null;
+            }
             myCell.setX(myCell.getX() - 1);
             if(!myCell.getBody().isEmpty())//
             {
@@ -348,6 +360,7 @@ public class ScreenGrid {
                  //Create another piece of food in the grid
                  addFoodCellToGrid(coordinateGrid[myCell.getX() + 1][myCell.getY()]);
                  coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
+                 //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                  //myCell = coordinateGrid[myCell.getX() + 1][myCell.getY()];
 
 
@@ -386,7 +399,10 @@ public class ScreenGrid {
          else
          {
              coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
-             coordinateGrid[myCell.getX()][myCell.getY()] = null;
+             if(myCell.getBody().isEmpty())
+             {
+                 coordinateGrid[myCell.getX()][myCell.getY()] = null;
+             }
              myCell.setX(myCell.getX() + 1);
              if(!myCell.getBody().isEmpty())
              {
