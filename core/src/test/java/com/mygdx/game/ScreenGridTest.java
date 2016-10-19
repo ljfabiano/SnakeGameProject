@@ -59,18 +59,11 @@ public class ScreenGridTest {
         testGrid.setScreenWidth(640);
         testGrid.setScreenHeight(480);
         testGrid.setCoordinateGrid();
-        //create a cell for the head
-//        Cell testHead = new Cell();
-//        testHead.setX(0);
-//        testHead.setY(0);
-//        testGrid.addCellToGrid(testHead);
-        //create a cell for the food
+
         Cell testFood = new Cell("food");
         testFood.setX(0);
         testFood.setY(1);
         testGrid.addCellToGrid(testFood);
-        //call a move method to move the head to the food
-//        testGrid.moveGridCellUp(testHead);
         //the boolean should return true if there is food in the coordinate, and false if there is not, so make a test for each of these possibilities
         boolean response = testGrid.checkForCell(0, 1);
         assertNotNull(response);
@@ -85,18 +78,11 @@ public class ScreenGridTest {
         testGrid.setScreenWidth(640);
         testGrid.setScreenHeight(480);
         testGrid.setCoordinateGrid();
-        //create a cell for the head
-//        Cell testHead = new Cell();
-//        testHead.setX(0);
-//        testHead.setY(0);
-//        testGrid.addCellToGrid(testHead);
-        //create a cell for the food
+
         Cell testHead = new Cell("head");
         testHead.setX(0);
         testHead.setY(1);
         testGrid.addCellToGrid(testHead);
-        //call a move method to move the head to the food
-//        testGrid.moveGridCellUp(testHead);
         //the boolean should return true if there is food in the coordinate, and false if there is not, so make a test for each of these possibilities
         boolean response = testGrid.checkForCell(0, 1);
         assertNotNull(response);
@@ -111,18 +97,6 @@ public class ScreenGridTest {
         testGrid.setScreenWidth(640);
         testGrid.setScreenHeight(480);
         testGrid.setCoordinateGrid();
-        //create a cell for the head
-//        Cell testHead = new Cell();
-//        testHead.setX(0);
-//        testHead.setY(0);
-//        testGrid.addCellToGrid(testHead);
-        //create a cell for the food
-//        Cell testHead = new Cell("head");
-//        testHead.setX(0);
-//        testHead.setY(1);
-//        testGrid.addCellToGrid(testHead);
-        //call a move method to move the head to the food
-//        testGrid.moveGridCellUp(testHead);
         //the boolean should return true if there is food in the coordinate, and false if there is not, so make a test for each of these possibilities
         boolean response = testGrid.checkForCell(0, 1);
         assertNotNull(response);
@@ -202,15 +176,10 @@ public class ScreenGridTest {
         testBodyList.add(testBodyCell3);
         testCell.setBody(testBodyList);
 
-//        Cell testFoodBodyAdd = new Cell();
-//        testCell.addBodyCellToList(testFoodBodyAdd);
-
         System.out.println("before the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -220,23 +189,13 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //move the cell up(+1) in the Y axis(method)
         testGrid.moveGridCellUp(testCell);
-        //Remove the cell from the old coordinate in the grid(method)
-        //change the y axis value in the cell object to reflect the new coordinate in the grid(method)
-
-//        assertNotNull(testGrid.coordinateGrid[0][1]);
-//        assertNull(testGrid.coordinateGrid[0][0]);
-//        assertEquals(0, testCell.getX());
-//        assertEquals(1, testCell.getY());
 
         //make sure the cell tail being gotten is the last or furthest from the head in the list
         System.out.println("after the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -246,22 +205,45 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //
         assertNotNull(testGrid.coordinateGrid[3][4]);
         assertNull(testGrid.coordinateGrid[3][3]);
         assertEquals(3, testCell.getX());
         assertEquals(4, testCell.getY());
-        //Extra stuff to work on to add
 
-
-//        //check the cell at the location in the array list for the testhead is the testfoodbodyadd object
-//        assertEquals(testCell.getBody().get(testCell.getLength() -1), testFoodBodyAdd);
-//
-//        //check that the coordinates assigned to the new body segment are correct according to the coordinate arraylist in the test head cell
-//        assertEquals(testCell.getBreadCrumbsList().get(testCell.getLength() -1).getX(), testFoodBodyAdd.getX());
-//        assertEquals(testCell.getBreadCrumbsList().get(testCell.getLength() -1).getY(), testFoodBodyAdd.getY());
     }
+    @Test
+    public void moveGridCellUpCollision() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell in the grid(method)
+        Cell testCell = new Cell();
+        testCell.setX(3);
+        testCell.setY(3);
+        testGrid.addCellToGrid(testCell);
+        //create a cell in the grid to collide with for the test
+        Cell testCollisionCell = new Cell("body");
+        testCollisionCell.setX(3);
+        testCollisionCell.setY(4);
+        testGrid.addCellToGrid(testCollisionCell);
 
+        //move the cell up(+1) in the Y axis(method)
+        try {
+            testGrid.moveGridCellUp(testCell);
+        }
+        catch(Exception e)
+        {
+            assertEquals("java.lang.Exception: You hit a snake body segment. This is not a food cell!", e.toString());
+        }
+
+        assertNotNull(testGrid.coordinateGrid[3][3]);
+        assertNotNull(testGrid.coordinateGrid[3][4]);
+        assertEquals(3, testCell.getX());
+        assertEquals(3, testCell.getY());
+    }
     @Test
     public void moveGridCellDown() throws Exception
     {
@@ -334,9 +316,6 @@ public class ScreenGridTest {
         testBodyList.add(testBodyCell3);
         testCell.setBody(testBodyList);
 
-//        Cell testFoodBodyAdd = new Cell();
-//        testCell.addBodyCellToList(testFoodBodyAdd);
-
         System.out.println("before the method call:");
         //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
@@ -352,23 +331,13 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //move the cell up(+1) in the Y axis(method)
         testGrid.moveGridCellDown(testCell);
-        //Remove the cell from the old coordinate in the grid(method)
-        //change the y axis value in the cell object to reflect the new coordinate in the grid(method)
-
-//        assertNotNull(testGrid.coordinateGrid[0][1]);
-//        assertNull(testGrid.coordinateGrid[0][0]);
-//        assertEquals(0, testCell.getX());
-//        assertEquals(1, testCell.getY());
 
         //make sure the cell tail being gotten is the last or furthest from the head in the list
         System.out.println("after the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -378,11 +347,43 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //
         assertNotNull(testGrid.coordinateGrid[3][2]);
         assertNull(testGrid.coordinateGrid[3][3]);
         assertEquals(3, testCell.getX());
         assertEquals(2, testCell.getY());
+    }
+    @Test
+    public void moveGridCellDownCollision() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell in the grid(method)
+        Cell testCell = new Cell();
+        testCell.setX(3);
+        testCell.setY(3);
+        testGrid.addCellToGrid(testCell);
+        //create a cell in the grid to collide with for the test
+        Cell testCollisionCell = new Cell("body");
+        testCollisionCell.setX(3);
+        testCollisionCell.setY(2);
+        testGrid.addCellToGrid(testCollisionCell);
+
+        //move the cell up(+1) in the Y axis(method)
+        try {
+            testGrid.moveGridCellDown(testCell);
+        }
+        catch(Exception e)
+        {
+            assertEquals("java.lang.Exception: You hit a snake body segment. This is not a food cell!", e.toString());
+        }
+
+        assertNotNull(testGrid.coordinateGrid[3][3]);
+        assertNotNull(testGrid.coordinateGrid[3][2]);
+        assertEquals(3, testCell.getX());
+        assertEquals(3, testCell.getY());
     }
     @Test
     public void moveGridCellLeft() throws Exception
@@ -456,15 +457,10 @@ public class ScreenGridTest {
         testBodyList.add(testBodyCell3);
         testCell.setBody(testBodyList);
 
-//        Cell testFoodBodyAdd = new Cell();
-//        testCell.addBodyCellToList(testFoodBodyAdd);
-
         System.out.println("before the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -474,23 +470,13 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //move the cell up(+1) in the Y axis(method)
         testGrid.moveGridCellLeft(testCell);
-        //Remove the cell from the old coordinate in the grid(method)
-        //change the y axis value in the cell object to reflect the new coordinate in the grid(method)
-
-//        assertNotNull(testGrid.coordinateGrid[0][1]);
-//        assertNull(testGrid.coordinateGrid[0][0]);
-//        assertEquals(0, testCell.getX());
-//        assertEquals(1, testCell.getY());
 
         //make sure the cell tail being gotten is the last or furthest from the head in the list
         System.out.println("after the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -500,13 +486,44 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //
         assertNotNull(testGrid.coordinateGrid[2][3]);
         assertNull(testGrid.coordinateGrid[3][3]);
         assertEquals(2, testCell.getX());
         assertEquals(3, testCell.getY());
     }
+    @Test
+    public void moveGridCellLeftCollision() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell in the grid(method)
+        Cell testCell = new Cell();
+        testCell.setX(3);
+        testCell.setY(3);
+        testGrid.addCellToGrid(testCell);
+        //create a cell in the grid to collide with for the test
+        Cell testCollisionCell = new Cell("body");
+        testCollisionCell.setX(2);
+        testCollisionCell.setY(3);
+        testGrid.addCellToGrid(testCollisionCell);
 
+        //move the cell up(+1) in the Y axis(method)
+        try {
+            testGrid.moveGridCellLeft(testCell);
+        }
+        catch(Exception e)
+        {
+            assertEquals("java.lang.Exception: You hit a snake body segment. This is not a food cell!", e.toString());
+        }
+
+        assertNotNull(testGrid.coordinateGrid[3][3]);
+        assertNotNull(testGrid.coordinateGrid[2][3]);
+        assertEquals(3, testCell.getX());
+        assertEquals(3, testCell.getY());
+    }
     @Test
     public void moveGridCellRight() throws Exception
     {
@@ -579,15 +596,10 @@ public class ScreenGridTest {
         testBodyList.add(testBodyCell3);
         testCell.setBody(testBodyList);
 
-//        Cell testFoodBodyAdd = new Cell();
-//        testCell.addBodyCellToList(testFoodBodyAdd);
-
         System.out.println("before the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -597,23 +609,13 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //move the cell up(+1) in the Y axis(method)
         testGrid.moveGridCellRight(testCell);
-        //Remove the cell from the old coordinate in the grid(method)
-        //change the y axis value in the cell object to reflect the new coordinate in the grid(method)
-
-//        assertNotNull(testGrid.coordinateGrid[0][1]);
-//        assertNull(testGrid.coordinateGrid[0][0]);
-//        assertEquals(0, testCell.getX());
-//        assertEquals(1, testCell.getY());
 
         //make sure the cell tail being gotten is the last or furthest from the head in the list
         System.out.println("after the method call:");
-        //System.out.println("testcell = " + testCell.getBody().indexOf(testCell));
         System.out.println("index of testbodycell1 = " + testCell.getBody().indexOf(testBodyCell1));
         System.out.println("index of testbodycell2 = " + testCell.getBody().indexOf(testBodyCell2));
         System.out.println("index of testbodycell3 = " + testCell.getBody().indexOf(testBodyCell3));
-
         System.out.println("x of testcell = " + testCell.getX());
         System.out.println("y of testcell = " + testCell.getY());
         System.out.println("x of testbodycell1 = " + testBodyCell1.getX());
@@ -623,13 +625,44 @@ public class ScreenGridTest {
         System.out.println("x of testbodycell3 = " + testBodyCell3.getX());
         System.out.println("y of testbodycell3 = " + testBodyCell3.getY());
 
-        //
         assertNotNull(testGrid.coordinateGrid[4][3]);
         assertNull(testGrid.coordinateGrid[3][3]);
         assertEquals(4, testCell.getX());
         assertEquals(3, testCell.getY());
     }
+    @Test
+    public void moveGridCellRightCollision() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell in the grid(method)
+        Cell testCell = new Cell();
+        testCell.setX(3);
+        testCell.setY(3);
+        testGrid.addCellToGrid(testCell);
+        //create a cell in the grid to collide with for the test
+        Cell testCollisionCell = new Cell("body");
+        testCollisionCell.setX(4);
+        testCollisionCell.setY(3);
+        testGrid.addCellToGrid(testCollisionCell);
 
+        //move the cell up(+1) in the Y axis(method)
+        try {
+            testGrid.moveGridCellRight(testCell);
+        }
+        catch(Exception e)
+        {
+            assertEquals("java.lang.Exception: You hit a snake body segment. This is not a food cell!", e.toString());
+        }
+
+        assertNotNull(testGrid.coordinateGrid[3][3]);
+        assertNotNull(testGrid.coordinateGrid[4][3]);
+        assertEquals(3, testCell.getX());
+        assertEquals(3, testCell.getY());
+    }
     @Test
     public void createNextGridCell() throws Exception
     {

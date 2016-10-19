@@ -48,8 +48,6 @@ public class SnakeGameTest {
         Coordinates testCoordinatesReturn = testGrid.getTrueCellLocation();
         testCell.setX(testCoordinatesReturn.getX());
         testCell.setY(testCoordinatesReturn.getY());
-//        testCell.setX(testGrid.getTrueCellLocation());
-//        testCell.setY(testGrid.getTrueCellYLocation());
 
         assertNotNull(testCell);
         assertEquals(20, testCell.getX());
