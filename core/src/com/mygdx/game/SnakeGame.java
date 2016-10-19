@@ -203,14 +203,14 @@ public class SnakeGame extends Game {
 		batch.end();
         //stage.draw();
 		//super.render();
-        if(myCell.getBreadCrumbsList().size() > 0)
-        {
-            for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                System.out.println("index = " + index);
-                System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-            }
-        }
+//        if(myCell.getBreadCrumbsList().size() > 0)
+//        {
+//            for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
+//                System.out.println("index = " + index);
+//                System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
+//                System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
+//            }
+//        }
     }
 	
 	@Override
@@ -414,6 +414,14 @@ public class SnakeGame extends Game {
             //Cell bodyCell = new Cell();
             //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellRight(myCell);
+            if(myCell.getBreadCrumbsList().size() > 0)
+            {
+                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
+                    System.out.println("index = " + index);
+                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
+                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
+                }
+            }
         }
         if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
             //myCell.setY(yPosition);
@@ -422,6 +430,14 @@ public class SnakeGame extends Game {
             //Cell bodyCell = new Cell();
             //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellUp(myCell);
+            if(myCell.getBreadCrumbsList().size() > 0)
+            {
+                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
+                    System.out.println("index = " + index);
+                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
+                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
+                }
+            }
         }
         if(xPosition < myCell.getX() * myCell.getCellSize()) {
             //myCell.setX(myCell.getX() - myCell.getCellSize());
@@ -430,6 +446,14 @@ public class SnakeGame extends Game {
             //Cell bodyCell = new Cell();
             //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellLeft(myCell);
+            if(myCell.getBreadCrumbsList().size() > 0)
+            {
+                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
+                    System.out.println("index = " + index);
+                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
+                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
+                }
+            }
         }
         if(yPosition < myCell.getY() * myCell.getCellSize()) {
             //myCell.setY(myCell.getY() - myCell.getCellSize());
@@ -438,6 +462,14 @@ public class SnakeGame extends Game {
             //Cell bodyCell = new Cell();
             //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellDown(myCell);
+            if(myCell.getBreadCrumbsList().size() > 0)
+            {
+                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
+                    System.out.println("index = " + index);
+                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
+                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
+                }
+            }
         }
     }
     public void exit()

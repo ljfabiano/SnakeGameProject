@@ -144,9 +144,11 @@ public class ScreenGrid {
     //The method is used to move an object in the grid(object/cell) to another location in the grid
     void moveGridCellUp(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
     {
+        //if the cell to move to is not null then check for cell will be true as in there is a cell already there in the grid
         boolean checkForCell = checkForCell(myCell.getX(), myCell.getY() + 1);
         if(checkForCell == true)
         {
+            //if the cell to move to has the type = food the return true, else false
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType());
             if(isCellFood == true)
             {
@@ -171,12 +173,23 @@ public class ScreenGrid {
                 myCell.setY(myCell.getY() + 1);
 
             }
+            else if(isCellHead(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType()) == true)
+            {
+                Exception ex = new Exception("You hit a snake head. This is not a food cell!");
+                throw ex;
+            }
+            else if(isCellBody(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType()) == true)
+            {
+                Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
+                throw ex;
+            }
             else
             {
-                Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
+                Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                 throw ex;
             }
         }
+        //the cell to move the head to is empty
         else
         {
             coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
@@ -184,10 +197,16 @@ public class ScreenGrid {
             //coordinateGrid[myCell.getX()][myCell.getY()] = tail;
             //tail = myCell.getY()
             myCell.setY(myCell.getY() + 1);
+            //if the head cell has a tail
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
+                //the body cell at head cell's length property - 1 in the body cell list in the head cell is being assigned to the head cell's coordinate grid location in this screengrid class
+
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);//myCell.getBody().size()//actual original working line
+                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);//1st change is currently on all the move methods
+                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);//works for unit test
+                //the tail of the snake's old location is set to null
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
 
@@ -222,9 +241,19 @@ public class ScreenGrid {
 
 
             }
+            else if(isCellHead(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType()) == true)
+            {
+                Exception ex = new Exception("You hit a snake head. This is not a food cell!");
+                throw ex;
+            }
+            else if(isCellBody(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType()) == true)
+            {
+                Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
+                throw ex;
+            }
             else
             {
-                Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
+                Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                 throw ex;
             }
         }
@@ -236,7 +265,9 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
+                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size());
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
+                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
 
@@ -273,9 +304,19 @@ public class ScreenGrid {
 
 
             }
+            else if(isCellHead(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType()) == true)
+            {
+                Exception ex = new Exception("You hit a snake head. This is not a food cell!");
+                throw ex;
+            }
+            else if(isCellBody(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType()) == true)
+            {
+                Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
+                throw ex;
+            }
             else
             {
-                Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
+                Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                 throw ex;
             }
         }
@@ -287,7 +328,9 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())//
             {
                 myCell.moveTailToBackOfHead();
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
+                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size());
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
+                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
 
@@ -324,9 +367,19 @@ public class ScreenGrid {
 
 
              }
+             else if(isCellHead(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType()) == true)
+             {
+                 Exception ex = new Exception("You hit a snake head. This is not a food cell!");
+                 throw ex;
+             }
+             else if(isCellBody(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType()) == true)
+             {
+                 Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
+                 throw ex;
+             }
              else
              {
-                 Exception ex = new Exception("You hit a snake head, or body segment in the grid. This is not a food cell!");
+                 Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                  throw ex;
              }
          }
@@ -338,7 +391,9 @@ public class ScreenGrid {
              if(!myCell.getBody().isEmpty())
              {
                  myCell.moveTailToBackOfHead();
-                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
+                 //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size());
+                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
+                 //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                  coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
              }
 
@@ -377,6 +432,34 @@ public class ScreenGrid {
             coordinateIsFood = false;
         }
         return coordinateIsFood;
+    }
+
+    public boolean isCellHead(String type)
+    {
+        boolean coordinateIsHead;
+        if(type.equals("head"))
+        {
+            coordinateIsHead = true;
+        }
+        else
+        {
+            coordinateIsHead = false;
+        }
+        return coordinateIsHead;
+    }
+
+    public boolean isCellBody(String type)
+    {
+        boolean coordinateIsBody;
+        if(type.equals("body"))
+        {
+            coordinateIsBody = true;
+        }
+        else
+        {
+            coordinateIsBody = false;
+        }
+        return coordinateIsBody;
     }
 
     public void addFoodCellToGrid(Cell foodCell)
