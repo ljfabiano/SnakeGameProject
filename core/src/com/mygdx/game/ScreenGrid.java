@@ -187,7 +187,7 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
 
@@ -236,7 +236,7 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
 
@@ -261,6 +261,7 @@ public class ScreenGrid {
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
 
+
                 //these need to be tied to the breadcrumbs because as of now they are floating in the grid, staying where they are... they are collided with eventually but are not visible...
 //                Cell newTail = new Cell("body");
 //                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
@@ -283,10 +284,10 @@ public class ScreenGrid {
             coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
             coordinateGrid[myCell.getX()][myCell.getY()] = null;
             myCell.setX(myCell.getX() - 1);
-            if(!myCell.getBody().isEmpty())
+            if(!myCell.getBody().isEmpty())//
             {
                 myCell.moveTailToBackOfHead();
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
 
@@ -337,7 +338,7 @@ public class ScreenGrid {
              if(!myCell.getBody().isEmpty())
              {
                  myCell.moveTailToBackOfHead();
-                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);
+                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                  coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
              }
 

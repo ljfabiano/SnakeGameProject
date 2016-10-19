@@ -183,10 +183,13 @@ public class SnakeGame extends Game {
                 myShape.setColor(0, 1, 0, 1);
                 myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
                 //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
-                for (int index = myCell.getLength(); index > 0; index--)
-                //for (int index = 1; index <= myCell.getLength(); index++)
+                if(!myCell.getBody().isEmpty())
                 {
-                    myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                    for (int index = myCell.getBreadCrumbsList().size() - 1; index >= 0; index--)
+                    //for (int index = 1; index <= myCell.getLength(); index++)
+                    {
+                        myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                    }
                 }
                 myShape.setColor(0, 0, 1, 1);
                 myShape.rect(myFood.getX() * myFood.getCellSize(), myFood.getY() * myFood.getCellSize(), myFood.getCellSize(), myFood.getCellSize());
@@ -200,7 +203,15 @@ public class SnakeGame extends Game {
 		batch.end();
         //stage.draw();
 		//super.render();
-	}
+        if(myCell.getBreadCrumbsList().size() > 0)
+        {
+            for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
+                System.out.println("index = " + index);
+                System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
+                System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
+            }
+        }
+    }
 	
 	@Override
 	public void dispose () {
