@@ -22,6 +22,13 @@ public class Cell {
         this.type = type;
     }
 
+    public Cell(int x, int y, String type)
+    {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+    }
+
     public int getX() {
         return x;
     }

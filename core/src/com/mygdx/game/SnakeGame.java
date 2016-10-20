@@ -78,10 +78,14 @@ public class SnakeGame extends Game {
         yDirectionalMovement = 0;
         //Initialize second snake
         snakeHeadP2 = new Cell("head");
-        snakeHeadP2.setX(playGrid.getCoordinateGrid().length);
-        snakeHeadP2.setY(playGrid.getCoordinateGrid()[0].length);
-        xPositionP2 = playGrid.getCoordinateGrid().length;
-        yPositionP2 = playGrid.getCoordinateGrid()[0].length;
+//        snakeHeadP2.setX(playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize());
+//        snakeHeadP2.setY(playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize());
+//        xPositionP2 = playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize();
+//        yPositionP2 = playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize();
+        snakeHeadP2.setX(63);
+        snakeHeadP2.setY(47);
+        xPositionP2 = 630;
+        yPositionP2 = 470;
         xDirectionalMovementP2 = 0;
         yDirectionalMovementP2 = 0;
         //initialize a body and food cell
@@ -176,7 +180,9 @@ public class SnakeGame extends Game {
             } else {
                 try {
                     //moveInGridCell();
-                    moveCellGrid();
+                    moveCellGridP2SnakeOnly();
+                    //moveCellGridTwoSnakes();
+                    //moveCellGrid();
                 }
                 catch (ArrayIndexOutOfBoundsException e)
                 {
@@ -208,6 +214,17 @@ public class SnakeGame extends Game {
                     //for (int index = 1; index <= myCell.getLength(); index++)
                     {
                         myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
+                    }
+                }
+                myShape.setColor(0, 0, 0, 1);
+                myShape.rect(snakeHeadP2.getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
+                //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
+                if(!snakeHeadP2.getBody().isEmpty())
+                {
+                    for (int index = snakeHeadP2.getBreadCrumbsList().size() - 1; index >= 0; index--)
+                    //for (int index = 1; index <= myCell.getLength(); index++)
+                    {
+                        myShape.rect(snakeHeadP2.getBreadCrumbsList().get(index).getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getBreadCrumbsList().get(index).getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
                     }
                 }
                 myShape.setColor(0, 0, 1, 1);

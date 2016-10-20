@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -8,6 +9,16 @@ import static org.junit.Assert.*;
  * Created by jfabiano on 10/12/2016.
  */
 public class SnakeGameTest {
+    @Test
+    public void moveCellGridTwoSnakes() throws Exception {
+
+    }
+
+    @Test
+    public void moveCellGridP2SnakeOnly() throws Exception {
+
+    }
+
     @Test
     public void movePerGridCell() throws Exception {
 

@@ -547,6 +547,28 @@ public class ScreenGridTest {
         assertEquals(0, testCell.getY());
     }
     @Test
+    public void moveGridCellRightNotOnOrigin() throws Exception
+    {
+        //create a grid
+        ScreenGrid testGrid = new ScreenGrid();
+        testGrid.setScreenWidth(640);
+        testGrid.setScreenHeight(480);
+        testGrid.setCoordinateGrid();
+        //create a cell in the grid(method)
+        Cell testCell = new Cell();
+        testCell.setX(60);
+        testCell.setY(40);
+        testGrid.addCellToGrid(testCell);
+        //move the cell up(+1) in the Y axis(method)
+        testGrid.moveGridCellRight(testCell);
+        //Remove the cell from the old coordinate in the grid(method)
+        //change the y axis value in the cell object to reflect the new coordinate in the grid(method)
+        assertNotNull(testGrid.coordinateGrid[61][40]);
+        assertNull(testGrid.coordinateGrid[60][40]);
+        assertEquals(61, testCell.getX());
+        assertEquals(40, testCell.getY());
+    }
+    @Test
     public void moveGridCellRightWithTail() throws Exception
     {
         //create a grid
