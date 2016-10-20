@@ -77,11 +77,11 @@ public class SnakeGame extends Game {
         xDirectionalMovement = 0;
         yDirectionalMovement = 0;
         //Initialize second snake
-        snakeHeadP2 = new Cell("head");
 //        snakeHeadP2.setX(playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize());
 //        snakeHeadP2.setY(playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize());
 //        xPositionP2 = playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize();
 //        yPositionP2 = playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize();
+        snakeHeadP2 = new Cell("head");
         snakeHeadP2.setX(63);
         snakeHeadP2.setY(47);
         xPositionP2 = 630;
@@ -180,8 +180,8 @@ public class SnakeGame extends Game {
             } else {
                 try {
                     //moveInGridCell();
-                    moveCellGridP2SnakeOnly();
-                    //moveCellGridTwoSnakes();
+                    //moveCellGridP2SnakeOnly();
+                    moveCellGridTwoSnakes();
                     //moveCellGrid();
                 }
                 catch (ArrayIndexOutOfBoundsException e)
@@ -511,7 +511,7 @@ public class SnakeGame extends Game {
     //Same as the regular move method, but for 2 snakes
     void moveCellGridTwoSnakes()throws Exception//ArrayIndexOutOfBoundsException
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             if(yDirectionalMovement == -1)
             {
                 xDirectionalMovement = 0;
@@ -523,7 +523,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovement = 1;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
             if(yDirectionalMovement == 1)
             {
                 xDirectionalMovement = 0;
@@ -535,7 +535,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovement = -1;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
             if(xDirectionalMovement == -1)
             {
                 xDirectionalMovement = -1;
@@ -547,7 +547,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovement = 0;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             if(xDirectionalMovement == 1)
             {
                 xDirectionalMovement = 1;
@@ -559,7 +559,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovement = 0;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if(yDirectionalMovementP2 == -1)
             {
                 xDirectionalMovementP2 = 0;
@@ -571,7 +571,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovementP2 = 1;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             if(yDirectionalMovementP2 == 1)
             {
                 xDirectionalMovementP2 = 0;
@@ -583,7 +583,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovementP2 = -1;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if(xDirectionalMovementP2 == -1)
             {
                 xDirectionalMovementP2 = -1;
@@ -595,7 +595,7 @@ public class SnakeGame extends Game {
                 yDirectionalMovementP2 = 0;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             if(xDirectionalMovementP2 == 1)
             {
                 xDirectionalMovementP2 = 1;
