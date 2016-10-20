@@ -19,13 +19,17 @@ public class SnakeGame extends Game {
 	Texture img;
 	ScreenGrid playGrid;
     Stage endGameStage;
-    TextButton playAgainButton;
+
     TextButton.TextButtonStyle textButtonStyle;
     BitmapFont font;
 
     Stage startGameStage;
     TextButton beginSinglePlayerGame;
     TextButton beginTwoPlayerGame;
+    TextButton exitGame;
+    TextButton playAgainButton;
+    TextButton returnToMainMenu;
+
     //TextButton.TextButtonStyle beginGameButtonStyle;
 
 	ShapeRenderer myShape;
@@ -51,7 +55,6 @@ public class SnakeGame extends Game {
     boolean singlePlayerGame = false;
     boolean twoPlayerGame = false;
     //Actor gridActor;
-
     public SnakeGame()
     {
         game = this;
@@ -100,21 +103,24 @@ public class SnakeGame extends Game {
         font = new BitmapFont();
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        playAgainButton = new TextButton("Click to play again", textButtonStyle);
-        playAgainButton.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 10);
+        playAgainButton = new TextButton("Play Again", textButtonStyle);
+        playAgainButton.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 20);
+        returnToMainMenu = new TextButton("Main Menu", textButtonStyle);
+        returnToMainMenu.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 20);
         endGameStage.addActor(playAgainButton);
+        endGameStage.addActor(returnToMainMenu);
 
         startGameStage = new Stage();
         font = new BitmapFont();
-        textButtonStyle = new TextButton.TextButtonStyle();
-        textButtonStyle.font = font;
         beginSinglePlayerGame = new TextButton("Single Player Game", textButtonStyle);
         beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 20);
         beginTwoPlayerGame = new TextButton("Two Player Game", textButtonStyle);
-        beginTwoPlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 20);
+        beginTwoPlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2);
+        exitGame = new TextButton("Exit", textButtonStyle);
+        exitGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 20);
         startGameStage.addActor(beginSinglePlayerGame);
         startGameStage.addActor(beginTwoPlayerGame);
-
+        startGameStage.addActor(exitGame);
 //        Drawable myDrawable = new BaseDrawable();
 //        myDrawable.draw(batch, Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60, 80, 30);
 //        beginGameButtonStyle = new Button.ButtonStyle();
@@ -133,23 +139,30 @@ public class SnakeGame extends Game {
         playAgainButton.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
-//                buttonSelectCounter++;
                 System.out.println("Play again button pressed");
                 gameOver = false;
                 create();
-//                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
+            }
+        });
+        returnToMainMenu.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                System.out.println("Return to main menu button pressed");
+                gameOver = false;
+                gameStarting = true;
+                singlePlayerGame = false;
+                twoPlayerGame = false;
+                create();
             }
         });
         beginSinglePlayerGame.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
-//                buttonSelectCounter++;
                 System.out.println("Begin single player game button pressed");
                 gameStarting = false;
                 singlePlayerGame = true;
                 twoPlayerGame = false;
                 create();
-//                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
             }
         });
         beginTwoPlayerGame.addListener(new ChangeListener() {
@@ -164,6 +177,13 @@ public class SnakeGame extends Game {
 //                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
             }
         });
+        exitGame.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                System.out.println("Exit game button pressed");
+                exit();
+            }
+        });
         //Used to disable the continuous calling of the render method, and requestRendering calls the render method just once.
 //        Gdx.graphics.setContinuousRendering(false);
 //        Gdx.graphics.requestRendering();
@@ -171,8 +191,6 @@ public class SnakeGame extends Game {
         //gridActor = new Actor();
         //gridActor.setBounds(x, y, width, height);
         //endGameStage.addActor(gridActor);
-
-
 	}
 
 	@Override
@@ -893,7 +911,9 @@ public class SnakeGame extends Game {
 
     public void exit()
     {
-        this.exit();
+        //this.dispose();
+        Gdx.app.exit();
+        //System.exit(0);
     }
 
 }
