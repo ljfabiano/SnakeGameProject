@@ -10,24 +10,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class SnakeGame extends Game {
 	Game game;
     SpriteBatch batch;
 	Texture img;
 	ScreenGrid playGrid;
-    Stage stage;
+    Stage endGameStage;
     TextButton playAgainButton;
     TextButton.TextButtonStyle textButtonStyle;
     BitmapFont font;
 
     Stage startGameStage;
-    TextButton beginGame;
+    TextButton beginSinglePlayerGame;
+    TextButton beginTwoPlayerGame;
     //TextButton.TextButtonStyle beginGameButtonStyle;
 
 	ShapeRenderer myShape;
@@ -50,6 +48,8 @@ public class SnakeGame extends Game {
 
     boolean gameOver = false;
     boolean gameStarting = true;
+    boolean singlePlayerGame = false;
+    boolean twoPlayerGame = false;
     //Actor gridActor;
 
     public SnakeGame()
@@ -76,52 +76,58 @@ public class SnakeGame extends Game {
         yPosition = 0;
         xDirectionalMovement = 0;
         yDirectionalMovement = 0;
-        //Initialize second snake
+
+        if(twoPlayerGame == true)
+        {
+            //Initialize second snake
 //        snakeHeadP2.setX(playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize());
 //        snakeHeadP2.setY(playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize());
 //        xPositionP2 = playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize();
 //        yPositionP2 = playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize();
-        snakeHeadP2 = new Cell("head");
-        snakeHeadP2.setX(63);
-        snakeHeadP2.setY(47);
-        xPositionP2 = 630;
-        yPositionP2 = 470;
-        xDirectionalMovementP2 = 0;
-        yDirectionalMovementP2 = 0;
+            snakeHeadP2 = new Cell("head");
+            snakeHeadP2.setX(63);
+            snakeHeadP2.setY(47);
+            xPositionP2 = 630;
+            yPositionP2 = 470;
+            xDirectionalMovementP2 = 0;
+            yDirectionalMovementP2 = 0;
+        }
         //initialize a body and food cell
-        myBody = new Cell("body");
         myFood = new Cell("food");
         playGrid.addFoodCellToGrid(myFood);
-        //Initialize the stage for menus/buttons
-        stage = new Stage();
+        //Initialize the endGameStage for menus/buttons
+        endGameStage = new Stage();
         font = new BitmapFont();
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
         playAgainButton = new TextButton("Click to play again", textButtonStyle);
         playAgainButton.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 10);
-        stage.addActor(playAgainButton);
+        endGameStage.addActor(playAgainButton);
 
         startGameStage = new Stage();
         font = new BitmapFont();
         textButtonStyle = new TextButton.TextButtonStyle();
         textButtonStyle.font = font;
-        beginGame = new TextButton("Click to start the game", textButtonStyle);
-        beginGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 10);
-        startGameStage.addActor(beginGame);
+        beginSinglePlayerGame = new TextButton("Single Player Game", textButtonStyle);
+        beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 20);
+        beginTwoPlayerGame = new TextButton("Two Player Game", textButtonStyle);
+        beginTwoPlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 20);
+        startGameStage.addActor(beginSinglePlayerGame);
+        startGameStage.addActor(beginTwoPlayerGame);
 
 //        Drawable myDrawable = new BaseDrawable();
 //        myDrawable.draw(batch, Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60, 80, 30);
 //        beginGameButtonStyle = new Button.ButtonStyle();
-//        beginGame = new Button(beginGameButtonStyle);
-//        beginGame.setPosition(Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60);
-//        stage.addActor(beginGame);
+//        beginSinglePlayerGame = new Button(beginGameButtonStyle);
+//        beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60);
+//        endGameStage.addActor(beginSinglePlayerGame);
         if(gameStarting == true)
         {
             Gdx.input.setInputProcessor(startGameStage);
         }
         else
         {
-            Gdx.input.setInputProcessor(stage);
+            Gdx.input.setInputProcessor(endGameStage);
         }
         //Create a listener for the play again button
         playAgainButton.addListener(new ChangeListener() {
@@ -134,12 +140,26 @@ public class SnakeGame extends Game {
 //                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
             }
         });
-        beginGame.addListener(new ChangeListener() {
+        beginSinglePlayerGame.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
 //                buttonSelectCounter++;
-                System.out.println("Begin game button pressed");
+                System.out.println("Begin single player game button pressed");
                 gameStarting = false;
+                singlePlayerGame = true;
+                twoPlayerGame = false;
+                create();
+//                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
+            }
+        });
+        beginTwoPlayerGame.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+//                buttonSelectCounter++;
+                System.out.println("Begin two player game button pressed");
+                gameStarting = false;
+                singlePlayerGame = false;
+                twoPlayerGame = true;
                 create();
 //                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
             }
@@ -150,7 +170,7 @@ public class SnakeGame extends Game {
 
         //gridActor = new Actor();
         //gridActor.setBounds(x, y, width, height);
-        //stage.addActor(gridActor);
+        //endGameStage.addActor(gridActor);
 
 
 	}
@@ -176,13 +196,19 @@ public class SnakeGame extends Game {
         else {
 
             if (gameOver == true) {
-                stage.draw();
+                endGameStage.draw();
             } else {
                 try {
-                    //moveInGridCell();
-                    //moveCellGridP2SnakeOnly();
-                    moveCellGridTwoSnakes();
-                    //moveCellGrid();
+                    if(singlePlayerGame == true)
+                    {
+                        //moveInGridCell();
+                        //moveCellGridP2SnakeOnly();
+                        moveCellGrid();
+                    }
+                    else if(twoPlayerGame == true)
+                    {
+                        moveCellGridTwoSnakes();
+                    }
                 }
                 catch (ArrayIndexOutOfBoundsException e)
                 {
@@ -216,15 +242,17 @@ public class SnakeGame extends Game {
                         myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
                     }
                 }
-                myShape.setColor(0, 0, 0, 1);
-                myShape.rect(snakeHeadP2.getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
-                //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
-                if(!snakeHeadP2.getBody().isEmpty())
+                if(twoPlayerGame == true)
                 {
-                    for (int index = snakeHeadP2.getBreadCrumbsList().size() - 1; index >= 0; index--)
-                    //for (int index = 1; index <= myCell.getLength(); index++)
-                    {
-                        myShape.rect(snakeHeadP2.getBreadCrumbsList().get(index).getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getBreadCrumbsList().get(index).getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
+                    myShape.setColor(0, 0, 0, 1);
+                    myShape.rect(snakeHeadP2.getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
+                    //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
+                    if (!snakeHeadP2.getBody().isEmpty()) {
+                        for (int index = snakeHeadP2.getBreadCrumbsList().size() - 1; index >= 0; index--)
+                        //for (int index = 1; index <= myCell.getLength(); index++)
+                        {
+                            myShape.rect(snakeHeadP2.getBreadCrumbsList().get(index).getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getBreadCrumbsList().get(index).getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
+                        }
                     }
                 }
                 myShape.setColor(0, 0, 1, 1);
@@ -237,7 +265,7 @@ public class SnakeGame extends Game {
 
 		//batch.draw(img, 0, 0);
 		batch.end();
-        //stage.draw();
+        //endGameStage.draw();
 		//super.render();
 //        if(myCell.getBreadCrumbsList().size() > 0)
 //        {

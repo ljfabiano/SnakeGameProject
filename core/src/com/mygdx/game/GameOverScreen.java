@@ -46,8 +46,8 @@ public class GameOverScreen implements Screen
     }
 
         //batch = new SpriteBatch();
-        //stage = new Stage();
-        //stage.addActor(yourBitmapFontName);
+        //endGameStage = new Stage();
+        //endGameStage.addActor(yourBitmapFontName);
         //Skin mySkin = new Skin();
         //Label gameOver = new Label("Game Over", mySkin);
 
