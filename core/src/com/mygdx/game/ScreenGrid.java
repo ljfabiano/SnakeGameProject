@@ -9,7 +9,7 @@ import java.lang.reflect.Array;
 public class ScreenGrid {
     //The original size by pixel of the play area
     //Array[][] gridArray = new Array[800][600];
-    //The size of the grid by units(5 pixels)
+    //The size of the grid by units(10 pixels)
     //Array[][] gridArray = new Array[160][120];
     int screenWidth;
     int screenHeight;
@@ -17,22 +17,15 @@ public class ScreenGrid {
     int dimensionOfCell = 10;
     boolean[][] coordinateGridBool;
     Cell[][] coordinateGrid;
-//    Array[] xCoordinate = new Array[screenWidth/dimensionOfCell];
-//    Array[] yCoordinate = new Array[screenHeight/dimensionOfCell];
-//    Array[] xCoordinate;
-//    Array[] yCoordinate;
-    //boolean[][] coordinateGrid = new boolean[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
 
     public ScreenGrid()
     {
 
     }
-
     public ScreenGrid(int screenWidth, int screenHeight)
     {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        //coordinateGrid = new boolean[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
         coordinateGrid = new Cell[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
     }
 
@@ -52,22 +45,6 @@ public class ScreenGrid {
         this.screenWidth = screenWidth;
     }
 
-//    public Array[] getxCoordinate() {
-//        return xCoordinate;
-//    }
-//
-//    public void setxCoordinate(Array[] xCoordinate) {
-//        this.xCoordinate = xCoordinate;
-//    }
-//
-//    public Array[] getyCoordinate() {
-//        return yCoordinate;
-//    }
-//
-//    public void setyCoordinate(Array[] yCoordinate) {
-//        this.yCoordinate = yCoordinate;
-//    }
-
     public Cell[][] getCoordinateGrid() {
         return coordinateGrid;
     }
@@ -80,17 +57,6 @@ public class ScreenGrid {
         coordinateGrid = new Cell[screenWidth/dimensionOfCell][screenHeight/dimensionOfCell];
 
     }
-//    public void setCoordinateGrid() {
-//
-//        for(int index; index < coordinateGrid.length; index++)
-//        {
-//            for()
-//            {
-//
-//            }
-//        }
-//    }
-
     public void setTrueCellLocation(Coordinates myCoordinates)
     {
         System.out.println("x length of grid = " + coordinateGrid.length);
@@ -100,7 +66,6 @@ public class ScreenGrid {
         System.out.println("x = " + myCoordinates.getX() + " y = " + myCoordinates.getY());
         coordinateGridBool[myCoordinates.getX()][myCoordinates.getY()] = true;
     }
-
     public void setFalseCellLocation(Coordinates myCoordinates)
     {
         coordinateGridBool[myCoordinates.getX()][myCoordinates.getY()] = false;
@@ -121,13 +86,6 @@ public class ScreenGrid {
         }
         return null;
     }
-
-//    public int getTrueCellYLocation()
-//    {
-//
-//        return 0;
-//    }
-
     Cell createNextGridCell(int x, int y)
     {
         Cell myCell = new Cell();
@@ -142,7 +100,7 @@ public class ScreenGrid {
         return gridCell;
     }
     //The method is used to move an object in the grid(object/cell) to another location in the grid
-    void moveGridCellUp(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
+    void moveGridCellUp(Cell myCell)throws Exception
     {
         //if the cell to move to is not null then check for cell will be true as in there is a cell already there in the grid
         boolean checkForCell = checkForCell(myCell.getX(), myCell.getY() + 1);
@@ -152,27 +110,14 @@ public class ScreenGrid {
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType());
             if(isCellFood == true)
             {
-
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY() + 1]);
-                //addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY()]);
                 coordinateGrid[myCell.getX()][myCell.getY() + 1] = myCell;
-                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
-                //myCell = coordinateGrid[myCell.getX()][myCell.getY() + 1];
-
-
                 Cell newTail = new Cell();
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
-
-//                Cell newTail = new Cell("body");
-//                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
-//                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
-//                newTail.setX(myCell.getX());
-//                newTail.setY(myCell.getY());
                 //add the tail to the back of the snake
                 myCell.setY(myCell.getY() + 1);
-
             }
             else if(isCellHead(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType()) == true)
             {
@@ -198,25 +143,18 @@ public class ScreenGrid {
             {
                 coordinateGrid[myCell.getX()][myCell.getY()] = null;
             }
-            //coordinateGrid[myCell.getX()][myCell.getY()] = tail;
-            //tail = myCell.getY()
             myCell.setY(myCell.getY() + 1);
             //if the head cell has a tail
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
-                //the body cell at head cell's length property - 1 in the body cell list in the head cell is being assigned to the head cell's coordinate grid location in this screengrid class
-
-                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);//myCell.getBody().size()//actual original working line
-                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);//1st change is currently on all the move methods
-                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length);//works for unit test
+                coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
                 //the tail of the snake's old location is set to null
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
-
         }
     }
-    void moveGridCellDown(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
+    void moveGridCellDown(Cell myCell)throws Exception
     {
         boolean checkForCell = checkForCell(myCell.getX(), myCell.getY() - 1);
         if(checkForCell == true)
@@ -224,27 +162,13 @@ public class ScreenGrid {
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType());
             if(isCellFood == true)
             {
-
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX()][myCell.getY() - 1]);
                 coordinateGrid[myCell.getX()][myCell.getY() - 1] = myCell;
-                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
-                //myCell = coordinateGrid[myCell.getX()][myCell.getY() - 1];
-
-
                 Cell newTail = new Cell();
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
-
-//                Cell newTail = new Cell("body");
-//                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
-//                newTail.setX(myCell.getX());
-//                newTail.setY(myCell.getY());
-                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                 myCell.setY(myCell.getY() - 1);
-                //add the tail to the back of the snake
-
-
             }
             else if(isCellHead(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType()) == true)
             {
@@ -273,15 +197,12 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())
             {
                 myCell.moveTailToBackOfHead();
-                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size());
                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
-                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
-
         }
     }
-    void moveGridCellLeft(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
+    void moveGridCellLeft(Cell myCell)throws Exception
     {
         boolean checkForCell = checkForCell(myCell.getX() - 1, myCell.getY());
         if(checkForCell == true)
@@ -289,29 +210,13 @@ public class ScreenGrid {
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType());
             if(isCellFood == true)
             {
-
                 //Create another piece of food in the grid
                 addFoodCellToGrid(coordinateGrid[myCell.getX() - 1][myCell.getY()]);
                 coordinateGrid[myCell.getX() - 1][myCell.getY()] = myCell;
-                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
-                //myCell = coordinateGrid[myCell.getX() - 1][myCell.getY()];
-
-
                 Cell newTail = new Cell();
                 myCell.addBodyCellToList(newTail);
                 myCell.setLength(myCell.getLength() + 1);
-
-
-                //these need to be tied to the breadcrumbs because as of now they are floating in the grid, staying where they are... they are collided with eventually but are not visible...
-//                Cell newTail = new Cell("body");
-//                coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
-//                newTail.setX(myCell.getX());
-//                newTail.setY(myCell.getY());
-                //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                 myCell.setX(myCell.getX() - 1);
-                //add the tail to the back of the snake
-
-
             }
             else if(isCellHead(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType()) == true)
             {
@@ -340,15 +245,12 @@ public class ScreenGrid {
             if(!myCell.getBody().isEmpty())//
             {
                 myCell.moveTailToBackOfHead();
-                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size());
                 coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
-                //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                 coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
             }
-
         }
     }
-    void moveGridCellRight(Cell myCell)throws Exception//ArrayIndexOutOfBoundsException
+    void moveGridCellRight(Cell myCell)throws Exception
      {
          boolean checkForCell = checkForCell(myCell.getX() + 1, myCell.getY());
          if(checkForCell == true)
@@ -356,29 +258,13 @@ public class ScreenGrid {
              boolean isCellFood = isCellFood(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType());
              if(isCellFood == true)
              {
-
                  //Create another piece of food in the grid
                  addFoodCellToGrid(coordinateGrid[myCell.getX() + 1][myCell.getY()]);
                  coordinateGrid[myCell.getX() + 1][myCell.getY()] = myCell;
-                 //coordinateGrid[myCell.getX()][myCell.getY()] = null;
-                 //myCell = coordinateGrid[myCell.getX() + 1][myCell.getY()];
-
-
-
                  Cell newTail = new Cell();
                  myCell.addBodyCellToList(newTail);
                  myCell.setLength(myCell.getLength() + 1);
-
-//                 Cell newTail = new Cell("body");
-//                 coordinateGrid[myCell.getX()][myCell.getY()] = newTail;
-//                 newTail.setX(myCell.getX());
-//                 newTail.setY(myCell.getY());
-                 //coordinateGrid[myCell.getX()][myCell.getY()] = null;
                  myCell.setX(myCell.getX() + 1);
-                 //add the tail to the back of the snake
-                //myCell.moveTailToBackOfHead();
-
-
              }
              else if(isCellHead(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType()) == true)
              {
@@ -407,14 +293,10 @@ public class ScreenGrid {
              if(!myCell.getBody().isEmpty())
              {
                  myCell.moveTailToBackOfHead();
-                 //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size());
                  coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.getBody().size() - 1);
-                 //coordinateGrid[myCell.getX()][myCell.getY()] = myCell.getBody().get(myCell.length - 1);
                  coordinateGrid[myCell.getBody().get(0).getX()][myCell.getBody().get(0).getY()] = null;
              }
-
          }
-
     }
 
     public void addCellToGrid(Cell myCell)
@@ -486,11 +368,29 @@ public class ScreenGrid {
             y = Math.random() * coordinateGrid[0].length;
         }
         while(coordinateGrid[(int)x][(int)y] != null);
-//        x = Math.random() * coordinateGrid.length;
-//        y = Math.random() * coordinateGrid[0].length;
         foodCell.setX((int)x);
         foodCell.setY((int)y);
         coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;
+        //a test to determine if the food was going to appear on top of the head of the snake
+//        double x, y;
+//                if(coordinateGrid[0][0] != null) {
+//                    System.out.println("origin cell is occupied");
+//                    do {
+//                        x = Math.random() * coordinateGrid.length;
+//                        y = Math.random() * coordinateGrid[0].length;
+//                    }
+//                    while(coordinateGrid[(int)x][(int)y] != null);
+//                    foodCell.setX((int)x);
+//                    foodCell.setY((int)y);
+//                    coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;
+//                }
+//                else
+//                {
+//                    System.out.println("origin cell is open");
+//                        foodCell.setX(0);
+//                        foodCell.setY(0);
+//                    coordinateGrid[0][0] = foodCell;
+//
+//                }
     }
-
 }

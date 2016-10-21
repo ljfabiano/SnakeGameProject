@@ -78,18 +78,6 @@ public class Cell {
             breadCrumbsList.remove(0);
         }
         breadCrumbsList.add(breadCrumbsList.size(), latestBreadCrumb);
-//        if(!breadCrumbsList.isEmpty() && breadCrumbsList.size() > 1)
-//        {
-//            System.out.println("in the if statement in the addcoordinatetolistmethod.");
-//            breadCrumbsList.remove(0);
-//        }
-//        breadCrumbsList.add(breadCrumbsList.size(), latestBreadCrumb);
-
-        //breadCrumbsList.remove(breadCrumbsList.indexOf(latestBreadCrumb) - length);
-//        if (length > 1)//may need to change to include length =1 as well so there is not a leaked segment???
-//        {
-//            breadCrumbsList.remove(length - (length - 1));
-//        }
     }
 
     public int getLength() {
@@ -110,59 +98,20 @@ public class Cell {
     //called from the screen grid class if the cell run over by the head is food before length of the head is set.
     public void addBodyCellToList(Cell bodySegment)
     {
-
-//        if(breadCrumbsList.size() == 0)
-//        {
-//            bodySegment.setX(x);
-//            //System.out.println("");
-//            bodySegment.setY(y);
-//            bodySegment.setType("body");
-//            body.add(length, bodySegment);//changed from length to length -1
-//        }
-//        else {
             //logic for adding the crumb to the last index(most recent)
             bodySegment.setX(breadCrumbsList.get(breadCrumbsList.size() - 1).getX());
-            //System.out.println("");
             bodySegment.setY(breadCrumbsList.get(breadCrumbsList.size() - 1).getY());
-
             bodySegment.setType("body");
-            body.add(bodySegment);//changed from length to length -1
-
-            //breadCrumbsList.remove(breadCrumbsList.indexOf(latestBreadCrumb) - length);
-            //body.remove(length - length);
-//        if (length > 1)//may need to change to include length =1 as well so there is not a leaked segment???
-//        {
-//            body.remove(length - (length - 1));
-//        }
-//        else
-//        {
-//            body.remove(length - length);
-//        }
-        //}
-
+            body.add(bodySegment);
     }
     public void moveTailToBackOfHead()
     {
-//        if(length > 0)
-//        {
-//            int lastIndex = length-1;
-//            Cell tail = body.get(lastIndex);//was 0
-////            tail.setX(body.get(length - 1).getX());
-////            tail.setY(body.get(length - 1).getY());
-//            tail.setX(breadCrumbsList.get(lastIndex).getX());
-//            tail.setY(breadCrumbsList.get(lastIndex).getY());
-//            body.add(lastIndex, tail);
-//
-//        }
-        //int lastIndex = length-1;
         for(int index = 0; index < body.size(); index++)
         {
             Cell cell = body.get(index);
             Coordinates myCoordinate = breadCrumbsList.get(index);
             cell.setX(myCoordinate.getX());
             cell.setY(myCoordinate.getY());
-
-
         }
     }
 }

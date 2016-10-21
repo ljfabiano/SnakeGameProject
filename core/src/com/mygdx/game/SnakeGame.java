@@ -30,8 +30,6 @@ public class SnakeGame extends Game {
     TextButton playAgainButton;
     TextButton returnToMainMenu;
 
-    //TextButton.TextButtonStyle beginGameButtonStyle;
-
 	ShapeRenderer myShape;
     //first snake
 	Cell myCell;
@@ -54,7 +52,6 @@ public class SnakeGame extends Game {
     boolean gameStarting = true;
     boolean singlePlayerGame = false;
     boolean twoPlayerGame = false;
-    //Actor gridActor;
     public SnakeGame()
     {
         game = this;
@@ -64,7 +61,6 @@ public class SnakeGame extends Game {
 	public void create () {
         //Initialize the SpriteBatch/ShapeRenderer
         batch = new SpriteBatch();
-        //batch.setColor(0, 0, 1, 1);
         myShape = new ShapeRenderer();
         //Initialize the game grid, cell, and movement variables
 		playGrid = new ScreenGrid();
@@ -80,13 +76,11 @@ public class SnakeGame extends Game {
         xDirectionalMovement = 0;
         yDirectionalMovement = 0;
 
+        playGrid.addCellToGrid(myCell);
+
         if(twoPlayerGame == true)
         {
             //Initialize second snake
-//        snakeHeadP2.setX(playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize());
-//        snakeHeadP2.setY(playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize());
-//        xPositionP2 = playGrid.getCoordinateGrid().length - 1 * snakeHeadP2.getCellSize();
-//        yPositionP2 = playGrid.getCoordinateGrid()[0].length - 1 * snakeHeadP2.getCellSize();
             snakeHeadP2 = new Cell("head");
             snakeHeadP2.setX(63);
             snakeHeadP2.setY(47);
@@ -94,6 +88,8 @@ public class SnakeGame extends Game {
             yPositionP2 = 470;
             xDirectionalMovementP2 = 0;
             yDirectionalMovementP2 = 0;
+
+            playGrid.addCellToGrid(snakeHeadP2);
         }
         //initialize a body and food cell
         myFood = new Cell("food");
@@ -121,12 +117,7 @@ public class SnakeGame extends Game {
         startGameStage.addActor(beginSinglePlayerGame);
         startGameStage.addActor(beginTwoPlayerGame);
         startGameStage.addActor(exitGame);
-//        Drawable myDrawable = new BaseDrawable();
-//        myDrawable.draw(batch, Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60, 80, 30);
-//        beginGameButtonStyle = new Button.ButtonStyle();
-//        beginSinglePlayerGame = new Button(beginGameButtonStyle);
-//        beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 40, Gdx.graphics.getHeight()/2 - 60);
-//        endGameStage.addActor(beginSinglePlayerGame);
+
         if(gameStarting == true)
         {
             Gdx.input.setInputProcessor(startGameStage);
@@ -168,13 +159,11 @@ public class SnakeGame extends Game {
         beginTwoPlayerGame.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
-//                buttonSelectCounter++;
                 System.out.println("Begin two player game button pressed");
                 gameStarting = false;
                 singlePlayerGame = false;
                 twoPlayerGame = true;
                 create();
-//                playAgainButton.setText("playAgainButton has been selected " + buttonSelectCounter + " times.");
             }
         });
         exitGame.addListener(new ChangeListener() {
@@ -187,10 +176,6 @@ public class SnakeGame extends Game {
         //Used to disable the continuous calling of the render method, and requestRendering calls the render method just once.
 //        Gdx.graphics.setContinuousRendering(false);
 //        Gdx.graphics.requestRendering();
-
-        //gridActor = new Actor();
-        //gridActor.setBounds(x, y, width, height);
-        //endGameStage.addActor(gridActor);
 	}
 
 	@Override
@@ -198,15 +183,7 @@ public class SnakeGame extends Game {
 
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//movePerGridCell();
         batch.begin();
-//		playGrid.setScreenHeight(Gdx.graphics.getHeight());
-//		playGrid.setScreenWidth(Gdx.graphics.getWidth());
-		//int drawPositionY = playGrid.getScreenHeight() - lastTouchedPositionY;
-		//myShape.rect(lastTouchedPositionX, drawPositionY, 100, 100);
-//if else to control what is being drawn/rendered.
-		//myShape.rect(myCell.getX(), myCell.getY(), myCell.getCellSize(), myCell.getCellSize());
-
         if(gameStarting == true)
         {
             startGameStage.draw();
@@ -219,8 +196,6 @@ public class SnakeGame extends Game {
                 try {
                     if(singlePlayerGame == true)
                     {
-                        //moveInGridCell();
-                        //moveCellGridP2SnakeOnly();
                         moveCellGrid();
                     }
                     else if(twoPlayerGame == true)
@@ -233,13 +208,6 @@ public class SnakeGame extends Game {
                     e.printStackTrace();
                     System.out.println("game over! Hit a wall!");
                     gameOver = true;
-                    //GameOverScreen gameOver = new GameOverScreen();
-                    //this.setScreen(new GameOverScreen(this.screen));
-                    //game.setScreen(new GameOverScreen(game));
-                    //dispose();
-                    //exit();
-                    //return;
-                    //game.getScreen();
                 }
                 catch (Exception ex)
                 {
@@ -255,7 +223,6 @@ public class SnakeGame extends Game {
                 if(!myCell.getBody().isEmpty())
                 {
                     for (int index = myCell.getBreadCrumbsList().size() - 1; index >= 0; index--)
-                    //for (int index = 1; index <= myCell.getLength(); index++)
                     {
                         myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
                     }
@@ -267,7 +234,6 @@ public class SnakeGame extends Game {
                     //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
                     if (!snakeHeadP2.getBody().isEmpty()) {
                         for (int index = snakeHeadP2.getBreadCrumbsList().size() - 1; index >= 0; index--)
-                        //for (int index = 1; index <= myCell.getLength(); index++)
                         {
                             myShape.rect(snakeHeadP2.getBreadCrumbsList().get(index).getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getBreadCrumbsList().get(index).getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
                         }
@@ -277,38 +243,14 @@ public class SnakeGame extends Game {
                 myShape.rect(myFood.getX() * myFood.getCellSize(), myFood.getY() * myFood.getCellSize(), myFood.getCellSize(), myFood.getCellSize());
                 myShape.end();
             }
-            //myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
         }
-
-
-		//batch.draw(img, 0, 0);
 		batch.end();
-        //endGameStage.draw();
-		//super.render();
-//        if(myCell.getBreadCrumbsList().size() > 0)
-//        {
-//            for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-//                System.out.println("index = " + index);
-//                System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-//                System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-//            }
-//        }
     }
-	
 	@Override
 	public void dispose () {
         batch.dispose();
         myShape.dispose();
-		//img.dispose();
 	}
-
-//    Cell createTestCell(int x, int y)
-//    {
-//        Cell gridCell = new Cell();
-//		gridCell.setX(x);
-//		gridCell.setY(y);
-//        return gridCell;
-//    }
     //Per pixel movement method
 	void movePerPixel() {
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -351,7 +293,6 @@ public class SnakeGame extends Game {
 		}
 		xPosition += xDirectionalMovement;
 		yPosition += yDirectionalMovement;
-        // || xPosition > myCell.getX()
 		if(xPosition == myCell.getX() + myCell.getCellSize()) {
 			myCell.setX(xPosition);
 		}
@@ -365,7 +306,7 @@ public class SnakeGame extends Game {
             myCell.setY(myCell.getY() - myCell.getCellSize());
         }
 	}
-    void moveInGridCell()throws Exception//ArrayIndexOutOfBoundsException
+    void moveInGridCell()throws Exception
     {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if(yDirectionalMovement == -1)
@@ -433,10 +374,9 @@ public class SnakeGame extends Game {
         {
                 playGrid.moveGridCellLeft(myCell);
         }
-
     }
 
-    void moveCellGrid()throws Exception//ArrayIndexOutOfBoundsException
+    void moveCellGrid()throws Exception
     {
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             if(yDirectionalMovement == -1)
@@ -488,13 +428,9 @@ public class SnakeGame extends Game {
         }
         xPosition += xDirectionalMovement;
         yPosition += yDirectionalMovement;
-        // || xPosition > myCell.getX()
         if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
-            //myCell.setX(xPosition);
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellRight(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -506,11 +442,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
-            //myCell.setY(yPosition);
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellUp(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -522,11 +455,8 @@ public class SnakeGame extends Game {
             }
         }
         if(xPosition < myCell.getX() * myCell.getCellSize()) {
-            //myCell.setX(myCell.getX() - myCell.getCellSize());
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellLeft(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -538,11 +468,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPosition < myCell.getY() * myCell.getCellSize()) {
-            //myCell.setY(myCell.getY() - myCell.getCellSize());
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellDown(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -555,7 +482,7 @@ public class SnakeGame extends Game {
         }
     }
     //Same as the regular move method, but for 2 snakes
-    void moveCellGridTwoSnakes()throws Exception//ArrayIndexOutOfBoundsException
+    void moveCellGridTwoSnakes()throws Exception
     {
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
             if(yDirectionalMovement == -1)
@@ -657,13 +584,9 @@ public class SnakeGame extends Game {
         yPosition += yDirectionalMovement;
         xPositionP2 += xDirectionalMovementP2;
         yPositionP2 += yDirectionalMovementP2;
-        // || xPosition > myCell.getX()
         if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
-            //myCell.setX(xPosition);
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellRight(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -675,11 +598,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
-            //myCell.setY(yPosition);
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellUp(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -691,11 +611,8 @@ public class SnakeGame extends Game {
             }
         }
         if(xPosition < myCell.getX() * myCell.getCellSize()) {
-            //myCell.setX(myCell.getX() - myCell.getCellSize());
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellLeft(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -707,11 +624,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPosition < myCell.getY() * myCell.getCellSize()) {
-            //myCell.setY(myCell.getY() - myCell.getCellSize());
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellDown(myCell);
             if(myCell.getBreadCrumbsList().size() > 0)
             {
@@ -723,11 +637,8 @@ public class SnakeGame extends Game {
             }
         }
         if(xPositionP2 >= snakeHeadP2.getX() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
-            //myCell.setX(xPosition);
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellRight(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -739,11 +650,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPositionP2 >= snakeHeadP2.getY() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
-            //myCell.setY(yPosition);
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellUp(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -755,11 +663,8 @@ public class SnakeGame extends Game {
             }
         }
         if(xPositionP2 < snakeHeadP2.getX() * snakeHeadP2.getCellSize()) {
-            //myCell.setX(myCell.getX() - myCell.getCellSize());
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellLeft(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -771,11 +676,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPositionP2 < snakeHeadP2.getY() * snakeHeadP2.getCellSize()) {
-            //myCell.setY(myCell.getY() - myCell.getCellSize());
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellDown(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -787,8 +689,7 @@ public class SnakeGame extends Game {
             }
         }
     }
-
-    void moveCellGridP2SnakeOnly()throws Exception//ArrayIndexOutOfBoundsException
+    void moveCellGridP2SnakeOnly()throws Exception
     {
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -841,14 +742,9 @@ public class SnakeGame extends Game {
         }
         xPositionP2 += xDirectionalMovementP2;
         yPositionP2 += yDirectionalMovementP2;
-        // || xPosition > myCell.getX()
-
         if(xPositionP2 >= snakeHeadP2.getX() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
-            //myCell.setX(xPosition);
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellRight(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -860,11 +756,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPositionP2 >= snakeHeadP2.getY() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
-            //myCell.setY(yPosition);
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellUp(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -876,11 +769,8 @@ public class SnakeGame extends Game {
             }
         }
         if(xPositionP2 < snakeHeadP2.getX() * snakeHeadP2.getCellSize()) {
-            //myCell.setX(myCell.getX() - myCell.getCellSize());
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellLeft(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -892,11 +782,8 @@ public class SnakeGame extends Game {
             }
         }
         if(yPositionP2 < snakeHeadP2.getY() * snakeHeadP2.getCellSize()) {
-            //myCell.setY(myCell.getY() - myCell.getCellSize());
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
-            //Cell bodyCell = new Cell();
-            //myCell.addBodyCellToList(bodyCell);
             playGrid.moveGridCellDown(snakeHeadP2);
             if(snakeHeadP2.getBreadCrumbsList().size() > 0)
             {
@@ -911,9 +798,6 @@ public class SnakeGame extends Game {
 
     public void exit()
     {
-        //this.dispose();
         Gdx.app.exit();
-        //System.exit(0);
     }
-
 }

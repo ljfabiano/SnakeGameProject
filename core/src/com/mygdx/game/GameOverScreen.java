@@ -32,7 +32,6 @@ public class GameOverScreen implements Screen
     @Override
     public void show() {
         batch = new SpriteBatch();
-        //font = new BitmapFont(Gdx.files.internal("font.fnt"));
         stage = new Stage();
         font = new BitmapFont();
         textButtonStyle = new TextButton.TextButtonStyle();
@@ -44,13 +43,6 @@ public class GameOverScreen implements Screen
 
 
     }
-
-        //batch = new SpriteBatch();
-        //endGameStage = new Stage();
-        //endGameStage.addActor(yourBitmapFontName);
-        //Skin mySkin = new Skin();
-        //Label gameOver = new Label("Game Over", mySkin);
-
 
     public void resume()
     {
