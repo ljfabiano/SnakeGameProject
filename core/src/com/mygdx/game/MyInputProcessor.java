@@ -3,20 +3,29 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 /**
  * Created by jfabiano on 10/21/2016.
  */
 
-public class MyInputProcessor implements InputProcessor {
+public class MyInputProcessor extends Stage implements InputProcessor {
 
     SnakeGame myGame = null;
 
+    public MyInputProcessor() {
+        super();
+    }
+
     public MyInputProcessor(SnakeGame myGame) {
+        super();
         this.myGame = myGame;
     }
 
     public boolean touchDown (int x, int y, int pointer, int button) {
+
         return false;
     }
 
@@ -26,59 +35,72 @@ public class MyInputProcessor implements InputProcessor {
     @Override
     public boolean keyDown (int keycode) {
         System.out.println("Key Down method *****");
+
         if (keycode == Input.Keys.UP) {
-            // Some stuff
-//            mouseX = Gdx.input.getX();
-//            mouseY = Gdx.input.getY();
+
             System.out.println("**** clicking the UP button.");
 
-//            myGame.setLastTouchedPositionX(Gdx.input.getX());
-//            myGame.setLastTouchedPositionY(Gdx.input.getY());
-
-//            System.out.println("last touched x = " + myGame.getLastTouchedPositionX());
-//            System.out.println("last touched y = " + myGame.getLastTouchedPositionY());
+            if(myGame.yDirectionalMovement == -1)
+            {
+                myGame.xDirectionalMovement = 0;
+                myGame.yDirectionalMovement = -1;
+            }
+            else
+            {
+                myGame.xDirectionalMovement = 0;
+                myGame.yDirectionalMovement = 1;
+            }
 
             return true;
         }
         if (keycode == Input.Keys.DOWN) {
-            // Some stuff
-//            mouseX = Gdx.input.getX();
-//            mouseY = Gdx.input.getY();
+
             System.out.println("**** clicking the DOWN button.");
 
-//            myGame.setLastTouchedPositionX(Gdx.input.getX());
-//            myGame.setLastTouchedPositionY(Gdx.input.getY());
-
-//            System.out.println("last touched x = " + myGame.getLastTouchedPositionX());
-//            System.out.println("last touched y = " + myGame.getLastTouchedPositionY());
+            if(myGame.yDirectionalMovement == 1)
+            {
+                myGame.xDirectionalMovement = 0;
+                myGame.yDirectionalMovement = 1;
+            }
+            else
+            {
+                myGame.xDirectionalMovement = 0;
+                myGame.yDirectionalMovement = -1;
+            }
 
             return true;
         }
         if (keycode == Input.Keys.LEFT) {
-            // Some stuff
-//            mouseX = Gdx.input.getX();
-//            mouseY = Gdx.input.getY();
+
             System.out.println("**** clicking the LEFT button.");
 
-//            myGame.setLastTouchedPositionX(Gdx.input.getX());
-//            myGame.setLastTouchedPositionY(Gdx.input.getY());
-
-//            System.out.println("last touched x = " + myGame.getLastTouchedPositionX());
-//            System.out.println("last touched y = " + myGame.getLastTouchedPositionY());
+            if(myGame.xDirectionalMovement == 1)
+            {
+                myGame.xDirectionalMovement = 1;
+                myGame.yDirectionalMovement = 0;
+            }
+            else
+            {
+                myGame.xDirectionalMovement = -1;
+                myGame.yDirectionalMovement = 0;
+            }
 
             return true;
         }
         if (keycode == Input.Keys.RIGHT) {
-            // Some stuff
-//            mouseX = Gdx.input.getX();
-//            mouseY = Gdx.input.getY();
+
             System.out.println("**** clicking the RIGHT button.");
 
-//            myGame.setLastTouchedPositionX(Gdx.input.getX());
-//            myGame.setLastTouchedPositionY(Gdx.input.getY());
-
-//            System.out.println("last touched x = " + myGame.getLastTouchedPositionX());
-//            System.out.println("last touched y = " + myGame.getLastTouchedPositionY());
+            if(myGame.xDirectionalMovement == -1)
+            {
+                myGame.xDirectionalMovement = -1;
+                myGame.yDirectionalMovement = 0;
+            }
+            else
+            {
+                myGame.xDirectionalMovement = 1;
+                myGame.yDirectionalMovement = 0;
+            }
 
             return true;
         }
@@ -104,6 +126,8 @@ public class MyInputProcessor implements InputProcessor {
     public boolean scrolled (int amount) {
         return false;
     }
+
 }
+
 
 

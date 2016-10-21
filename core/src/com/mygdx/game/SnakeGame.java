@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,12 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class SnakeGame extends Game {
 	Game game;
+    MyInputProcessor myProcessor;
     SpriteBatch batch;
 	Texture img;
 	ScreenGrid playGrid;
+    Stage gamePlayStage;
     Stage endGameStage;
 
     TextButton.TextButtonStyle textButtonStyle;
@@ -109,28 +113,42 @@ public class SnakeGame extends Game {
         startGameStage = new Stage();
         font = new BitmapFont();
         beginSinglePlayerGame = new TextButton("Single Player Game", textButtonStyle);
-        beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 20);
+        beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 40);
         beginTwoPlayerGame = new TextButton("Two Player Game", textButtonStyle);
         beginTwoPlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2);
         exitGame = new TextButton("Exit", textButtonStyle);
-        exitGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 20);
+        exitGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 40);
         startGameStage.addActor(beginSinglePlayerGame);
         startGameStage.addActor(beginTwoPlayerGame);
         startGameStage.addActor(exitGame);
 
-        if(gameStarting == true)
-        {
-            Gdx.input.setInputProcessor(startGameStage);
-        }
-        else if(gameOver == true)
-        {
-            Gdx.input.setInputProcessor(endGameStage);
-        }
-        else
-        {
+        gamePlayStage = new Stage();
+
+        //MyInputProcessor myProcessor;
+//        if(gameStarting == true)
+//        {
+//            MyInputProcessor myProcessor = new MyInputProcessor(this);
+//            Gdx.input.setInputProcessor(myProcessor);
+
+//            Gdx.input.setInputProcessor(startGameStage);
             MyInputProcessor myProcessor = new MyInputProcessor(this);
-            Gdx.input.setInputProcessor(myProcessor);
-        }
+            InputMultiplexer multiplexer = new InputMultiplexer();
+            multiplexer.addProcessor(startGameStage);
+            multiplexer.addProcessor(myProcessor);
+            multiplexer.addProcessor(endGameStage);
+            Gdx.input.setInputProcessor(multiplexer);
+//        }
+//        else if(gameOver == true)
+//        {
+//            myProcessor = null;
+//            Gdx.input.setInputProcessor(endGameStage);
+//        }
+//        else
+//        {
+//            MyInputProcessor myProcessor = new MyInputProcessor(this);
+//            Gdx.input.setInputProcessor(myProcessor);
+//        }
+
         //Create a listener for the play again button
         playAgainButton.addListener(new ChangeListener() {
             @Override
@@ -140,6 +158,7 @@ public class SnakeGame extends Game {
                 create();
             }
         });
+
         returnToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
@@ -198,6 +217,7 @@ public class SnakeGame extends Game {
             if (gameOver == true) {
                 endGameStage.draw();
             } else {
+                //gamePlayStage.draw();
                 try {
                     if(singlePlayerGame == true)
                     {
@@ -383,54 +403,54 @@ public class SnakeGame extends Game {
 
     void moveCellGrid()throws Exception
     {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if(yDirectionalMovement == -1)
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = -1;
-            }
-            else
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = 1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if(yDirectionalMovement == 1)
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = 1;
-            }
-            else
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = -1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(xDirectionalMovement == -1)
-            {
-                xDirectionalMovement = -1;
-                yDirectionalMovement = 0;
-            }
-            else
-            {
-                xDirectionalMovement = 1;
-                yDirectionalMovement = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if(xDirectionalMovement == 1)
-            {
-                xDirectionalMovement = 1;
-                yDirectionalMovement = 0;
-            }
-            else
-            {
-                xDirectionalMovement = -1;
-                yDirectionalMovement = 0;
-            }
-        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+//            if(yDirectionalMovement == -1)
+//            {
+//                xDirectionalMovement = 0;
+//                yDirectionalMovement = -1;
+//            }
+//            else
+//            {
+//                xDirectionalMovement = 0;
+//                yDirectionalMovement = 1;
+//            }
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+//            if(yDirectionalMovement == 1)
+//            {
+//                xDirectionalMovement = 0;
+//                yDirectionalMovement = 1;
+//            }
+//            else
+//            {
+//                xDirectionalMovement = 0;
+//                yDirectionalMovement = -1;
+//            }
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+//            if(xDirectionalMovement == -1)
+//            {
+//                xDirectionalMovement = -1;
+//                yDirectionalMovement = 0;
+//            }
+//            else
+//            {
+//                xDirectionalMovement = 1;
+//                yDirectionalMovement = 0;
+//            }
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+//            if(xDirectionalMovement == 1)
+//            {
+//                xDirectionalMovement = 1;
+//                yDirectionalMovement = 0;
+//            }
+//            else
+//            {
+//                xDirectionalMovement = -1;
+//                yDirectionalMovement = 0;
+//            }
+//        }
         xPosition += xDirectionalMovement;
         yPosition += yDirectionalMovement;
         if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
