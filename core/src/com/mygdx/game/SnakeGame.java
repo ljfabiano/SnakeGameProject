@@ -122,9 +122,14 @@ public class SnakeGame extends Game {
         {
             Gdx.input.setInputProcessor(startGameStage);
         }
-        else
+        else if(gameOver == true)
         {
             Gdx.input.setInputProcessor(endGameStage);
+        }
+        else
+        {
+            MyInputProcessor myProcessor = new MyInputProcessor(this);
+            Gdx.input.setInputProcessor(myProcessor);
         }
         //Create a listener for the play again button
         playAgainButton.addListener(new ChangeListener() {
