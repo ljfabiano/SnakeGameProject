@@ -12,6 +12,7 @@ public class Cell {
     ArrayList<Coordinates> breadCrumbsList = new ArrayList<Coordinates>();
     int length = 0;//food collected + head
     ArrayList<Cell> body = new ArrayList<Cell>();
+    boolean isCrashed = false;
 
     public Cell()
     {

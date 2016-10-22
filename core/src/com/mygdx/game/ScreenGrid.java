@@ -102,8 +102,15 @@ public class ScreenGrid {
     //The method is used to move an object in the grid(object/cell) to another location in the grid
     void moveGridCellUp(Cell myCell)throws Exception
     {
+        boolean checkForCell;
+        try {
+            checkForCell = checkForCell(myCell.getX(), myCell.getY() + 1);
+        }catch(ArrayIndexOutOfBoundsException ex)
+        {
+            myCell.isCrashed = true;
+            throw ex;
+        }
         //if the cell to move to is not null then check for cell will be true as in there is a cell already there in the grid
-        boolean checkForCell = checkForCell(myCell.getX(), myCell.getY() + 1);
         if(checkForCell == true)
         {
             //if the cell to move to has the type = food the return true, else false
@@ -121,16 +128,19 @@ public class ScreenGrid {
             }
             else if(isCellHead(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType()) == true)
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("You hit a snake head. This is not a food cell!");
                 throw ex;
             }
             else if(isCellBody(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType()) == true)
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
                 throw ex;
             }
             else
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                 throw ex;
             }
@@ -156,7 +166,14 @@ public class ScreenGrid {
     }
     void moveGridCellDown(Cell myCell)throws Exception
     {
-        boolean checkForCell = checkForCell(myCell.getX(), myCell.getY() - 1);
+        boolean checkForCell;
+        try {
+            checkForCell = checkForCell(myCell.getX(), myCell.getY() - 1);
+        }catch(ArrayIndexOutOfBoundsException ex)
+        {
+            myCell.isCrashed = true;
+            throw ex;
+        }
         if(checkForCell == true)
         {
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType());
@@ -172,16 +189,19 @@ public class ScreenGrid {
             }
             else if(isCellHead(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType()) == true)
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("You hit a snake head. This is not a food cell!");
                 throw ex;
             }
             else if(isCellBody(coordinateGrid[myCell.getX()][myCell.getY() - 1].getType()) == true)
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
                 throw ex;
             }
             else
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                 throw ex;
             }
@@ -204,7 +224,14 @@ public class ScreenGrid {
     }
     void moveGridCellLeft(Cell myCell)throws Exception
     {
-        boolean checkForCell = checkForCell(myCell.getX() - 1, myCell.getY());
+        boolean checkForCell;
+        try {
+            checkForCell = checkForCell(myCell.getX() - 1, myCell.getY());
+        }catch(ArrayIndexOutOfBoundsException ex)
+        {
+            myCell.isCrashed = true;
+            throw ex;
+        }
         if(checkForCell == true)
         {
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType());
@@ -220,16 +247,19 @@ public class ScreenGrid {
             }
             else if(isCellHead(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType()) == true)
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("You hit a snake head. This is not a food cell!");
                 throw ex;
             }
             else if(isCellBody(coordinateGrid[myCell.getX() - 1][myCell.getY()].getType()) == true)
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
                 throw ex;
             }
             else
             {
+                myCell.isCrashed = true;
                 Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                 throw ex;
             }
@@ -252,7 +282,14 @@ public class ScreenGrid {
     }
     void moveGridCellRight(Cell myCell)throws Exception
      {
-         boolean checkForCell = checkForCell(myCell.getX() + 1, myCell.getY());
+         boolean checkForCell;
+         try {
+             checkForCell = checkForCell(myCell.getX() + 1, myCell.getY());
+         }catch(ArrayIndexOutOfBoundsException ex)
+         {
+             myCell.isCrashed = true;
+             throw ex;
+         }
          if(checkForCell == true)
          {
              boolean isCellFood = isCellFood(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType());
@@ -268,16 +305,19 @@ public class ScreenGrid {
              }
              else if(isCellHead(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType()) == true)
              {
+                 myCell.isCrashed = true;
                  Exception ex = new Exception("You hit a snake head. This is not a food cell!");
                  throw ex;
              }
              else if(isCellBody(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType()) == true)
              {
+                 myCell.isCrashed = true;
                  Exception ex = new Exception("You hit a snake body segment. This is not a food cell!");
                  throw ex;
              }
              else
              {
+                 myCell.isCrashed = true;
                  Exception ex = new Exception("This is not food, a head, or body... something else is wrong!");
                  throw ex;
              }
@@ -307,14 +347,11 @@ public class ScreenGrid {
     public boolean checkForCell(int x, int y)
     {
         boolean coordinateisOccupied;
-        if(coordinateGrid[x][y] != null)
-        {
-            coordinateisOccupied = true;
-        }
-        else
-        {
-            coordinateisOccupied = false;
-        }
+            if (coordinateGrid[x][y] != null) {
+                coordinateisOccupied = true;
+            } else {
+                coordinateisOccupied = false;
+            }
         return coordinateisOccupied;
     }
 

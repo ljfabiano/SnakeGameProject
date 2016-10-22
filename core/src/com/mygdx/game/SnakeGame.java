@@ -19,6 +19,9 @@ public class SnakeGame extends Game {
 	Game game;
     MyInputProcessor myProcessor;
     SpriteBatch batch;
+    BitmapFont yourBitmapFontName;
+    String yourScoreName = "Snake Game";
+
 	Texture img;
 	ScreenGrid playGrid;
     Stage gamePlayStage;
@@ -67,6 +70,10 @@ public class SnakeGame extends Game {
 	public void create () {
         //Initialize the SpriteBatch/ShapeRenderer
         batch = new SpriteBatch();
+        yourBitmapFontName = new BitmapFont();
+        yourBitmapFontName.setColor(.1f, 1.0f, 1.0f, 1.0f);
+        //yourBitmapFontName.
+
         myShape = new ShapeRenderer();
         //Initialize the game grid, cell, and movement variables
 		playGrid = new ScreenGrid();
@@ -192,15 +199,21 @@ public class SnakeGame extends Game {
 
         Gdx.gl.glClearColor(.7f, .5f, .6f, .8f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
+        //batch.begin();
         if(gameStarting == true)
         {
             startGameStage.draw();
+            batch.begin();
+            yourBitmapFontName.draw(batch, yourScoreName, Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 90);
+            batch.end();
         }
         else {
 
             if (gameOver == true) {
                 endGameStage.draw();
+                batch.begin();
+                yourBitmapFontName.draw(batch, yourScoreName, Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 90);
+                batch.end();
             } else {
                 try {
                     if(singlePlayerGame == true)
@@ -216,12 +229,28 @@ public class SnakeGame extends Game {
                 {
                     e.printStackTrace();
                     System.out.println("game over! Hit a wall!");
+                    if(myCell.isCrashed == true) {
+                        System.out.println("Player 1 Lost!");
+                        yourScoreName = "Player 1 Lost!";
+                    }
+                    else if (snakeHeadP2.isCrashed == true){
+                        System.out.println("Player 2 Lost!");
+                        yourScoreName = "Player 2 Lost!";
+                    }
                     gameOver = true;
                 }
                 catch (Exception ex)
                 {
                     ex.printStackTrace();
                     System.out.println("game over! Hit a snake head or body!");
+                    if(myCell.isCrashed == true) {
+                        System.out.println("Player 1 Lost!");
+                        yourScoreName = "Player 1 Lost!";
+                    }
+                    else if(snakeHeadP2.isCrashed == true){
+                        System.out.println("Player 2 Lost!");
+                        yourScoreName = "Player 2 Lost!";
+                    }
                     gameOver = true;
                 }
                 ShapeRenderer myShape = new ShapeRenderer();
@@ -253,7 +282,7 @@ public class SnakeGame extends Game {
                 myShape.end();
             }
         }
-		batch.end();
+		//batch.end();
         startTime = System.currentTimeMillis();
         callRenderMethodBasedOnTime();
     }
