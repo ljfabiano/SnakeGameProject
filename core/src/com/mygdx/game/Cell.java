@@ -74,7 +74,7 @@ public class Cell {
         //logic for adding the crumb to the last index(most recent)
         if(!breadCrumbsList.isEmpty() && (breadCrumbsList.size() - 1 == body.size()))
         {
-            System.out.println("in the if statement in the addcoordinatetolistmethod.");
+            //System.out.println("in the if statement in the addcoordinatetolistmethod.");
             breadCrumbsList.remove(0);
         }
         breadCrumbsList.add(breadCrumbsList.size(), latestBreadCrumb);

@@ -23,6 +23,8 @@ public class SnakeGame extends Game {
 	ScreenGrid playGrid;
     Stage gamePlayStage;
     Stage endGameStage;
+    long startTime;
+    long endTime;
 
     TextButton.TextButtonStyle textButtonStyle;
     BitmapFont font;
@@ -88,8 +90,10 @@ public class SnakeGame extends Game {
             snakeHeadP2 = new Cell("head");
             snakeHeadP2.setX(63);
             snakeHeadP2.setY(47);
-            xPositionP2 = 630;
-            yPositionP2 = 470;
+            xPositionP2 = 63;
+            yPositionP2 = 47;
+//            xPositionP2 = 630;
+//            yPositionP2 = 470;
             xDirectionalMovementP2 = 0;
             yDirectionalMovementP2 = 0;
 
@@ -122,32 +126,12 @@ public class SnakeGame extends Game {
         startGameStage.addActor(beginTwoPlayerGame);
         startGameStage.addActor(exitGame);
 
-        gamePlayStage = new Stage();
-
-        //MyInputProcessor myProcessor;
-//        if(gameStarting == true)
-//        {
-//            MyInputProcessor myProcessor = new MyInputProcessor(this);
-//            Gdx.input.setInputProcessor(myProcessor);
-
-//            Gdx.input.setInputProcessor(startGameStage);
-            MyInputProcessor myProcessor = new MyInputProcessor(this);
-            InputMultiplexer multiplexer = new InputMultiplexer();
-            multiplexer.addProcessor(startGameStage);
-            multiplexer.addProcessor(myProcessor);
-            multiplexer.addProcessor(endGameStage);
-            Gdx.input.setInputProcessor(multiplexer);
-//        }
-//        else if(gameOver == true)
-//        {
-//            myProcessor = null;
-//            Gdx.input.setInputProcessor(endGameStage);
-//        }
-//        else
-//        {
-//            MyInputProcessor myProcessor = new MyInputProcessor(this);
-//            Gdx.input.setInputProcessor(myProcessor);
-//        }
+        myProcessor = new MyInputProcessor(this);
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(startGameStage);
+        multiplexer.addProcessor(myProcessor);
+        multiplexer.addProcessor(endGameStage);
+        Gdx.input.setInputProcessor(multiplexer);
 
         //Create a listener for the play again button
         playAgainButton.addListener(new ChangeListener() {
@@ -158,7 +142,6 @@ public class SnakeGame extends Game {
                 create();
             }
         });
-
         returnToMainMenu.addListener(new ChangeListener() {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
@@ -198,8 +181,12 @@ public class SnakeGame extends Game {
             }
         });
         //Used to disable the continuous calling of the render method, and requestRendering calls the render method just once.
-//        Gdx.graphics.setContinuousRendering(false);
-//        Gdx.graphics.requestRendering();
+        Gdx.graphics.setContinuousRendering(false);
+        Gdx.graphics.requestRendering();
+        //get the current time from java
+        //long startTime = System.currentTimeMillis();
+        //System.out.println("Time elapsed in seconds = " + ((System.currentTimeMillis() - startTime) / 1000));
+        //callRenderMethodPerTime();
 	}
 
 	@Override
@@ -217,7 +204,6 @@ public class SnakeGame extends Game {
             if (gameOver == true) {
                 endGameStage.draw();
             } else {
-                //gamePlayStage.draw();
                 try {
                     if(singlePlayerGame == true)
                     {
@@ -270,6 +256,8 @@ public class SnakeGame extends Game {
             }
         }
 		batch.end();
+        startTime = System.currentTimeMillis();
+        callRenderMethodBasedOnTime();
     }
 	@Override
 	public void dispose () {
@@ -403,7 +391,42 @@ public class SnakeGame extends Game {
 
     void moveCellGrid()throws Exception
     {
-//        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        xPosition += xDirectionalMovement;
+        yPosition += yDirectionalMovement;
+
+        if(xPosition > myCell.getX()) {
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellRight(myCell);
+
+            myProcessor.moving = false;
+        }
+        else if(yPosition > myCell.getY()) {
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellUp(myCell);
+
+            myProcessor.moving = false;
+        }
+        else if(xPosition < myCell.getX()) {
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellLeft(myCell);
+
+            myProcessor.moving = false;
+        }
+        else if(yPosition < myCell.getY()) {
+            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+            myCell.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellDown(myCell);
+
+            myProcessor.moving = false;
+        }
+    }
+    //Same as the regular move method, but for 2 snakes
+    void moveCellGridTwoSnakes()throws Exception
+    {
+//        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
 //            if(yDirectionalMovement == -1)
 //            {
 //                xDirectionalMovement = 0;
@@ -415,7 +438,7 @@ public class SnakeGame extends Game {
 //                yDirectionalMovement = 1;
 //            }
 //        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+//        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
 //            if(yDirectionalMovement == 1)
 //            {
 //                xDirectionalMovement = 0;
@@ -427,7 +450,7 @@ public class SnakeGame extends Game {
 //                yDirectionalMovement = -1;
 //            }
 //        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+//        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
 //            if(xDirectionalMovement == -1)
 //            {
 //                xDirectionalMovement = -1;
@@ -439,7 +462,7 @@ public class SnakeGame extends Game {
 //                yDirectionalMovement = 0;
 //            }
 //        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+//        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
 //            if(xDirectionalMovement == 1)
 //            {
 //                xDirectionalMovement = 1;
@@ -451,267 +474,114 @@ public class SnakeGame extends Game {
 //                yDirectionalMovement = 0;
 //            }
 //        }
-        xPosition += xDirectionalMovement;
-        yPosition += yDirectionalMovement;
-        if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
-            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
-            myCell.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellRight(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-        if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
-            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
-            myCell.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellUp(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-        if(xPosition < myCell.getX() * myCell.getCellSize()) {
-            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
-            myCell.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellLeft(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-        if(yPosition < myCell.getY() * myCell.getCellSize()) {
-            currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
-            myCell.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellDown(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-    }
-    //Same as the regular move method, but for 2 snakes
-    void moveCellGridTwoSnakes()throws Exception
-    {
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            if(yDirectionalMovement == -1)
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = -1;
-            }
-            else
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = 1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            if(yDirectionalMovement == 1)
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = 1;
-            }
-            else
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = -1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(xDirectionalMovement == -1)
-            {
-                xDirectionalMovement = -1;
-                yDirectionalMovement = 0;
-            }
-            else
-            {
-                xDirectionalMovement = 1;
-                yDirectionalMovement = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if(xDirectionalMovement == 1)
-            {
-                xDirectionalMovement = 1;
-                yDirectionalMovement = 0;
-            }
-            else
-            {
-                xDirectionalMovement = -1;
-                yDirectionalMovement = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if(yDirectionalMovementP2 == -1)
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = -1;
-            }
-            else
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = 1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if(yDirectionalMovementP2 == 1)
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = 1;
-            }
-            else
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = -1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(xDirectionalMovementP2 == -1)
-            {
-                xDirectionalMovementP2 = -1;
-                yDirectionalMovementP2 = 0;
-            }
-            else
-            {
-                xDirectionalMovementP2 = 1;
-                yDirectionalMovementP2 = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if(xDirectionalMovementP2 == 1)
-            {
-                xDirectionalMovementP2 = 1;
-                yDirectionalMovementP2 = 0;
-            }
-            else
-            {
-                xDirectionalMovementP2 = -1;
-                yDirectionalMovementP2 = 0;
-            }
-        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+//            if(yDirectionalMovementP2 == -1)
+//            {
+//                xDirectionalMovementP2 = 0;
+//                yDirectionalMovementP2 = -1;
+//            }
+//            else
+//            {
+//                xDirectionalMovementP2 = 0;
+//                yDirectionalMovementP2 = 1;
+//            }
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+//            if(yDirectionalMovementP2 == 1)
+//            {
+//                xDirectionalMovementP2 = 0;
+//                yDirectionalMovementP2 = 1;
+//            }
+//            else
+//            {
+//                xDirectionalMovementP2 = 0;
+//                yDirectionalMovementP2 = -1;
+//            }
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+//            if(xDirectionalMovementP2 == -1)
+//            {
+//                xDirectionalMovementP2 = -1;
+//                yDirectionalMovementP2 = 0;
+//            }
+//            else
+//            {
+//                xDirectionalMovementP2 = 1;
+//                yDirectionalMovementP2 = 0;
+//            }
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+//            if(xDirectionalMovementP2 == 1)
+//            {
+//                xDirectionalMovementP2 = 1;
+//                yDirectionalMovementP2 = 0;
+//            }
+//            else
+//            {
+//                xDirectionalMovementP2 = -1;
+//                yDirectionalMovementP2 = 0;
+//            }
+//        }
         xPosition += xDirectionalMovement;
         yPosition += yDirectionalMovement;
         xPositionP2 += xDirectionalMovementP2;
         yPositionP2 += yDirectionalMovementP2;
-        if(xPosition >= myCell.getX() * myCell.getCellSize() + myCell.getCellSize()) {
+
+        if(xPosition > myCell.getX()) {
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellRight(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.moving = false;
         }
-        if(yPosition >= myCell.getY() * myCell.getCellSize() + myCell.getCellSize()) {
+        if(yPosition > myCell.getY()) {
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellUp(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.moving = false;
         }
-        if(xPosition < myCell.getX() * myCell.getCellSize()) {
+        if(xPosition < myCell.getX()) {
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellLeft(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.moving = false;
         }
-        if(yPosition < myCell.getY() * myCell.getCellSize()) {
+        if(yPosition < myCell.getY()) {
             currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
             myCell.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellDown(myCell);
-            if(myCell.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < myCell.getBreadCrumbsList().size(); index++) {
-                    System.out.println("index = " + index);
-                    System.out.println("x = " + myCell.getBreadCrumbsList().get(index).getX());
-                    System.out.println("y = " + myCell.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.moving = false;
         }
-        if(xPositionP2 >= snakeHeadP2.getX() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
+        if(xPositionP2 > snakeHeadP2.getX()) {
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellRight(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.movingP2 = false;
         }
-        if(yPositionP2 >= snakeHeadP2.getY() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
+        if(yPositionP2 > snakeHeadP2.getY()) {
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellUp(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.movingP2 = false;
         }
-        if(xPositionP2 < snakeHeadP2.getX() * snakeHeadP2.getCellSize()) {
+        if(xPositionP2 < snakeHeadP2.getX()) {
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellLeft(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.movingP2 = false;
         }
-        if(yPositionP2 < snakeHeadP2.getY() * snakeHeadP2.getCellSize()) {
+        if(yPositionP2 < snakeHeadP2.getY()) {
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
             snakeHeadP2.addCoordinateToList(currentCoordinate);
             playGrid.moveGridCellDown(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
+
+            myProcessor.movingP2 = false;
         }
     }
     void moveCellGridP2SnakeOnly()throws Exception
@@ -820,6 +690,18 @@ public class SnakeGame extends Game {
             }
         }
     }
+public void callRenderMethodBasedOnTime()
+{
+    while (gameOver == false)
+    {
+        endTime = System.currentTimeMillis();
+        if (endTime >= startTime + 100)
+        {
+            Gdx.graphics.requestRendering();
+            break;
+        }
+    }
+}
 
     public void exit()
     {

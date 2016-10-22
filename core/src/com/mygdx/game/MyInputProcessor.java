@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 public class MyInputProcessor extends Stage implements InputProcessor {
 
     SnakeGame myGame = null;
+    boolean moving = false;
+    boolean movingP2 = false;
 
     public MyInputProcessor() {
         super();
@@ -35,74 +37,105 @@ public class MyInputProcessor extends Stage implements InputProcessor {
     @Override
     public boolean keyDown (int keycode) {
         System.out.println("Key Down method *****");
-
-        if (keycode == Input.Keys.UP) {
-
-            System.out.println("**** clicking the UP button.");
-
-            if(myGame.yDirectionalMovement == -1)
-            {
-                myGame.xDirectionalMovement = 0;
-                myGame.yDirectionalMovement = -1;
+        if(moving == false) {
+            if (keycode == Input.Keys.W) {
+                System.out.println("**** clicking the W button.");
+                if (myGame.yDirectionalMovement == -1) {
+                    myGame.xDirectionalMovement = 0;
+                    myGame.yDirectionalMovement = -1;
+                } else {
+                    myGame.xDirectionalMovement = 0;
+                    myGame.yDirectionalMovement = 1;
+                    moving = true;
+                }
+                return true;
             }
-            else
-            {
-                myGame.xDirectionalMovement = 0;
-                myGame.yDirectionalMovement = 1;
+            if (keycode == Input.Keys.S) {
+                System.out.println("**** clicking the S button.");
+                if (myGame.yDirectionalMovement == 1) {
+                    myGame.xDirectionalMovement = 0;
+                    myGame.yDirectionalMovement = 1;
+                } else {
+                    myGame.xDirectionalMovement = 0;
+                    myGame.yDirectionalMovement = -1;
+                    moving = true;
+                }
+                return true;
             }
-
-            return true;
+            if (keycode == Input.Keys.A) {
+                System.out.println("**** clicking the A button.");
+                if (myGame.xDirectionalMovement == 1) {
+                    myGame.xDirectionalMovement = 1;
+                    myGame.yDirectionalMovement = 0;
+                } else {
+                    myGame.xDirectionalMovement = -1;
+                    myGame.yDirectionalMovement = 0;
+                    moving = true;
+                }
+                return true;
+            }
+            if (keycode == Input.Keys.D) {
+                System.out.println("**** clicking the D button.");
+                if (myGame.xDirectionalMovement == -1) {
+                    myGame.xDirectionalMovement = -1;
+                    myGame.yDirectionalMovement = 0;
+                } else {
+                    myGame.xDirectionalMovement = 1;
+                    myGame.yDirectionalMovement = 0;
+                    moving = true;
+                }
+                return true;
+            }
         }
-        if (keycode == Input.Keys.DOWN) {
-
-            System.out.println("**** clicking the DOWN button.");
-
-            if(myGame.yDirectionalMovement == 1)
-            {
-                myGame.xDirectionalMovement = 0;
-                myGame.yDirectionalMovement = 1;
+        if(movingP2 == false) {
+            if (keycode == Input.Keys.UP) {
+                System.out.println("**** clicking the UP button.");
+                if (myGame.yDirectionalMovementP2 == -1) {
+                    myGame.xDirectionalMovementP2 = 0;
+                    myGame.yDirectionalMovementP2 = -1;
+                } else {
+                    myGame.xDirectionalMovementP2 = 0;
+                    myGame.yDirectionalMovementP2 = 1;
+                    movingP2 = true;
+                }
+                return true;
             }
-            else
-            {
-                myGame.xDirectionalMovement = 0;
-                myGame.yDirectionalMovement = -1;
+            if (keycode == Input.Keys.DOWN) {
+                System.out.println("**** clicking the DOWN button.");
+                if (myGame.yDirectionalMovementP2 == 1) {
+                    myGame.xDirectionalMovementP2 = 0;
+                    myGame.yDirectionalMovementP2 = 1;
+                } else {
+                    myGame.xDirectionalMovementP2 = 0;
+                    myGame.yDirectionalMovementP2 = -1;
+                    movingP2 = true;
+                }
+                return true;
             }
-
-            return true;
-        }
-        if (keycode == Input.Keys.LEFT) {
-
-            System.out.println("**** clicking the LEFT button.");
-
-            if(myGame.xDirectionalMovement == 1)
-            {
-                myGame.xDirectionalMovement = 1;
-                myGame.yDirectionalMovement = 0;
+            if (keycode == Input.Keys.RIGHT) {
+                System.out.println("**** clicking the RIGHT button.");
+                if (myGame.xDirectionalMovementP2 == -1) {
+                    myGame.xDirectionalMovementP2 = -1;
+                    myGame.yDirectionalMovementP2 = 0;
+                } else {
+                    myGame.xDirectionalMovementP2 = 1;
+                    myGame.yDirectionalMovementP2 = 0;
+                    movingP2 = true;
+                }
+                return true;
             }
-            else
-            {
-                myGame.xDirectionalMovement = -1;
-                myGame.yDirectionalMovement = 0;
+            if (keycode == Input.Keys.LEFT) {
+                System.out.println("**** clicking the LEFT button.");
+                if (myGame.xDirectionalMovementP2 == 1) {
+                    myGame.xDirectionalMovementP2 = 1;
+                    myGame.yDirectionalMovementP2 = 0;
+                } else {
+                    myGame.xDirectionalMovementP2 = -1;
+                    myGame.yDirectionalMovementP2 = 0;
+                    movingP2 = true;
+                }
+                return true;
             }
-
-            return true;
-        }
-        if (keycode == Input.Keys.RIGHT) {
-
-            System.out.println("**** clicking the RIGHT button.");
-
-            if(myGame.xDirectionalMovement == -1)
-            {
-                myGame.xDirectionalMovement = -1;
-                myGame.yDirectionalMovement = 0;
-            }
-            else
-            {
-                myGame.xDirectionalMovement = 1;
-                myGame.yDirectionalMovement = 0;
-            }
-
-            return true;
         }
         return false;
     }
