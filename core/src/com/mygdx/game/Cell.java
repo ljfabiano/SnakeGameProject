@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Cell {
     int x, y;
-    int cellSize = 10;
+    int cellSize = 40;
     String type;
     ArrayList<Coordinates> breadCrumbsList = new ArrayList<Coordinates>();
     int length = 0;//food collected + head

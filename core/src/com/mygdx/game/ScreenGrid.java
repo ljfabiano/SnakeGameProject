@@ -14,7 +14,7 @@ public class ScreenGrid {
     int screenWidth;
     int screenHeight;
 
-    int dimensionOfCell = 10;
+    int dimensionOfCell = 40;
     boolean[][] coordinateGridBool;
     Cell[][] coordinateGrid;
 

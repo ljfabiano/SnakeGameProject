@@ -88,12 +88,10 @@ public class SnakeGame extends Game {
         {
             //Initialize second snake
             snakeHeadP2 = new Cell("head");
-            snakeHeadP2.setX(63);
-            snakeHeadP2.setY(47);
-            xPositionP2 = 63;
-            yPositionP2 = 47;
-//            xPositionP2 = 630;
-//            yPositionP2 = 470;
+            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
+            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
+            xPositionP2 = snakeHeadP2.getX();
+            yPositionP2 = snakeHeadP2.getY();
             xDirectionalMovementP2 = 0;
             yDirectionalMovementP2 = 0;
 
@@ -192,7 +190,7 @@ public class SnakeGame extends Game {
 	@Override
 	public void render () {
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(.7f, .5f, .6f, .8f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         if(gameStarting == true)
@@ -228,7 +226,7 @@ public class SnakeGame extends Game {
                 }
                 ShapeRenderer myShape = new ShapeRenderer();
                 myShape.begin(ShapeRenderer.ShapeType.Filled);
-                myShape.setColor(0, 1, 0, 1);
+                myShape.setColor(0, .9f, .1f, 1);
                 myShape.rect(myCell.getX() * myCell.getCellSize(), myCell.getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
                 //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
                 if(!myCell.getBody().isEmpty())
@@ -250,7 +248,7 @@ public class SnakeGame extends Game {
                         }
                     }
                 }
-                myShape.setColor(0, 0, 1, 1);
+                myShape.setColor(1, 1, 0, 1);
                 myShape.rect(myFood.getX() * myFood.getCellSize(), myFood.getY() * myFood.getCellSize(), myFood.getCellSize(), myFood.getCellSize());
                 myShape.end();
             }
