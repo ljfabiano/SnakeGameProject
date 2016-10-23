@@ -20,7 +20,7 @@ public class SnakeGame extends Game {
     MyInputProcessor myProcessor;
     SpriteBatch batch;
     BitmapFont yourBitmapFontName;
-    String yourScoreName = "Snake Game";
+    String yourScoreName;// = "Snake Game";
 
 	Texture img;
 	ScreenGrid playGrid;
@@ -72,6 +72,7 @@ public class SnakeGame extends Game {
         batch = new SpriteBatch();
         yourBitmapFontName = new BitmapFont();
         yourBitmapFontName.setColor(.1f, 1.0f, 1.0f, 1.0f);
+        yourScoreName = "Snake Game";
         //yourBitmapFontName.
 
         myShape = new ShapeRenderer();
