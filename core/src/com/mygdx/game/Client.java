@@ -16,7 +16,7 @@ public class Client {
     Server myServer;
     Socket clientSocket;
     int port = 8005;
-    String ipAddress = "localhost";
+    String ipAddress = "localhost";//"192.168.86.135"; Dom's ip address when we tested on his computer
     PrintWriter out;
     BufferedReader in;
     public Client()
@@ -90,7 +90,7 @@ public class Client {
             //Scanner for the console
             //Scanner consoleInput = new Scanner(System.in);
             // connect to the server on the target port
-            clientSocket = new Socket(ipAddress, port);
+            clientSocket = new Socket("localhost", port);//"192.168.86.135" Dom's ip address when we tested multiplayer on his computer, also 8006 was the port for testing with Dom.  may have been the original port number here
             //Change this string to point to the appropriate ip address, or localhost for myself, 127.0.0.1 = me, 10.0.0.139 = Ben
             // once we connect to the server, we also have an input and output stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
