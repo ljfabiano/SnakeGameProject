@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class ConnectionHandler implements Runnable{
     Socket connection;
     SnakeGame myGame;
+    Client myClient;
     public ConnectionHandler()
     {
 
@@ -52,6 +53,15 @@ public class ConnectionHandler implements Runnable{
             System.out.println("Ip Address = " + ipAddress);
 
                 outputToClient.println("I have your ip address.");
+//            //create a server client
+//            if(myGame.twoPlayerServer == true) {
+//                createServersClient();
+//            }
+            if(myGame.twoPlayerServer == true)
+            {
+                System.out.println("Creating Server's Client");
+                createServersClient();
+            }
                 while ((inputLine = inputFromClient.readLine()) != null) {
                         //inputLine;
                     if(inputLine.equals("W"))
@@ -69,13 +79,39 @@ public class ConnectionHandler implements Runnable{
                         myGame.xDirectionalMovementP2 = -1;
                         myGame.yDirectionalMovementP2 = 0;
                     }
-                    else if(inputLine.equals("D"))
-                    {
+                    else if(inputLine.equals("D")) {
                         myGame.xDirectionalMovementP2 = 1;
                         myGame.yDirectionalMovementP2 = 0;
                     }
+                    if(inputLine.equals("UP"))
+                    {
+                        myGame.xDirectionalMovementP2 = 0;
+                        myGame.yDirectionalMovementP2 = 1;
+                    }
+                    else if(inputLine.equals("DOWN"))
+                    {
+                        myGame.xDirectionalMovementP2 = 0;
+                        myGame.yDirectionalMovementP2 = -1;
+                    }
+                    else if(inputLine.equals("LEFT"))
+                    {
+                        myGame.xDirectionalMovementP2 = -1;
+                        myGame.yDirectionalMovementP2 = 0;
+                    }
+                    else if(inputLine.equals("RIGHT")) {
+                        myGame.xDirectionalMovementP2 = 1;
+                        myGame.yDirectionalMovementP2 = 0;
+                    }
+//                    }else if (inputLine.equals("Client's Server setup complete"))
+//                    {
+//                        if(myGame.twoPlayerServer == true) {
+//                            System.out.println("Creating Server's Client");
+//                            createServersClient();
+//                        }
+//                    }
                     System.out.println("inputLine = " + inputLine);
                     outputToClient.println("received from client: " + outputToClient);
+
                         //aList.add(inputLine);
 
                       //add a sys out to see what is actually happening here in the aList
@@ -84,5 +120,11 @@ public class ConnectionHandler implements Runnable{
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+    public void createServersClient()
+    {
+        myClient = new Client(myGame, "localhost", 8006);
+        myClient.runClient();
+        System.out.println("Server's client created, and the run client command called.");
     }
 }

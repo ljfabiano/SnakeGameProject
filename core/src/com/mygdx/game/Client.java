@@ -12,11 +12,27 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
+    SnakeGame myGame;
+    Server myServer;
     Socket clientSocket;
     int port = 8005;
     String ipAddress = "localhost";
     PrintWriter out;
     BufferedReader in;
+    public Client()
+    {
+
+    }
+    public Client(SnakeGame myGame)
+    {
+        this.myGame = myGame;
+    }
+    public Client(SnakeGame myGame, String ipAddress, int port)
+    {
+        this.myGame = myGame;
+        this.ipAddress = ipAddress;
+        this.port = port;
+    }
     public static void main(String[] args) {
         System.out.println("This is the client");
         try {
@@ -39,6 +55,7 @@ public class Client {
             if(serverResponse.equals("I have your ip address.")) {
 
                 System.out.println("The server is ready to receive commands from the button listeners.");
+                //createClientsServer();
                 //input = consoleInput.nextLine();
 
                 //out.println(input);
@@ -73,7 +90,7 @@ public class Client {
             //Scanner for the console
             //Scanner consoleInput = new Scanner(System.in);
             // connect to the server on the target port
-            clientSocket = new Socket("localhost", 8005);
+            clientSocket = new Socket(ipAddress, port);
             //Change this string to point to the appropriate ip address, or localhost for myself, 127.0.0.1 = me, 10.0.0.139 = Ben
             // once we connect to the server, we also have an input and output stream
             out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -89,6 +106,10 @@ public class Client {
             if(serverResponse.equals("I have your ip address.")) {
 
                 System.out.println("The server is ready to receive commands from the button listeners.");
+                if(myGame.twoPlayerClient == true) {
+                    System.out.println("Creating client's server");
+                    createClientsServer();
+                }
                 //input = consoleInput.nextLine();
 
                 //out.println(input);
@@ -99,6 +120,9 @@ public class Client {
                 response = dialogWithServer("left");
                 System.out.println("The response from server on a command: " + response.toString());
                 response = dialogWithServer("right");
+                System.out.println("The response from server on a command: " + response.toString());
+                //Client's Server setup complete
+                response = dialogWithServer("Client's Server setup complete");
                 System.out.println("The response from server on a command: " + response.toString());
                 //if the server/client is waiting for a input from the other the stream is blocked. always have a closed loop for the back and
                 //forth between the server and the client.
@@ -156,6 +180,12 @@ public class Client {
 
         }
         return messageFromServer;
+    }
+    public void createClientsServer()
+    {
+        myServer = new Server(myGame, 8006);
+        myServer.setConnection();
+        System.out.println("Client's server set connection called, and the server created");
     }
     public void closeConnection()
     {

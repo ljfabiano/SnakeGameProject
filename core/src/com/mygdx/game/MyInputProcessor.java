@@ -103,54 +103,126 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                 return true;
             }
         }
-        if(movingP2 == false) {
-            if (keycode == Input.Keys.UP) {
-                System.out.println("**** clicking the UP button.");
-                if (myGame.yDirectionalMovementP2 == -1) {
-                    myGame.xDirectionalMovementP2 = 0;
-                    myGame.yDirectionalMovementP2 = -1;
-                } else {
-                    myGame.xDirectionalMovementP2 = 0;
-                    myGame.yDirectionalMovementP2 = 1;
-                    movingP2 = true;
+//        if(movingP2 == false) {
+//            if (keycode == Input.Keys.UP) {
+//                System.out.println("**** clicking the UP button.");
+//                if (myGame.yDirectionalMovementP2 == -1) {
+//                    myGame.xDirectionalMovementP2 = 0;
+//                    myGame.yDirectionalMovementP2 = -1;
+//                } else {
+//                    myGame.xDirectionalMovementP2 = 0;
+//                    myGame.yDirectionalMovementP2 = 1;
+//                    if(myGame.twoPlayerServer == true)
+//                    {
+//                        myGame.myServer.myHandler.myClient.dialogWithServer("UP");
+//                    }
+//                    movingP2 = true;
+//                }
+//                return true;
+//            }
+//            if (keycode == Input.Keys.DOWN) {
+//                System.out.println("**** clicking the DOWN button.");
+//                if (myGame.yDirectionalMovementP2 == 1) {
+//                    myGame.xDirectionalMovementP2 = 0;
+//                    myGame.yDirectionalMovementP2 = 1;
+//                } else {
+//                    myGame.xDirectionalMovementP2 = 0;
+//                    myGame.yDirectionalMovementP2 = -1;
+//                    if(myGame.twoPlayerServer == true)
+//                    {
+//                        myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
+//                    }
+//                    movingP2 = true;
+//                }
+//                return true;
+//            }
+//            if (keycode == Input.Keys.RIGHT) {
+//                System.out.println("**** clicking the RIGHT button.");
+//                if (myGame.xDirectionalMovementP2 == -1) {
+//                    myGame.xDirectionalMovementP2 = -1;
+//                    myGame.yDirectionalMovementP2 = 0;
+//                } else {
+//                    myGame.xDirectionalMovementP2 = 1;
+//                    myGame.yDirectionalMovementP2 = 0;
+//                    if(myGame.twoPlayerServer == true)
+//                    {
+//                        myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
+//                    }
+//                    movingP2 = true;
+//                }
+//                return true;
+//            }
+//            if (keycode == Input.Keys.LEFT) {
+//                System.out.println("**** clicking the LEFT button.");
+//                if (myGame.xDirectionalMovementP2 == 1) {
+//                    myGame.xDirectionalMovementP2 = 1;
+//                    myGame.yDirectionalMovementP2 = 0;
+//                } else {
+//                    myGame.xDirectionalMovementP2 = -1;
+//                    myGame.yDirectionalMovementP2 = 0;
+//                    if(myGame.twoPlayerServer == true)
+//                    {
+//                        myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
+//                    }
+//                    movingP2 = true;
+//                }
+//                return true;
+//            }
+//        }
+        if(myGame.twoPlayerServer == true) {
+            if (moving == false) {
+                if (keycode == Input.Keys.UP) {
+                    System.out.println("**** clicking the UP button.");
+                    if (myGame.yDirectionalMovement == -1) {
+                        myGame.xDirectionalMovement = 0;
+                        myGame.yDirectionalMovement = -1;
+                    } else {
+                        myGame.xDirectionalMovement = 0;
+                        myGame.yDirectionalMovement = 1;
+                            myGame.myServer.myHandler.myClient.dialogWithServer("UP");
+                        moving = true;
+                    }
+                    return true;
                 }
-                return true;
-            }
-            if (keycode == Input.Keys.DOWN) {
-                System.out.println("**** clicking the DOWN button.");
-                if (myGame.yDirectionalMovementP2 == 1) {
-                    myGame.xDirectionalMovementP2 = 0;
-                    myGame.yDirectionalMovementP2 = 1;
-                } else {
-                    myGame.xDirectionalMovementP2 = 0;
-                    myGame.yDirectionalMovementP2 = -1;
-                    movingP2 = true;
+                if (keycode == Input.Keys.DOWN) {
+                    System.out.println("**** clicking the DOWN button.");
+                    if (myGame.yDirectionalMovement == 1) {
+                        myGame.xDirectionalMovement = 0;
+                        myGame.yDirectionalMovement = 1;
+                    } else {
+                        myGame.xDirectionalMovement = 0;
+                        myGame.yDirectionalMovement = -1;
+                            myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
+                        moving = true;
+                    }
+                    return true;
                 }
-                return true;
-            }
-            if (keycode == Input.Keys.RIGHT) {
-                System.out.println("**** clicking the RIGHT button.");
-                if (myGame.xDirectionalMovementP2 == -1) {
-                    myGame.xDirectionalMovementP2 = -1;
-                    myGame.yDirectionalMovementP2 = 0;
-                } else {
-                    myGame.xDirectionalMovementP2 = 1;
-                    myGame.yDirectionalMovementP2 = 0;
-                    movingP2 = true;
+                if (keycode == Input.Keys.RIGHT) {
+                    System.out.println("**** clicking the RIGHT button.");
+                    if (myGame.xDirectionalMovement == -1) {
+                        myGame.xDirectionalMovement = -1;
+                        myGame.yDirectionalMovement = 0;
+                    } else {
+                        myGame.xDirectionalMovement = 1;
+                        myGame.yDirectionalMovement = 0;
+                        myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
+                        moving = true;
+                    }
+                    return true;
                 }
-                return true;
-            }
-            if (keycode == Input.Keys.LEFT) {
-                System.out.println("**** clicking the LEFT button.");
-                if (myGame.xDirectionalMovementP2 == 1) {
-                    myGame.xDirectionalMovementP2 = 1;
-                    myGame.yDirectionalMovementP2 = 0;
-                } else {
-                    myGame.xDirectionalMovementP2 = -1;
-                    myGame.yDirectionalMovementP2 = 0;
-                    movingP2 = true;
+                if (keycode == Input.Keys.LEFT) {
+                    System.out.println("**** clicking the LEFT button.");
+                    if (myGame.xDirectionalMovement == 1) {
+                        myGame.xDirectionalMovement = 1;
+                        myGame.yDirectionalMovement = 0;
+                    } else {
+                        myGame.xDirectionalMovement = -1;
+                        myGame.yDirectionalMovement = 0;
+                            myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
+                        moving = true;
+                    }
+                    return true;
                 }
-                return true;
             }
         }
         return false;

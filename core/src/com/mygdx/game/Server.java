@@ -9,6 +9,8 @@ import java.net.Socket;
 
 public class Server {
     SnakeGame myGame;
+    int port = 8005;
+    ConnectionHandler myHandler;
     public Server()
     {
 
@@ -17,17 +19,22 @@ public class Server {
     {
         this.myGame = myGame;
     }
+    public Server(SnakeGame myGame, int port)
+    {
+        this.myGame = myGame;
+        this.port = port;
+    }
 
     public void setConnection()
     {
         try {
             System.out.println("Server called");
-            ServerSocket serverListener = new ServerSocket(8005);
+            ServerSocket serverListener = new ServerSocket(port);
 //            while(true) {
                 Socket clientSocket = serverListener.accept();
                 //create new connection handler just accepted, and create the connection handler object, then create the thread, and then
                 //pass it the thread
-                ConnectionHandler myHandler = new ConnectionHandler(clientSocket, myGame);
+                myHandler = new ConnectionHandler(clientSocket, myGame);
                 Thread handlingThread = new Thread(myHandler);
                 handlingThread.start();
 //            }

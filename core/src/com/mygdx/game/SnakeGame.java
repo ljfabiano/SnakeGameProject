@@ -152,7 +152,7 @@ public class SnakeGame extends Game {
 
             playGrid.addCellToGrid(snakeHeadP2);
 
-            myClient = new Client();
+            myClient = new Client(this);
             myClient.runClient();
         }
         //initialize a body and food cell
