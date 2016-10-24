@@ -46,6 +46,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                 } else {
                     myGame.xDirectionalMovement = 0;
                     myGame.yDirectionalMovement = 1;
+                    if(myGame.twoPlayerClient == true)
+                    {
+                        myGame.myClient.dialogWithServer("W");
+                    }
                     moving = true;
                 }
                 return true;
@@ -58,6 +62,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                 } else {
                     myGame.xDirectionalMovement = 0;
                     myGame.yDirectionalMovement = -1;
+                    if(myGame.twoPlayerClient == true)
+                    {
+                        myGame.myClient.dialogWithServer("S");
+                    }
                     moving = true;
                 }
                 return true;
@@ -70,6 +78,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                 } else {
                     myGame.xDirectionalMovement = -1;
                     myGame.yDirectionalMovement = 0;
+                    if(myGame.twoPlayerClient == true)
+                    {
+                        myGame.myClient.dialogWithServer("A");
+                    }
                     moving = true;
                 }
                 return true;
@@ -82,6 +94,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                 } else {
                     myGame.xDirectionalMovement = 1;
                     myGame.yDirectionalMovement = 0;
+                    if(myGame.twoPlayerClient == true)
+                    {
+                        myGame.myClient.dialogWithServer("D");
+                    }
                     moving = true;
                 }
                 return true;

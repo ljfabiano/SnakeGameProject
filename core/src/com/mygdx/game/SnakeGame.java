@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class SnakeGame extends Game {
 	Game game;
@@ -35,6 +34,8 @@ public class SnakeGame extends Game {
     Stage startGameStage;
     TextButton beginSinglePlayerGame;
     TextButton beginTwoPlayerGame;
+    TextButton beginTwoPlayerServer;
+    TextButton beginTwoPlayerClient;
     TextButton exitGame;
     TextButton playAgainButton;
     TextButton returnToMainMenu;
@@ -61,6 +62,12 @@ public class SnakeGame extends Game {
     boolean gameStarting = true;
     boolean singlePlayerGame = false;
     boolean twoPlayerGame = false;
+    boolean twoPlayerServer = false;
+    boolean twoPlayerClient = false;
+
+    //multiplayer section
+    Client myClient;
+    Server myServer;
     public SnakeGame()
     {
         game = this;
@@ -81,17 +88,18 @@ public class SnakeGame extends Game {
         playGrid.setScreenHeight(Gdx.graphics.getHeight());
         playGrid.setScreenWidth(Gdx.graphics.getWidth());
         playGrid.setCoordinateGrid();
-        //initialize first snake
-        myCell = new Cell("head");
-        myCell.setX(0);
-        myCell.setY(0);
-        xPosition = 0;
-        yPosition = 0;
-        xDirectionalMovement = 0;
-        yDirectionalMovement = 0;
+        if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true) {
+            //initialize first snake
+            myCell = new Cell("head");
+            myCell.setX(0);
+            myCell.setY(0);
+            xPosition = 0;
+            yPosition = 0;
+            xDirectionalMovement = 0;
+            yDirectionalMovement = 0;
 
-        playGrid.addCellToGrid(myCell);
-
+            playGrid.addCellToGrid(myCell);
+        }
         if(twoPlayerGame == true)
         {
             //Initialize second snake
@@ -104,6 +112,48 @@ public class SnakeGame extends Game {
             yDirectionalMovementP2 = 0;
 
             playGrid.addCellToGrid(snakeHeadP2);
+        }
+        if(twoPlayerServer == true)
+        {
+            //Initialize second snake
+            snakeHeadP2 = new Cell("head");
+            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
+            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
+            xPositionP2 = snakeHeadP2.getX();
+            yPositionP2 = snakeHeadP2.getY();
+            xDirectionalMovementP2 = 0;
+            yDirectionalMovementP2 = 0;
+
+            playGrid.addCellToGrid(snakeHeadP2);
+
+            myServer = new Server(this);
+            myServer.setConnection();
+
+        }
+        if(twoPlayerClient == true)
+        {
+            myCell = new Cell("head");
+            myCell.setX(playGrid.coordinateGrid.length - 1);
+            myCell.setY(playGrid.coordinateGrid[0].length - 1);
+            xPosition = myCell.getX();
+            yPosition = myCell.getY();
+            xDirectionalMovement = 0;
+            yDirectionalMovement = 0;
+
+            playGrid.addCellToGrid(myCell);
+            //Initialize second snake
+            snakeHeadP2 = new Cell("head");
+            snakeHeadP2.setX(0);
+            snakeHeadP2.setY(0);
+            xPositionP2 = 0;
+            yPositionP2 = 0;
+            xDirectionalMovementP2 = 0;
+            yDirectionalMovementP2 = 0;
+
+            playGrid.addCellToGrid(snakeHeadP2);
+
+            myClient = new Client();
+            myClient.runClient();
         }
         //initialize a body and food cell
         myFood = new Cell("food");
@@ -126,10 +176,16 @@ public class SnakeGame extends Game {
         beginSinglePlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 + 40);
         beginTwoPlayerGame = new TextButton("Two Player Game", textButtonStyle);
         beginTwoPlayerGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2);
+        beginTwoPlayerServer = new TextButton("Two Player Server", textButtonStyle);
+        beginTwoPlayerServer.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 80);
+        beginTwoPlayerClient = new TextButton("Two Player Client", textButtonStyle);
+        beginTwoPlayerClient.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 120);
         exitGame = new TextButton("Exit", textButtonStyle);
         exitGame.setPosition(Gdx.graphics.getWidth()/2 - 50, Gdx.graphics.getHeight()/2 - 40);
         startGameStage.addActor(beginSinglePlayerGame);
         startGameStage.addActor(beginTwoPlayerGame);
+        startGameStage.addActor(beginTwoPlayerServer);
+        startGameStage.addActor(beginTwoPlayerClient);
         startGameStage.addActor(exitGame);
 
         myProcessor = new MyInputProcessor(this);
@@ -145,6 +201,9 @@ public class SnakeGame extends Game {
             public void changed (ChangeEvent event, Actor actor) {
                 System.out.println("Play again button pressed");
                 gameOver = false;
+//                if(twoPlayerClient == true) {
+//                    myClient.closeConnection();
+//                }
                 create();
             }
         });
@@ -156,6 +215,13 @@ public class SnakeGame extends Game {
                 gameStarting = true;
                 singlePlayerGame = false;
                 twoPlayerGame = false;
+                if(twoPlayerClient == true) {
+                    myClient.closeConnection();
+                }
+                twoPlayerServer = false;
+                twoPlayerClient = false;
+
+                //myServer.
                 create();
             }
         });
@@ -166,6 +232,8 @@ public class SnakeGame extends Game {
                 gameStarting = false;
                 singlePlayerGame = true;
                 twoPlayerGame = false;
+                twoPlayerServer = false;
+                twoPlayerClient = false;
                 create();
             }
         });
@@ -176,6 +244,30 @@ public class SnakeGame extends Game {
                 gameStarting = false;
                 singlePlayerGame = false;
                 twoPlayerGame = true;
+                twoPlayerServer = false;
+                twoPlayerClient = false;
+                create();
+            }
+        });
+        beginTwoPlayerServer.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                System.out.println("Begin two player server button pressed");
+                gameStarting = false;
+                singlePlayerGame = false;
+                twoPlayerServer = true;
+                twoPlayerClient = false;
+                create();
+            }
+        });
+        beginTwoPlayerClient.addListener(new ChangeListener() {
+            @Override
+            public void changed (ChangeEvent event, Actor actor) {
+                System.out.println("Begin two player client button pressed");
+                gameStarting = false;
+                singlePlayerGame = false;
+                twoPlayerClient = true;
+                twoPlayerServer = false;
                 create();
             }
         });
@@ -221,7 +313,7 @@ public class SnakeGame extends Game {
                     {
                         moveCellGrid();
                     }
-                    else if(twoPlayerGame == true)
+                    else if(twoPlayerGame == true || twoPlayerServer == true || twoPlayerClient == true)
                     {
                         moveCellGridTwoSnakes();
                     }
@@ -266,7 +358,7 @@ public class SnakeGame extends Game {
                         myShape.rect(myCell.getBreadCrumbsList().get(index).getX() * myCell.getCellSize(), myCell.getBreadCrumbsList().get(index).getY() * myCell.getCellSize(), myCell.getCellSize(), myCell.getCellSize());
                     }
                 }
-                if(twoPlayerGame == true)
+                if(twoPlayerGame == true || twoPlayerServer == true|| twoPlayerClient == true)
                 {
                     myShape.setColor(0, 0, 0, 1);
                     myShape.rect(snakeHeadP2.getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
@@ -723,7 +815,7 @@ public void callRenderMethodBasedOnTime()
     while (gameOver == false)
     {
         endTime = System.currentTimeMillis();
-        if (endTime >= startTime + 100)
+        if (endTime >= startTime + 300)
         {
             Gdx.graphics.requestRendering();
             break;
