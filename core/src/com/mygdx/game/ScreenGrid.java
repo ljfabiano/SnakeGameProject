@@ -11,6 +11,7 @@ public class ScreenGrid {
     //Array[][] gridArray = new Array[800][600];
     //The size of the grid by units(10 pixels)
     //Array[][] gridArray = new Array[160][120];
+    SnakeGame myGame;
     int screenWidth;
     int screenHeight;
 
@@ -21,6 +22,10 @@ public class ScreenGrid {
     public ScreenGrid()
     {
 
+    }
+    public ScreenGrid(SnakeGame myGame)
+    {
+        this.myGame = myGame;
     }
     public ScreenGrid(int screenWidth, int screenHeight)
     {
@@ -405,6 +410,11 @@ public class ScreenGrid {
             y = Math.random() * coordinateGrid[0].length;
         }
         while(coordinateGrid[(int)x][(int)y] != null);
+        if(myGame.twoPlayerServer == true && myGame.myServer.myHandler.myClient!= null)
+        {
+            myGame.myServer.myHandler.myClient.dialogWithServer("x" + (int)x);
+            myGame.myServer.myHandler.myClient.dialogWithServer("y" + (int)y);
+        }
         foodCell.setX((int)x);
         foodCell.setY((int)y);
         coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;

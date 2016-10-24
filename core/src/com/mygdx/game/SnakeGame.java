@@ -84,7 +84,7 @@ public class SnakeGame extends Game {
 
         myShape = new ShapeRenderer();
         //Initialize the game grid, cell, and movement variables
-		playGrid = new ScreenGrid();
+		playGrid = new ScreenGrid(this);
         playGrid.setScreenHeight(Gdx.graphics.getHeight());
         playGrid.setScreenWidth(Gdx.graphics.getWidth());
         playGrid.setCoordinateGrid();
@@ -157,7 +157,9 @@ public class SnakeGame extends Game {
         }
         //initialize a body and food cell
         myFood = new Cell("food");
-        playGrid.addFoodCellToGrid(myFood);
+        if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true) {
+            playGrid.addFoodCellToGrid(myFood);
+        }
         //Initialize the endGameStage for menus/buttons
         endGameStage = new Stage();
         font = new BitmapFont();

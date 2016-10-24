@@ -3,6 +3,8 @@ package com.mygdx.game;
 /**
  * Created by jfabiano on 10/23/2016.
  */
+import com.badlogic.gdx.utils.CharArray;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +16,9 @@ public class ConnectionHandler implements Runnable{
     Socket connection;
     SnakeGame myGame;
     Client myClient;
+    char[] myArray;
+    //add jodd library to project to use the json parser
+    //JsonParser toDoItemParser;
     public ConnectionHandler()
     {
 
@@ -102,6 +107,46 @@ public class ConnectionHandler implements Runnable{
                         myGame.xDirectionalMovementP2 = 1;
                         myGame.yDirectionalMovementP2 = 0;
                     }
+                    //the json parser to send objects on the network
+//                    JsonParser toDoItemParser = new JsonParser();
+//                    Coordinates foodCoordinates = toDoItemParser.parse(inputFromClient.readLine(), Stroke.class);
+//                    if(inputLine.startsWith("x")) {
+//                        inputLine = inputLine.substring(1);
+//                        System.out.println("substring of food x location = " + inputLine);
+//
+//                        myArray = inputLine.toCharArray();
+//                        if(myArray.length == 1)
+//                        {
+//                            myGame.myFood.setX((int)myArray[0]);
+//                            System.out.println("myGame.myFood.getx = " + myGame.myFood.getX());
+//                        }
+//                        else if(myArray.length == 2)
+//                        {
+//                            myArray[0] *= 10;
+//
+//                            myGame.myFood.setX((int)myArray[0] + (int)myArray[1]);
+//                            System.out.println("myGame.myFood.getx = " + myGame.myFood.getX());
+//                        }
+//                    }
+//                    else if(inputLine.startsWith("y"))
+//                    {
+//                        inputLine = inputLine.substring(1);
+//                        System.out.println("substring of food y location = " + inputLine);
+//                        myArray = inputLine.toCharArray();
+//                        if(myArray.length == 1)
+//                        {
+//                            myGame.myFood.setY((int)myArray[0]);
+//                            System.out.println("myGame.myFood.gety = " + myGame.myFood.getY());
+//                        }
+//                        else if(myArray.length == 2)
+//                        {
+//                            myArray[0] *= 10;
+//
+//                            myGame.myFood.setY((int)myArray[0] + (int)myArray[1]);
+//                            System.out.println("myGame.myFood.gety = " + myGame.myFood.getY());
+//                        }
+//                        myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
+//                    }
 //                    }else if (inputLine.equals("Client's Server setup complete"))
 //                    {
 //                        if(myGame.twoPlayerServer == true) {

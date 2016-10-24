@@ -181,6 +181,25 @@ public class Client {
         }
         return messageFromServer;
     }
+    //overload for sending objects rather than strings(Integers for the food location)
+    public String dialogWithServer(Object messageToServer)
+    {
+        //JsonSerializer jsonSerializer = new JsonSerializer().deep(true);
+        //Object jsonStringStroke = jsonSerializer.serialize(myStroke);
+        String messageFromServer = null;
+        try {
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            out.println(messageToServer);
+            messageFromServer = in.readLine();
+        }
+        catch(IOException ex) {
+
+        }
+        return messageFromServer;
+    }
+
     public void createClientsServer()
     {
         myServer = new Server(myGame, 8006);
