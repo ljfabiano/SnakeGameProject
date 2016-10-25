@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import java.io.IOException;
+
 public class SnakeGame extends Game {
 	Game game;
     MyInputProcessor myProcessor;
@@ -88,78 +90,56 @@ public class SnakeGame extends Game {
         playGrid.setScreenHeight(Gdx.graphics.getHeight());
         playGrid.setScreenWidth(Gdx.graphics.getWidth());
         playGrid.setCoordinateGrid();
-        if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true) {
-            //initialize first snake
-            myCell = new Cell("head");
-            myCell.setX(0);
-            myCell.setY(0);
-            xPosition = 0;
-            yPosition = 0;
-            xDirectionalMovement = 0;
-            yDirectionalMovement = 0;
 
-            playGrid.addCellToGrid(myCell);
-        }
-        if(twoPlayerGame == true)
-        {
-            //Initialize second snake
-            snakeHeadP2 = new Cell("head");
-            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
-            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
-            xPositionP2 = snakeHeadP2.getX();
-            yPositionP2 = snakeHeadP2.getY();
-            xDirectionalMovementP2 = 0;
-            yDirectionalMovementP2 = 0;
-
-            playGrid.addCellToGrid(snakeHeadP2);
-        }
-        if(twoPlayerServer == true)
-        {
-            //Initialize second snake
-            snakeHeadP2 = new Cell("head");
-            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
-            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
-            xPositionP2 = snakeHeadP2.getX();
-            yPositionP2 = snakeHeadP2.getY();
-            xDirectionalMovementP2 = 0;
-            yDirectionalMovementP2 = 0;
-
-            playGrid.addCellToGrid(snakeHeadP2);
-
-            myServer = new Server(this);
-            myServer.setConnection();
-
-        }
-        if(twoPlayerClient == true)
-        {
-            myCell = new Cell("head");
-            myCell.setX(playGrid.coordinateGrid.length - 1);
-            myCell.setY(playGrid.coordinateGrid[0].length - 1);
-            xPosition = myCell.getX();
-            yPosition = myCell.getY();
-            xDirectionalMovement = 0;
-            yDirectionalMovement = 0;
-
-            playGrid.addCellToGrid(myCell);
-            //Initialize second snake
-            snakeHeadP2 = new Cell("head");
-            snakeHeadP2.setX(0);
-            snakeHeadP2.setY(0);
-            xPositionP2 = 0;
-            yPositionP2 = 0;
-            xDirectionalMovementP2 = 0;
-            yDirectionalMovementP2 = 0;
-
-            playGrid.addCellToGrid(snakeHeadP2);
-
-            myClient = new Client(this);
-            myClient.runClient();
-        }
+//        if(twoPlayerServer == true)
+//        {
+//            //Initialize second snake
+//            snakeHeadP2 = new Cell("head");
+//            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
+//            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
+//            xPositionP2 = snakeHeadP2.getX();
+//            yPositionP2 = snakeHeadP2.getY();
+//            xDirectionalMovementP2 = 0;
+//            yDirectionalMovementP2 = 0;
+//
+//            playGrid.addCellToGrid(snakeHeadP2);
+//            if(myServer == null) {
+//                myServer = new Server(this);
+//                myServer.setConnection();
+//            }
+//
+//        }
+//        if(twoPlayerClient == true)
+//        {
+//            myCell = new Cell("head");
+//            myCell.setX(playGrid.coordinateGrid.length - 1);
+//            myCell.setY(playGrid.coordinateGrid[0].length - 1);
+//            xPosition = myCell.getX();
+//            yPosition = myCell.getY();
+//            xDirectionalMovement = 0;
+//            yDirectionalMovement = 0;
+//
+//            playGrid.addCellToGrid(myCell);
+//            //Initialize second snake
+//            snakeHeadP2 = new Cell("head");
+//            snakeHeadP2.setX(0);
+//            snakeHeadP2.setY(0);
+//            xPositionP2 = 0;
+//            yPositionP2 = 0;
+//            xDirectionalMovementP2 = 0;
+//            yDirectionalMovementP2 = 0;
+//
+//            playGrid.addCellToGrid(snakeHeadP2);
+//            if(myClient == null) {
+//                myClient = new Client(this);
+//                myClient.runClient();
+//            }
+//        }
         //initialize a body and food cell
         myFood = new Cell("food");
-        if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true) {
+        //if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true) {
             playGrid.addFoodCellToGrid(myFood);
-        }
+        //}
         //Initialize the endGameStage for menus/buttons
         endGameStage = new Stage();
         font = new BitmapFont();
@@ -203,10 +183,11 @@ public class SnakeGame extends Game {
             public void changed (ChangeEvent event, Actor actor) {
                 System.out.println("Play again button pressed");
                 gameOver = false;
+                resetGame();
 //                if(twoPlayerClient == true) {
 //                    myClient.closeConnection();
 //                }
-                create();
+                //create();
             }
         });
         returnToMainMenu.addListener(new ChangeListener() {
@@ -219,12 +200,39 @@ public class SnakeGame extends Game {
                 twoPlayerGame = false;
                 if(twoPlayerClient == true) {
                     myClient.closeConnection();
+                    try {
+                    myClient.myServer.myHandler.connection.close();
+                    }
+                    catch(IOException ex)
+                    {
+                        System.out.println("there was an IO issue closing the connection handler socket for the client's server.");
+                        ex.printStackTrace();
+                    }
+                }
+                if(twoPlayerServer == true) {
+                    myServer.myHandler.myClient.closeConnection();
+                    try {
+                        myServer.myHandler.connection.close();
+                    }
+                    catch(IOException ex)
+                    {
+                        System.out.println("there was an IO issue closing the connection handler socket for the server.");
+                        ex.printStackTrace();
+                    }
                 }
                 twoPlayerServer = false;
                 twoPlayerClient = false;
-
+//                playGrid.setCoordinateGrid();
+//                myCell.setX(0);
+//                myCell.setY(0);
+//                xPosition = 0;
+//                yPosition = 0;
+//                xDirectionalMovement = 0;
+//                yDirectionalMovement = 0;
+//
+//                playGrid.addCellToGrid(myCell);
                 //myServer.
-                create();
+                //create();
             }
         });
         beginSinglePlayerGame.addListener(new ChangeListener() {
@@ -236,7 +244,8 @@ public class SnakeGame extends Game {
                 twoPlayerGame = false;
                 twoPlayerServer = false;
                 twoPlayerClient = false;
-                create();
+                resetGame();
+                //create();
             }
         });
         beginTwoPlayerGame.addListener(new ChangeListener() {
@@ -248,7 +257,8 @@ public class SnakeGame extends Game {
                 twoPlayerGame = true;
                 twoPlayerServer = false;
                 twoPlayerClient = false;
-                create();
+                resetGame();
+                //create();
             }
         });
         beginTwoPlayerServer.addListener(new ChangeListener() {
@@ -259,7 +269,9 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerServer = true;
                 twoPlayerClient = false;
-                create();
+                createServer();
+                resetGame();
+                //create();
             }
         });
         beginTwoPlayerClient.addListener(new ChangeListener() {
@@ -270,7 +282,9 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerClient = true;
                 twoPlayerServer = false;
-                create();
+                createClient();
+                resetGame();
+                //create();
             }
         });
         exitGame.addListener(new ChangeListener() {
@@ -386,130 +400,6 @@ public class SnakeGame extends Game {
         batch.dispose();
         myShape.dispose();
 	}
-    //Per pixel movement method
-	void movePerPixel() {
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			xDirectionalMovement = 0;
-			yDirectionalMovement = 1;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			xDirectionalMovement = 0;
-			yDirectionalMovement = -1;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			xDirectionalMovement = 1;
-			yDirectionalMovement = 0;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			xDirectionalMovement = -1;
-			yDirectionalMovement = 0;
-		}
-		xPosition += xDirectionalMovement;
-		yPosition += yDirectionalMovement;
-	}
-	//Per pixel movement, but the image is updated once the length of the cell + the previous position is reached(simulating the grid)
-	void movePerGridCell()
-	{
-		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			xDirectionalMovement = 0;
-			yDirectionalMovement = 1;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			xDirectionalMovement = 0;
-			yDirectionalMovement = -1;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			xDirectionalMovement = 1;
-			yDirectionalMovement = 0;
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			xDirectionalMovement = -1;
-			yDirectionalMovement = 0;
-		}
-		xPosition += xDirectionalMovement;
-		yPosition += yDirectionalMovement;
-		if(xPosition == myCell.getX() + myCell.getCellSize()) {
-			myCell.setX(xPosition);
-		}
-		if(yPosition == myCell.getY() + myCell.getCellSize()) {
-			myCell.setY(yPosition);
-		}
-        if(xPosition < myCell.getX()) {
-            myCell.setX(myCell.getX() - myCell.getCellSize());
-        }
-        if(yPosition < myCell.getY()) {
-            myCell.setY(myCell.getY() - myCell.getCellSize());
-        }
-	}
-    void moveInGridCell()throws Exception
-    {
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            if(yDirectionalMovement == -1)
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = -1;
-            }
-            else
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = 1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            if(yDirectionalMovement == 1)
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = 1;
-            }
-            else
-            {
-                xDirectionalMovement = 0;
-                yDirectionalMovement = -1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(xDirectionalMovement == -1)
-            {
-                xDirectionalMovement = -1;
-                yDirectionalMovement = 0;
-            }
-            else
-            {
-                xDirectionalMovement = 1;
-                yDirectionalMovement = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if(xDirectionalMovement == 1)
-            {
-                xDirectionalMovement = 1;
-                yDirectionalMovement = 0;
-            }
-            else
-            {
-                xDirectionalMovement = -1;
-                yDirectionalMovement = 0;
-            }
-        }
-        xPosition += xDirectionalMovement;
-        yPosition += yDirectionalMovement;
-        if(yDirectionalMovement == 1)
-        {
-                playGrid.moveGridCellUp(myCell);
-        }
-        if(yDirectionalMovement == -1)
-        {
-                playGrid.moveGridCellDown(myCell);
-        }
-        if(xDirectionalMovement == 1)
-        {
-                playGrid.moveGridCellRight(myCell);
-        }
-        if(xDirectionalMovement == -1)
-        {
-                playGrid.moveGridCellLeft(myCell);
-        }
-    }
 
     void moveCellGrid()throws Exception
     {
@@ -548,102 +438,6 @@ public class SnakeGame extends Game {
     //Same as the regular move method, but for 2 snakes
     void moveCellGridTwoSnakes()throws Exception
     {
-//        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-//            if(yDirectionalMovement == -1)
-//            {
-//                xDirectionalMovement = 0;
-//                yDirectionalMovement = -1;
-//            }
-//            else
-//            {
-//                xDirectionalMovement = 0;
-//                yDirectionalMovement = 1;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-//            if(yDirectionalMovement == 1)
-//            {
-//                xDirectionalMovement = 0;
-//                yDirectionalMovement = 1;
-//            }
-//            else
-//            {
-//                xDirectionalMovement = 0;
-//                yDirectionalMovement = -1;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-//            if(xDirectionalMovement == -1)
-//            {
-//                xDirectionalMovement = -1;
-//                yDirectionalMovement = 0;
-//            }
-//            else
-//            {
-//                xDirectionalMovement = 1;
-//                yDirectionalMovement = 0;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-//            if(xDirectionalMovement == 1)
-//            {
-//                xDirectionalMovement = 1;
-//                yDirectionalMovement = 0;
-//            }
-//            else
-//            {
-//                xDirectionalMovement = -1;
-//                yDirectionalMovement = 0;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-//            if(yDirectionalMovementP2 == -1)
-//            {
-//                xDirectionalMovementP2 = 0;
-//                yDirectionalMovementP2 = -1;
-//            }
-//            else
-//            {
-//                xDirectionalMovementP2 = 0;
-//                yDirectionalMovementP2 = 1;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-//            if(yDirectionalMovementP2 == 1)
-//            {
-//                xDirectionalMovementP2 = 0;
-//                yDirectionalMovementP2 = 1;
-//            }
-//            else
-//            {
-//                xDirectionalMovementP2 = 0;
-//                yDirectionalMovementP2 = -1;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-//            if(xDirectionalMovementP2 == -1)
-//            {
-//                xDirectionalMovementP2 = -1;
-//                yDirectionalMovementP2 = 0;
-//            }
-//            else
-//            {
-//                xDirectionalMovementP2 = 1;
-//                yDirectionalMovementP2 = 0;
-//            }
-//        }
-//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-//            if(xDirectionalMovementP2 == 1)
-//            {
-//                xDirectionalMovementP2 = 1;
-//                yDirectionalMovementP2 = 0;
-//            }
-//            else
-//            {
-//                xDirectionalMovementP2 = -1;
-//                yDirectionalMovementP2 = 0;
-//            }
-//        }
         xPosition += xDirectionalMovement;
         yPosition += yDirectionalMovement;
         xPositionP2 += xDirectionalMovementP2;
@@ -706,127 +500,113 @@ public class SnakeGame extends Game {
             myProcessor.movingP2 = false;
         }
     }
-    void moveCellGridP2SnakeOnly()throws Exception
-    {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            if(yDirectionalMovementP2 == -1)
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = -1;
-            }
-            else
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = 1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            if(yDirectionalMovementP2 == 1)
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = 1;
-            }
-            else
-            {
-                xDirectionalMovementP2 = 0;
-                yDirectionalMovementP2 = -1;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if(xDirectionalMovementP2 == -1)
-            {
-                xDirectionalMovementP2 = -1;
-                yDirectionalMovementP2 = 0;
-            }
-            else
-            {
-                xDirectionalMovementP2 = 1;
-                yDirectionalMovementP2 = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            if(xDirectionalMovementP2 == 1)
-            {
-                xDirectionalMovementP2 = 1;
-                yDirectionalMovementP2 = 0;
-            }
-            else
-            {
-                xDirectionalMovementP2 = -1;
-                yDirectionalMovementP2 = 0;
-            }
-        }
-        xPositionP2 += xDirectionalMovementP2;
-        yPositionP2 += yDirectionalMovementP2;
-        if(xPositionP2 >= snakeHeadP2.getX() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellRight(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-        if(yPositionP2 >= snakeHeadP2.getY() * snakeHeadP2.getCellSize() + snakeHeadP2.getCellSize()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellUp(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-        if(xPositionP2 < snakeHeadP2.getX() * snakeHeadP2.getCellSize()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellLeft(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-        if(yPositionP2 < snakeHeadP2.getY() * snakeHeadP2.getCellSize()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellDown(snakeHeadP2);
-            if(snakeHeadP2.getBreadCrumbsList().size() > 0)
-            {
-                for (int index = 0; index < snakeHeadP2.getBreadCrumbsList().size(); index++) {
-                    System.out.println("P2 index = " + index);
-                    System.out.println("P2 x = " + snakeHeadP2.getBreadCrumbsList().get(index).getX());
-                    System.out.println("P2 y = " + snakeHeadP2.getBreadCrumbsList().get(index).getY());
-                }
-            }
-        }
-    }
-public void callRenderMethodBasedOnTime()
-{
-    while (gameOver == false)
+    public void callRenderMethodBasedOnTime()
     {
-        endTime = System.currentTimeMillis();
-        if (endTime >= startTime + 300)
+        while (gameOver == false)
         {
-            Gdx.graphics.requestRendering();
-            break;
+            endTime = System.currentTimeMillis();
+            if (endTime >= startTime + 300)
+            {
+                Gdx.graphics.requestRendering();
+                break;
+            }
         }
     }
-}
 
     public void exit()
     {
         Gdx.app.exit();
+    }
+    public void createServer()
+    {
+//        if(myServer == null) {
+            myServer = new Server(this);
+            myServer.setConnection();
+//        }
+    }
+    public void createClient()
+    {
+//        if(myClient == null) {
+            myClient = new Client(this);
+            myClient.runClient();
+//        }
+    }
+    public void resetGame()
+    {
+        if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true)
+        {
+            playGrid.setCoordinateGrid();
+            //initialize first snake
+            myCell = new Cell("head");
+            myCell.setX(0);
+            myCell.setY(0);
+            xPosition = 0;
+            yPosition = 0;
+            xDirectionalMovement = 0;
+            yDirectionalMovement = 0;
+            playGrid.addCellToGrid(myCell);
+        }
+        if(twoPlayerGame == true)
+        {
+            //Initialize second snake
+            snakeHeadP2 = new Cell("head");
+            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
+            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
+            xPositionP2 = snakeHeadP2.getX();
+            yPositionP2 = snakeHeadP2.getY();
+            xDirectionalMovementP2 = 0;
+            yDirectionalMovementP2 = 0;
+            playGrid.addCellToGrid(snakeHeadP2);
+        }
+        if(twoPlayerServer == true)
+        {
+            //Initialize second snake
+            snakeHeadP2 = new Cell("head");
+            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
+            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
+            xPositionP2 = snakeHeadP2.getX();
+            yPositionP2 = snakeHeadP2.getY();
+            xDirectionalMovementP2 = 0;
+            yDirectionalMovementP2 = 0;
+            playGrid.addCellToGrid(snakeHeadP2);
+//            if(myServer == null) {
+//                myServer = new Server(this);
+//                myServer.setConnection();
+//            }
+
+        }
+        if(twoPlayerClient == true)
+        {
+            playGrid.setCoordinateGrid();
+            myCell = new Cell("head");
+            myCell.setX(playGrid.coordinateGrid.length - 1);
+            myCell.setY(playGrid.coordinateGrid[0].length - 1);
+            xPosition = myCell.getX();
+            yPosition = myCell.getY();
+            xDirectionalMovement = 0;
+            yDirectionalMovement = 0;
+
+            playGrid.addCellToGrid(myCell);
+            //Initialize second snake
+            snakeHeadP2 = new Cell("head");
+            snakeHeadP2.setX(0);
+            snakeHeadP2.setY(0);
+            xPositionP2 = 0;
+            yPositionP2 = 0;
+            xDirectionalMovementP2 = 0;
+            yDirectionalMovementP2 = 0;
+
+            playGrid.addCellToGrid(snakeHeadP2);
+
+//            if(myClient == null) {
+//                myClient = new Client(this);
+//                myClient.runClient();
+//            }
+        }
+        myProcessor.moving = false;
+        myProcessor.movingP2 = false;
+        myFood = new Cell("food");
+        playGrid.addFoodCellToGrid(myFood);
     }
 }

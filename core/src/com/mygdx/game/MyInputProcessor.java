@@ -38,7 +38,9 @@ public class MyInputProcessor extends Stage implements InputProcessor {
     public boolean keyDown (int keycode) {
         System.out.println("Key Down method *****");
         if(myGame.singlePlayerGame == true || myGame.twoPlayerGame == true) {
+            System.out.println("single/twoplayer == true");
             if (moving == false) {
+                System.out.println("moving == false");
                 if (keycode == Input.Keys.W) {
                     System.out.println("**** clicking the W button.");
                     if (myGame.yDirectionalMovement == -1) {
