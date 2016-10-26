@@ -201,7 +201,8 @@ public class SnakeGame extends Game {
                 if(twoPlayerClient == true) {
                     myClient.closeConnection();
                     try {
-                    myClient.myServer.myHandler.connection.close();
+                        myClient.myServer.myHandler.connection.close();
+                        myClient.myServer.serverListener.close();
                     }
                     catch(IOException ex)
                     {
@@ -213,6 +214,7 @@ public class SnakeGame extends Game {
                     myServer.myHandler.myClient.closeConnection();
                     try {
                         myServer.myHandler.connection.close();
+                        myServer.serverListener.close();
                     }
                     catch(IOException ex)
                     {

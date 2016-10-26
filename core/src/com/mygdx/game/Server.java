@@ -11,6 +11,7 @@ public class Server {
     SnakeGame myGame;
     int port = 8005;
     ConnectionHandler myHandler;
+    ServerSocket serverListener;
     public Server()
     {
 
@@ -29,7 +30,7 @@ public class Server {
     {
         try {
             System.out.println("Server called");
-            ServerSocket serverListener = new ServerSocket(port);
+            serverListener = new ServerSocket(port);
 //            while(true) {
                 Socket clientSocket = serverListener.accept();
                 //create new connection handler just accepted, and create the connection handler object, then create the thread, and then
