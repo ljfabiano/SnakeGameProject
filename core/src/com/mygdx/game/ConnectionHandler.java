@@ -162,7 +162,7 @@ public class ConnectionHandler implements Runnable{
 //                        }
 //                    }
                     System.out.println("inputLine = " + inputLine);
-                    outputToClient.println("received from client: " + outputToClient);
+                    outputToClient.println("received from client: " + inputLine);
 
                         //aList.add(inputLine);
 

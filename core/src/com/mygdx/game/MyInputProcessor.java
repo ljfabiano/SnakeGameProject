@@ -16,6 +16,7 @@ public class MyInputProcessor extends Stage implements InputProcessor {
     SnakeGame myGame = null;
     boolean moving = false;
     boolean movingP2 = false;
+    String response;
 
     public MyInputProcessor() {
         super();
@@ -152,7 +153,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = -1;
                     } else {
-                        myGame.myClient.dialogWithServer("W");
+//                        response = myGame.myClient.dialogWithServer("W");
+//                        System.out.println(response.toString());
+                        response = myGame.myClient.dialogWithServer("W");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = 1;
 
@@ -166,7 +170,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = 1;
                     } else {
-                        myGame.myClient.dialogWithServer("S");
+//                        response = myGame.myClient.dialogWithServer("S");
+//                        System.out.println(response.toString());
+                        response = myGame.myClient.dialogWithServer("S");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = -1;
 
@@ -180,7 +187,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = 1;
                         myGame.yDirectionalMovement = 0;
                     } else {
-                        myGame.myClient.dialogWithServer("A");
+//                        response = myGame.myClient.dialogWithServer("A");
+//                        System.out.println(response.toString());
+                        response = myGame.myClient.dialogWithServer("A");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = -1;
                         myGame.yDirectionalMovement = 0;
 
@@ -194,7 +204,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = -1;
                         myGame.yDirectionalMovement = 0;
                     } else {
-                        myGame.myClient.dialogWithServer("D");
+//                        response = myGame.myClient.dialogWithServer("D");
+//                        System.out.println(response.toString());
+                        response = myGame.myClient.dialogWithServer("D");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = 1;
                         myGame.yDirectionalMovement = 0;
 
@@ -212,7 +225,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = -1;
                     } else {
-                        myGame.myServer.myHandler.myClient.dialogWithServer("UP");
+//                        response = myGame.myServer.myHandler.myClient.dialogWithServer("UP");
+//                        System.out.println(response.toString());
+                        response = myGame.myServer.myHandler.myClient.dialogWithServer("UP");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = 1;
 
@@ -226,7 +242,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = 1;
                     } else {
-                        myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
+//                        response = myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
+//                        System.out.println(response.toString());
+                        response = myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = -1;
 
@@ -240,7 +259,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = -1;
                         myGame.yDirectionalMovement = 0;
                     } else {
-                        myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
+//                        response = myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
+//                        System.out.println(response.toString());
+                        response = myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = 1;
                         myGame.yDirectionalMovement = 0;
 
@@ -254,7 +276,10 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                         myGame.xDirectionalMovement = 1;
                         myGame.yDirectionalMovement = 0;
                     } else {
-                        myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
+//                        response = myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
+//                        System.out.println(response.toString());
+                        response = myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
+                        System.out.println(response.toString());
                         myGame.xDirectionalMovement = -1;
                         myGame.yDirectionalMovement = 0;
 

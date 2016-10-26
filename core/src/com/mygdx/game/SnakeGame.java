@@ -502,10 +502,11 @@ public class SnakeGame extends Game {
             xPosition = 0;
             yPosition = 0;
             xDirectionalMovement = 0;
+            //xDirectionalMovement = 1;
             yDirectionalMovement = 0;
             playGrid.addCellToGrid(myCell);
         }
-        if(twoPlayerGame == true)
+        if(twoPlayerGame == true || twoPlayerServer == true)
         {
             //Initialize second snake
             snakeHeadP2 = new Cell("head");
@@ -513,27 +514,29 @@ public class SnakeGame extends Game {
             snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
             xPositionP2 = snakeHeadP2.getX();
             yPositionP2 = snakeHeadP2.getY();
-            xDirectionalMovementP2 = 0;
+            //xDirectionalMovementP2 = 0;
+            xDirectionalMovementP2 = -1;
             yDirectionalMovementP2 = 0;
             playGrid.addCellToGrid(snakeHeadP2);
         }
-        if(twoPlayerServer == true)
-        {
-            //Initialize second snake
-            snakeHeadP2 = new Cell("head");
-            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
-            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
-            xPositionP2 = snakeHeadP2.getX();
-            yPositionP2 = snakeHeadP2.getY();
-            xDirectionalMovementP2 = 0;
-            yDirectionalMovementP2 = 0;
-            playGrid.addCellToGrid(snakeHeadP2);
-//            if(myServer == null) {
-//                myServer = new Server(this);
-//                myServer.setConnection();
-//            }
-
-        }
+//        if(twoPlayerServer == true)
+//        {
+//            //Initialize second snake
+//            snakeHeadP2 = new Cell("head");
+//            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
+//            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
+//            xPositionP2 = snakeHeadP2.getX();
+//            yPositionP2 = snakeHeadP2.getY();
+////            xDirectionalMovementP2 = 0;
+//            xDirectionalMovementP2 = -1;
+//            yDirectionalMovementP2 = 0;
+//            playGrid.addCellToGrid(snakeHeadP2);
+////            if(myServer == null) {
+////                myServer = new Server(this);
+////                myServer.setConnection();
+////            }
+//
+//        }
         if(twoPlayerClient == true)
         {
             playGrid.setCoordinateGrid();
@@ -542,7 +545,8 @@ public class SnakeGame extends Game {
             myCell.setY(playGrid.coordinateGrid[0].length - 1);
             xPosition = myCell.getX();
             yPosition = myCell.getY();
-            xDirectionalMovement = 0;
+            //xDirectionalMovement = 0;
+            xDirectionalMovement = -1;
             yDirectionalMovement = 0;
 
             playGrid.addCellToGrid(myCell);
@@ -553,6 +557,7 @@ public class SnakeGame extends Game {
             xPositionP2 = 0;
             yPositionP2 = 0;
             xDirectionalMovementP2 = 0;
+            //xDirectionalMovementP2 = 1;
             yDirectionalMovementP2 = 0;
 
             playGrid.addCellToGrid(snakeHeadP2);
