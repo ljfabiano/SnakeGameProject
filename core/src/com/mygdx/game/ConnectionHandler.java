@@ -110,15 +110,18 @@ public class ConnectionHandler implements Runnable{
                     //the json parser to send objects on the network
 //                    JsonParser toDoItemParser = new JsonParser();
 //                    Coordinates foodCoordinates = toDoItemParser.parse(inputFromClient.readLine(), Stroke.class);
-//                    if(inputLine.startsWith("x")) {
-//                        inputLine = inputLine.substring(1);
-//                        System.out.println("substring of food x location = " + inputLine);
-//
+                    if(inputLine.startsWith("x")) {
+                        inputLine = inputLine.substring(1);
+                        System.out.println("substring of food x location = " + inputLine);
+                        //Integer.parseInt(inputLine);//To get an int
+                        myGame.myFood.setX(Integer.parseInt(inputLine));
+                        System.out.println("myGame.myFood.getx = " + myGame.myFood.getX());
 //                        myArray = inputLine.toCharArray();
 //                        if(myArray.length == 1)
 //                        {
 //                            myGame.myFood.setX((int)myArray[0]);
 //                            System.out.println("myGame.myFood.getx = " + myGame.myFood.getX());
+
 //                        }
 //                        else if(myArray.length == 2)
 //                        {
@@ -127,11 +130,13 @@ public class ConnectionHandler implements Runnable{
 //                            myGame.myFood.setX((int)myArray[0] + (int)myArray[1]);
 //                            System.out.println("myGame.myFood.getx = " + myGame.myFood.getX());
 //                        }
-//                    }
-//                    else if(inputLine.startsWith("y"))
-//                    {
-//                        inputLine = inputLine.substring(1);
-//                        System.out.println("substring of food y location = " + inputLine);
+                    }
+                    else if(inputLine.startsWith("y"))
+                    {
+                        inputLine = inputLine.substring(1);
+                        System.out.println("substring of food y location = " + inputLine);
+                        myGame.myFood.setY(Integer.parseInt(inputLine));
+                        System.out.println("myGame.myFood.gety = " + myGame.myFood.getY());
 //                        myArray = inputLine.toCharArray();
 //                        if(myArray.length == 1)
 //                        {
@@ -140,13 +145,15 @@ public class ConnectionHandler implements Runnable{
 //                        }
 //                        else if(myArray.length == 2)
 //                        {
-//                            myArray[0] *= 10;
+//                            //Integer.valueOf(inputLine);//To get an Integer object
+//                            Integer.parseInt(inputLine);//To get an int
+//                            //myArray[0] = (int)myArray[0] * 10;
 //
 //                            myGame.myFood.setY((int)myArray[0] + (int)myArray[1]);
 //                            System.out.println("myGame.myFood.gety = " + myGame.myFood.getY());
 //                        }
-//                        myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
-//                    }
+                        myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
+                    }
 //                    }else if (inputLine.equals("Client's Server setup complete"))
 //                    {
 //                        if(myGame.twoPlayerServer == true) {

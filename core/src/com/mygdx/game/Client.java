@@ -110,6 +110,7 @@ public class Client {
                     System.out.println("Creating client's server");
                     createClientsServer();
                 }
+
                 //input = consoleInput.nextLine();
 
                 //out.println(input);
@@ -124,6 +125,11 @@ public class Client {
                 //Client's Server setup complete
                 response = dialogWithServer("Client's Server setup complete");
                 System.out.println("The response from server on a command: " + response.toString());
+                if(myGame.twoPlayerServer == true) {
+                    System.out.println("Server's client attempting to send the food to the client's server");
+                    myGame.myServer.myHandler.myClient.dialogWithServer("x" + myGame.myFood.getX());
+                    myGame.myServer.myHandler.myClient.dialogWithServer("y" + myGame.myFood.getY());
+                }
                 //if the server/client is waiting for a input from the other the stream is blocked. always have a closed loop for the back and
                 //forth between the server and the client.
             }

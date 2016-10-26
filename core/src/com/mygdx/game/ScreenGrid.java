@@ -307,6 +307,7 @@ public class ScreenGrid {
                  myCell.addBodyCellToList(newTail);
                  myCell.setLength(myCell.getLength() + 1);
                  myCell.setX(myCell.getX() + 1);
+//                 addFoodCellToGrid(coordinateGrid[myCell.getX() + 1][myCell.getY()]);
              }
              else if(isCellHead(coordinateGrid[myCell.getX() + 1][myCell.getY()].getType()) == true)
              {
@@ -402,23 +403,23 @@ public class ScreenGrid {
         return coordinateIsBody;
     }
 
-    public void addFoodCellToGrid(Cell foodCell)
-    {
-        double x, y;
-        do {
-            x = Math.random() * coordinateGrid.length;
-            y = Math.random() * coordinateGrid[0].length;
-        }
-        while(coordinateGrid[(int)x][(int)y] != null);
-        if(myGame.twoPlayerServer == true && myGame.myServer.myHandler.myClient!= null)
-        {
-            myGame.myServer.myHandler.myClient.dialogWithServer("x" + (int)x);
-            myGame.myServer.myHandler.myClient.dialogWithServer("y" + (int)y);
-        }
-        foodCell.setX((int)x);
-        foodCell.setY((int)y);
-        coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;
-        //a test to determine if the food was going to appear on top of the head of the snake
+    public void addFoodCellToGrid(Cell foodCell) {
+        if (myGame.twoPlayerClient == true) {
+        } else {
+            double x, y;
+            do {
+                x = Math.random() * coordinateGrid.length;
+                y = Math.random() * coordinateGrid[0].length;
+            }
+            while (coordinateGrid[(int) x][(int) y] != null);
+            if (myGame.twoPlayerServer == true && myGame.myServer.myHandler.myClient != null) {
+                myGame.myServer.myHandler.myClient.dialogWithServer("x" + (int) x);
+                myGame.myServer.myHandler.myClient.dialogWithServer("y" + (int) y);
+            }
+            foodCell.setX((int) x);
+            foodCell.setY((int) y);
+            coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;
+            //a test to determine if the food was going to appear on top of the head of the snake
 //        double x, y;
 //                if(coordinateGrid[0][0] != null) {
 //                    System.out.println("origin cell is occupied");
@@ -439,5 +440,6 @@ public class ScreenGrid {
 //                    coordinateGrid[0][0] = foodCell;
 //
 //                }
+        }
     }
 }

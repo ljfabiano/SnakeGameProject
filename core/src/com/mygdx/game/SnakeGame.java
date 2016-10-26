@@ -91,50 +91,6 @@ public class SnakeGame extends Game {
         playGrid.setScreenWidth(Gdx.graphics.getWidth());
         playGrid.setCoordinateGrid();
 
-//        if(twoPlayerServer == true)
-//        {
-//            //Initialize second snake
-//            snakeHeadP2 = new Cell("head");
-//            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
-//            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
-//            xPositionP2 = snakeHeadP2.getX();
-//            yPositionP2 = snakeHeadP2.getY();
-//            xDirectionalMovementP2 = 0;
-//            yDirectionalMovementP2 = 0;
-//
-//            playGrid.addCellToGrid(snakeHeadP2);
-//            if(myServer == null) {
-//                myServer = new Server(this);
-//                myServer.setConnection();
-//            }
-//
-//        }
-//        if(twoPlayerClient == true)
-//        {
-//            myCell = new Cell("head");
-//            myCell.setX(playGrid.coordinateGrid.length - 1);
-//            myCell.setY(playGrid.coordinateGrid[0].length - 1);
-//            xPosition = myCell.getX();
-//            yPosition = myCell.getY();
-//            xDirectionalMovement = 0;
-//            yDirectionalMovement = 0;
-//
-//            playGrid.addCellToGrid(myCell);
-//            //Initialize second snake
-//            snakeHeadP2 = new Cell("head");
-//            snakeHeadP2.setX(0);
-//            snakeHeadP2.setY(0);
-//            xPositionP2 = 0;
-//            yPositionP2 = 0;
-//            xDirectionalMovementP2 = 0;
-//            yDirectionalMovementP2 = 0;
-//
-//            playGrid.addCellToGrid(snakeHeadP2);
-//            if(myClient == null) {
-//                myClient = new Client(this);
-//                myClient.runClient();
-//            }
-//        }
         //initialize a body and food cell
         myFood = new Cell("food");
         //if(singlePlayerGame == true || twoPlayerGame == true || twoPlayerServer == true) {
@@ -608,7 +564,16 @@ public class SnakeGame extends Game {
         }
         myProcessor.moving = false;
         myProcessor.movingP2 = false;
-        myFood = new Cell("food");
+        //myFood = new Cell("food");
         playGrid.addFoodCellToGrid(myFood);
+//        while(myServer.myHandler.myClient == null)
+//        {
+//
+//        }
+//        if (twoPlayerServer == true) {//&& myGame.myServer.myHandler.myClient != null
+//
+//            myServer.myHandler.myClient.dialogWithServer("x" + myFood.getX());
+//            myServer.myHandler.myClient.dialogWithServer("y" + myFood.getY());
+//        }
     }
 }
