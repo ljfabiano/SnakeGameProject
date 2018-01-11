@@ -38,12 +38,14 @@ public class EchoServer extends Thread {
             }
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
+            //Adding lines to test changing the values sent through to the server from the client
+
             packet = new DatagramPacket(buf, buf.length, address, port);
             String received = new String(packet.getData(), 0, packet.getLength());
-
-            if (received.equals("end")) {
+            System.out.println("The value of datagram packet as received by the server: " + received);
+            if (received.startsWith("end")) {//Changed from received.equals to received.startswith
                 running = false;
-                continue;
+                //continue;
             }
             try {
                 socket.send(packet);

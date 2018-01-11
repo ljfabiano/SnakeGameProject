@@ -35,7 +35,9 @@ public class UDPTest {
         System.out.println("echo string value after client.sendecho method call with server is working value: " + echo);
         assertFalse(echo.equals("hello server"));
         assertEquals("server is working", echo);
-
+        echo = client.sendEcho("testing...");
+        assertFalse(echo.equals("server is working"));
+        assertEquals("testing...", echo);
     }
 
     @After
