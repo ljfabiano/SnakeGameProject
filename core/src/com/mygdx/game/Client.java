@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
@@ -15,10 +16,13 @@ public class Client {
     SnakeGame myGame;
     Server myServer;
     Socket clientSocket;
+    //DatagramSocket testClientSocket;
     int port = 8005;
     String ipAddress = "localhost";//"192.168.86.135"; Dom's ip address when we tested on his computer
     PrintWriter out;
     BufferedReader in;
+    String serverResponse = null;
+    String messageFromServer = null;
     public Client()
     {
 
@@ -101,7 +105,7 @@ public class Client {
             //String name = consoleInput.nextLine();
             String input = InetAddress.getLocalHost().toString();
             out.println(input);
-            String serverResponse = in.readLine();
+            serverResponse = in.readLine();
             System.out.println(serverResponse);
             if(serverResponse.equals("I have your ip address.")) {
 
@@ -174,7 +178,7 @@ public class Client {
     }
     public String dialogWithServer(String messageToServer)
     {
-        String messageFromServer = null;
+
         try {
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));

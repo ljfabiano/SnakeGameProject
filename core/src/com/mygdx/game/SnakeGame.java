@@ -74,13 +74,14 @@ public class SnakeGame extends Game {
     {
         game = this;
     }
-	
+
 	@Override
 	public void create () {
         //Initialize the SpriteBatch/ShapeRenderer
         batch = new SpriteBatch();
         yourBitmapFontName = new BitmapFont();
         yourBitmapFontName.setColor(.1f, 1.0f, 1.0f, 1.0f);
+        yourBitmapFontName.getData().setScale(3, 3);
         yourScoreName = "Snake Game";
         //yourBitmapFontName.
 
@@ -287,9 +288,17 @@ public class SnakeGame extends Game {
                     {
                         moveCellGrid();
                     }
-                    else if(twoPlayerGame == true || twoPlayerServer == true || twoPlayerClient == true)
+                    else if(twoPlayerGame == true)// || twoPlayerServer == true || twoPlayerClient == true
                     {
                         moveCellGridTwoSnakes();
+                    }
+                    else if(twoPlayerServer == true)
+                    {
+                            moveCellGridTwoSnakesServer();
+                    }
+                    else if(twoPlayerClient == true)
+                    {
+                            moveCellGridTwoSnakesClient();
                     }
                 }
                 catch (ArrayIndexOutOfBoundsException e)
@@ -313,12 +322,14 @@ public class SnakeGame extends Game {
                     if(myCell.isCrashed == true) {
                         System.out.println("Player 1 Lost!");
                         yourScoreName = "Player 1 Lost!";
+                        gameOver = true;
                     }
                     else if(snakeHeadP2.isCrashed == true){
                         System.out.println("Player 2 Lost!");
                         yourScoreName = "Player 2 Lost!";
+                        gameOver = true;
                     }
-                    gameOver = true;
+
                 }
                 ShapeRenderer myShape = new ShapeRenderer();
                 myShape.begin(ShapeRenderer.ShapeType.Filled);
@@ -428,6 +439,178 @@ public class SnakeGame extends Game {
             playGrid.moveGridCellDown(myCell);
 
             myProcessor.moving = false;
+        }
+        if(xPositionP2 > snakeHeadP2.getX()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellRight(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+        if(yPositionP2 > snakeHeadP2.getY()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellUp(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+        if(xPositionP2 < snakeHeadP2.getX()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellLeft(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+        if(yPositionP2 < snakeHeadP2.getY()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellDown(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+    }
+
+    void moveCellGridTwoSnakesServer()throws Exception {
+            if (myServer.myHandler.myClient.serverResponse == null) {
+
+            }
+        else
+            {
+            String response;
+            if (xDirectionalMovement == 0 && yDirectionalMovement == 1) {
+                response = myServer.myHandler.myClient.dialogWithServer("UP");//UP
+                System.out.println(response);
+            } else if (xDirectionalMovement == 0 && yDirectionalMovement == -1) {
+                response = myServer.myHandler.myClient.dialogWithServer("DOWN");//DOWN
+                System.out.println(response);
+            } else if (xDirectionalMovement == -1 && yDirectionalMovement == 0) {
+                response = myServer.myHandler.myClient.dialogWithServer("LEFT");//LEFT
+                System.out.println(response);
+            } else if (xDirectionalMovement == 1 && yDirectionalMovement == 0) {
+                response = myServer.myHandler.myClient.dialogWithServer("RIGHT");//RIGHT
+                System.out.println(response);
+            }
+
+            xPosition += xDirectionalMovement;
+            yPosition += yDirectionalMovement;
+                xPositionP2 += xDirectionalMovementP2;
+                yPositionP2 += yDirectionalMovementP2;
+
+            if (xPosition > myCell.getX()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellRight(myCell);
+
+                myProcessor.moving = false;
+            }
+            if (yPosition > myCell.getY()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellUp(myCell);
+
+                myProcessor.moving = false;
+            }
+            if (xPosition < myCell.getX()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellLeft(myCell);
+
+                myProcessor.moving = false;
+            }
+            if (yPosition < myCell.getY()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellDown(myCell);
+
+                myProcessor.moving = false;
+            }
+        }
+
+        if(xPositionP2 > snakeHeadP2.getX()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellRight(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+        if(yPositionP2 > snakeHeadP2.getY()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellUp(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+        if(xPositionP2 < snakeHeadP2.getX()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellLeft(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+        if(yPositionP2 < snakeHeadP2.getY()) {
+            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+            snakeHeadP2.addCoordinateToList(currentCoordinate);
+            playGrid.moveGridCellDown(snakeHeadP2);
+
+            myProcessor.movingP2 = false;
+        }
+    }
+    void moveCellGridTwoSnakesClient()throws Exception
+    {
+        if(myClient.myServer.myHandler.ipAddress == null)
+        {
+
+        }
+        else {
+            String response;
+
+            if (xDirectionalMovement == 0 && yDirectionalMovement == 1) {
+                response = myClient.dialogWithServer("W");//W
+                System.out.println(response);
+            } else if (xDirectionalMovement == 0 && yDirectionalMovement == -1) {
+                response = myClient.dialogWithServer("S");//S
+                System.out.println(response);
+            } else if (xDirectionalMovement == -1 && yDirectionalMovement == 0) {
+                response = myClient.dialogWithServer("A");//A
+                System.out.println(response);
+            } else if (xDirectionalMovement == 1 && yDirectionalMovement == 0) {
+                response = myClient.dialogWithServer("D");//D
+                System.out.println(response);
+            }
+
+            xPosition += xDirectionalMovement;
+            yPosition += yDirectionalMovement;
+        xPositionP2 += xDirectionalMovementP2;
+        yPositionP2 += yDirectionalMovementP2;
+
+            if (xPosition > myCell.getX()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellRight(myCell);
+
+                myProcessor.moving = false;
+            }
+            if (yPosition > myCell.getY()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellUp(myCell);
+
+                myProcessor.moving = false;
+            }
+            if (xPosition < myCell.getX()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellLeft(myCell);
+
+                myProcessor.moving = false;
+            }
+            if (yPosition < myCell.getY()) {
+                currentCoordinate = new Coordinates(myCell.getX(), myCell.getY());
+                myCell.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellDown(myCell);
+
+                myProcessor.moving = false;
+            }
         }
         if(xPositionP2 > snakeHeadP2.getX()) {
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());

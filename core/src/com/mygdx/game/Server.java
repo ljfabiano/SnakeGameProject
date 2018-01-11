@@ -4,6 +4,7 @@ package com.mygdx.game;
  * Created by jfabiano on 10/23/2016.
  */
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -12,6 +13,10 @@ public class Server {
     int port = 8005;
     ConnectionHandler myHandler;
     ServerSocket serverListener;
+    //The new attempt to use a UDP connection for the game for performance
+    //1. Need to test to ensure the old one still works as expected meaning network play...
+    //2. Need to test to see if this will work as is, or what needs to change for it to work.
+    //DatagramSocket testClientSocket;
     public Server()
     {
 

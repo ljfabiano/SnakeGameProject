@@ -155,8 +155,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myClient.dialogWithServer("W");
 //                        System.out.println(response.toString());
-                        response = myGame.myClient.dialogWithServer("W");
-                        System.out.println(response.toString());
+                        //response = myGame.myClient.dialogWithServer("W");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = 1;
 
@@ -172,8 +172,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myClient.dialogWithServer("S");
 //                        System.out.println(response.toString());
-                        response = myGame.myClient.dialogWithServer("S");
-                        System.out.println(response.toString());
+                        //response = myGame.myClient.dialogWithServer("S");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = -1;
 
@@ -189,8 +189,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myClient.dialogWithServer("A");
 //                        System.out.println(response.toString());
-                        response = myGame.myClient.dialogWithServer("A");
-                        System.out.println(response.toString());
+                        //response = myGame.myClient.dialogWithServer("A");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = -1;
                         myGame.yDirectionalMovement = 0;
 
@@ -206,8 +206,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myClient.dialogWithServer("D");
 //                        System.out.println(response.toString());
-                        response = myGame.myClient.dialogWithServer("D");
-                        System.out.println(response.toString());
+                        //response = myGame.myClient.dialogWithServer("D");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = 1;
                         myGame.yDirectionalMovement = 0;
 
@@ -227,8 +227,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myServer.myHandler.myClient.dialogWithServer("UP");
 //                        System.out.println(response.toString());
-                        response = myGame.myServer.myHandler.myClient.dialogWithServer("UP");
-                        System.out.println(response.toString());
+                        //response = myGame.myServer.myHandler.myClient.dialogWithServer("UP");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = 1;
 
@@ -244,8 +244,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
 //                        System.out.println(response.toString());
-                        response = myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
-                        System.out.println(response.toString());
+                        //response = myGame.myServer.myHandler.myClient.dialogWithServer("DOWN");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = 0;
                         myGame.yDirectionalMovement = -1;
 
@@ -261,8 +261,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
 //                        System.out.println(response.toString());
-                        response = myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
-                        System.out.println(response.toString());
+                        //response = myGame.myServer.myHandler.myClient.dialogWithServer("RIGHT");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = 1;
                         myGame.yDirectionalMovement = 0;
 
@@ -278,8 +278,8 @@ public class MyInputProcessor extends Stage implements InputProcessor {
                     } else {
 //                        response = myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
 //                        System.out.println(response.toString());
-                        response = myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
-                        System.out.println(response.toString());
+                        //response = myGame.myServer.myHandler.myClient.dialogWithServer("LEFT");
+                        //System.out.println(response.toString());
                         myGame.xDirectionalMovement = -1;
                         myGame.yDirectionalMovement = 0;
 

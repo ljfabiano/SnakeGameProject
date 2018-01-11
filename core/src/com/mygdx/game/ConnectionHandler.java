@@ -9,13 +9,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
 public class ConnectionHandler implements Runnable{
     Socket connection;
+    //DatagramSocket testClientSocket;
     SnakeGame myGame;
     Client myClient;
+    String ipAddress;
+    PrintWriter outputToClient;
     char[] myArray;
     //add jodd library to project to use the json parser
     //JsonParser toDoItemParser;
@@ -40,7 +44,7 @@ public class ConnectionHandler implements Runnable{
         try
         {
             ArrayList<String> aList = new ArrayList<String>();
-            String ipAddress;
+            //String ipAddress;
             String inputLine;
             // start a server on a specific port. This is what needs to happen in a thread
             // display information about who just connected to our server
@@ -49,7 +53,7 @@ public class ConnectionHandler implements Runnable{
             // this is how we read from the client
             BufferedReader inputFromClient = new BufferedReader(new InputStreamReader(this.connection.getInputStream()));
             // this is how we write back to the client
-            PrintWriter outputToClient = new PrintWriter(this.connection.getOutputStream(), true);
+            outputToClient = new PrintWriter(this.connection.getOutputStream(), true);
 
             // read from the input until the client disconnects
             //On the server side, make sure the first message that each client sends is their ipAddress using a message structure
