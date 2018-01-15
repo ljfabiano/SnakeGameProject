@@ -70,6 +70,8 @@ public class SnakeGame extends Game {
     //multiplayer section
     Client myClient;
     Server myServer;
+    DatagramClient myDatagramClient;
+    DatagramServer myDatagramServer;
     public SnakeGame()
     {
         game = this;
@@ -228,6 +230,9 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerServer = true;
                 twoPlayerClient = false;
+                //This is where the datagram server should be created
+                //createDataGramServer();
+                //The Player1 client needs to be created as well.
                 createServer();
                 resetGame();
                 //create();
@@ -241,6 +246,9 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerClient = true;
                 twoPlayerServer = false;
+                //This is where the datagram client should be created
+                //createDataGramClient();
+                //The Player2 server needs to be created as well.
                 createClient();
                 resetGame();
                 //create();
@@ -666,12 +674,24 @@ public class SnakeGame extends Game {
             myServer.setConnection();
 //        }
     }
+    public void createDataGramServer()
+    {
+        //myServer = new Server(this);
+        //myServer.setConnection();
+        myDatagramServer = new DatagramServer(this);
+    }
     public void createClient()
     {
 //        if(myClient == null) {
             myClient = new Client(this);
             myClient.runClient();
 //        }
+    }
+    public void createDataGramClient()
+    {
+        //myClient = new Client(this);
+        //myClient.runClient();
+        myDatagramClient = new DatagramClient(this);
     }
     public void resetGame()
     {

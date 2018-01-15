@@ -43,6 +43,8 @@ public class EchoServer extends Thread {
             packet = new DatagramPacket(buf, buf.length, address, port);
             String received = new String(packet.getData(), 0, packet.getLength());
             System.out.println("The value of datagram packet as received by the server: " + received);
+            //received = received.concat(" mark from server");
+            System.out.println("value of packet after manually appending to it: " + received);
             if (received.startsWith("end")) {//Changed from received.equals to received.startswith
                 running = false;
                 //continue;
