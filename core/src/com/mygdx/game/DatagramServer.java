@@ -10,14 +10,16 @@ import java.net.InetAddress;
  */
 public class DatagramServer extends Thread {
     SnakeGame myGame;
+    int port = 4446;
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[256];
+    DatagramClient myClient;
 
     public DatagramServer() {
-        System.out.println("Server constructor");
+        System.out.println("DatagramServer constructor");
         try {
-            socket = new DatagramSocket(4445);
+            socket = new DatagramSocket(port);
         }catch(IOException echoServerConstructor){
             echoServerConstructor.printStackTrace();
         }
@@ -26,11 +28,30 @@ public class DatagramServer extends Thread {
     public DatagramServer(SnakeGame myGame)
     {
         this.myGame = myGame;
+        if(myGame.twoPlayerServer == true)
+        {
+            port = 4445;
+            //Not sure if the server's client is needed here yet
+            //System.out.println("Creating Server's Client");
+            //createServersClient();
+        }
+        System.out.println("DatagramServer constructor");
+        try {
+            socket = new DatagramSocket(port);
+        }catch(IOException echoServerConstructor){
+            echoServerConstructor.printStackTrace();
+        }
     }
 
     public void run() {
-        System.out.println("Server run method");
+        System.out.println("DatagramServer run method");
         running = true;
+
+        if(myGame.twoPlayerServer == true)
+        {
+            System.out.println("Creating Server's Client");
+            createServersClient();
+        }
 
         while (running) {
             System.out.println("while loop in run method running again");
@@ -63,5 +84,11 @@ public class DatagramServer extends Thread {
         }
         System.out.println("Closing run method");
         socket.close();
+    }
+    public void createServersClient()
+    {
+        myClient = new DatagramClient(myGame);
+        //myClient.runClient();
+        System.out.println("Server's client created, and the run client command called.");
     }
 }

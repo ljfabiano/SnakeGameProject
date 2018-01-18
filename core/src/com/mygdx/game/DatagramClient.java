@@ -12,11 +12,12 @@ public class DatagramClient {
     SnakeGame myGame;
     private DatagramSocket socket;
     private InetAddress address;
-
+    DatagramServer myServer;
+    int port = 4445;
     private byte[] buf;
 
     public DatagramClient() {
-        System.out.println("Client constructor");
+        System.out.println("DatagramClient constructor");
         try {
             socket = new DatagramSocket();
 
@@ -29,13 +30,20 @@ public class DatagramClient {
 
     public DatagramClient(SnakeGame myGame)
     {
+        System.out.println("DatagramClient constructor");
         this.myGame = myGame;
+        if(myGame.twoPlayerClient == true) {
+            port = 4446;
+            //not sure if we need the clientsServer here yet
+            //System.out.println("Creating client's server");
+            //createClientsServer();
+        }
     }
 
     public String sendEcho(String msg) {
         System.out.println("Sending echo from client to server");
         buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
         try {
             socket.send(packet);
             packet = new DatagramPacket(buf, buf.length);
@@ -53,7 +61,7 @@ public class DatagramClient {
         //Need to be sending relevant game data, so crafting the proper packet is important here.
         System.out.println("Sending data from client to server");
         buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
         try {
             socket.send(packet);
             //packet = new DatagramPacket(buf, buf.length);
@@ -64,6 +72,13 @@ public class DatagramClient {
         }
         //String received = new String(packet.getData(), 0, packet.getLength());
         //return received;
+    }
+
+    public void createClientsServer()
+    {
+        myServer = new DatagramServer(myGame);
+        //myServer.setConnection();
+        System.out.println("Client's server set connection called, and the server created");
     }
 
     public void close() {
