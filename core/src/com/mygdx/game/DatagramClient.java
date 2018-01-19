@@ -32,12 +32,21 @@ public class DatagramClient {
     {
         System.out.println("DatagramClient constructor");
         this.myGame = myGame;
-        if(myGame.twoPlayerClient == true) {
+        if(myGame.twoPlayerServer == true) {
             port = 4446;
             //not sure if we need the clientsServer here yet
-            //System.out.println("Creating client's server");
-            //createClientsServer();
+            System.out.println("Creating client's server");
+            createClientsServer();
         }
+        try {
+            socket = new DatagramSocket();
+
+            address = InetAddress.getByName("localhost");
+        }
+        catch(IOException echoClientConstructor) {
+            echoClientConstructor.printStackTrace();
+        }
+
     }
 
     public String sendEcho(String msg) {
@@ -82,6 +91,8 @@ public class DatagramClient {
     }
 
     public void close() {
+        System.out.println("Sending the \"end\" text to the server to shut it off.");
+        sendData("end");
         System.out.println("Closing client");
         socket.close();
     }

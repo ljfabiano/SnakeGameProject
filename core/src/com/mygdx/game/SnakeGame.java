@@ -158,6 +158,11 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerGame = false;
                 if(twoPlayerClient == true) {
+                    //Datagram/UDP
+                    //The "end" text is sent in the close method to close the server thread.
+                    //myDatagramClient.close();
+
+                    //TCP
                     myClient.closeConnection();
                     try {
                         myClient.myServer.myHandler.connection.close();
@@ -170,6 +175,11 @@ public class SnakeGame extends Game {
                     }
                 }
                 if(twoPlayerServer == true) {
+                    //Datagram/UDP
+                    //The "end" text is sent in the close method to close the server thread.
+                    //myDatagramServer.myClient.close();//myDatagramClient.close();
+
+                    //TCP
                     myServer.myHandler.myClient.closeConnection();
                     try {
                         myServer.myHandler.connection.close();

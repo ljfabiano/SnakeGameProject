@@ -15,14 +15,17 @@ import static junit.framework.TestCase.assertFalse;
 
 public class UDPTest {
     EchoClient client;
+    //DatagramClient client;
 
     @Before
     public void setup(){
         System.out.println("Setting up test");
         System.out.println("creating server");
         new EchoServer().start();
+        //new DatagramServer().start();
         System.out.println("Creating client");
         client = new EchoClient();
+        //client = new DatagramClient();
     }
 
     @Test
