@@ -118,7 +118,7 @@ public class ScreenGrid {
         //if the cell to move to is not null then check for cell will be true as in there is a cell already there in the grid
         if(checkForCell == true)
         {
-            //if the cell to move to has the type = food the return true, else false
+            //if the cell to move to has the type = food then return true, else false
             boolean isCellFood = isCellFood(coordinateGrid[myCell.getX()][myCell.getY() + 1].getType());
             if(isCellFood == true)
             {
@@ -412,10 +412,17 @@ public class ScreenGrid {
                 y = Math.random() * coordinateGrid[0].length;
             }
             while (coordinateGrid[(int) x][(int) y] != null);
-            if (myGame.twoPlayerServer == true && myGame.myServer.myHandler.myClient != null) {
-                myGame.myServer.myHandler.myClient.dialogWithServer("x" + (int) x);
-                myGame.myServer.myHandler.myClient.dialogWithServer("y" + (int) y);
+            //uncomment for tcp
+            //if (myGame.twoPlayerServer == true && myGame.myServer.myHandler.myClient != null) {
+            //    myGame.myServer.myHandler.myClient.dialogWithServer("x" + (int) x);
+            //    myGame.myServer.myHandler.myClient.dialogWithServer("y" + (int) y);
+            //}
+            //uncomment for UDP
+            if (myGame.twoPlayerServer == true && myGame.myDatagramServer.myClient != null) {
+                myGame.myDatagramServer.myClient.sendData("x" + (int) x);
+                myGame.myDatagramServer.myClient.sendData("y" + (int) y);
             }
+
             foodCell.setX((int) x);
             foodCell.setY((int) y);
             coordinateGrid[foodCell.getX()][foodCell.getY()] = foodCell;

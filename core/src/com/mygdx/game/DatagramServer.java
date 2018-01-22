@@ -41,6 +41,11 @@ public class DatagramServer extends Thread {
     public DatagramServer(SnakeGame myGame)
     {
         this.myGame = myGame;
+        if(myGame.twoPlayerServer == true)
+        {
+            System.out.println("Creating Server's Client");
+            createServersClient();
+        }
         if(myGame.twoPlayerClient == true)
         {
             port = 4446;
@@ -60,11 +65,11 @@ public class DatagramServer extends Thread {
         System.out.println("DatagramServer run method");
         running = true;
 
-        if(myGame.twoPlayerServer == true)
-        {
-            System.out.println("Creating Server's Client");
-            createServersClient();
-        }
+        //if(myGame.twoPlayerServer == true)
+        //{
+        //    System.out.println("Creating Server's Client");
+        //    createServersClient();
+        //}
 
         while (running) {
             System.out.println("while loop in run method running again");
@@ -138,6 +143,20 @@ public class DatagramServer extends Thread {
 
                 myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
             }
+            if(received.equals("Testing Connection"))
+            {
+
+                int port = packet.getPort();
+                //Adding lines to test changing the values sent through to the server from the client
+                packet = new DatagramPacket(buf, buf.length, address, port);
+
+                try {
+                    socket.send(packet);
+                }catch(IOException datagramServerRunSocketSend){
+                    datagramServerRunSocketSend.printStackTrace();
+                }
+
+            }
 
             if (received.startsWith("end")) {//Changed from received.equals to received.startswith
                 running = false;
@@ -149,7 +168,7 @@ public class DatagramServer extends Thread {
             //    echoServerRunSocketSend.printStackTrace();
             //}
         }
-        System.out.println("Closing run method");
+        System.out.println("Run method datagram server closing, and closing the socket.");
         socket.close();
     }
 

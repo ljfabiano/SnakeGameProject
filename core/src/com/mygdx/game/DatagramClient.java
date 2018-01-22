@@ -93,7 +93,7 @@ public class DatagramClient {
     public void close() {
         System.out.println("Sending the \"end\" text to the server to shut it off.");
         sendData("end");
-        System.out.println("Closing client");
+        System.out.println("Closing client socket");
         socket.close();
     }
 }

@@ -43,6 +43,7 @@ public class SnakeGame extends Game {
     TextButton returnToMainMenu;
 
 	ShapeRenderer myShape;
+
     //first snake
 	Cell myCell;
     Cell myBody;
@@ -158,38 +159,38 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerGame = false;
                 if(twoPlayerClient == true) {
-                    //Datagram/UDP
+                    //uncomment for Datagram/UDP
                     //The "end" text is sent in the close method to close the server thread.
-                    //myDatagramClient.close();
+                    myDatagramClient.close();
 
-                    //TCP
-                    myClient.closeConnection();
-                    try {
-                        myClient.myServer.myHandler.connection.close();
-                        myClient.myServer.serverListener.close();
-                    }
-                    catch(IOException ex)
-                    {
-                        System.out.println("there was an IO issue closing the connection handler socket for the client's server.");
-                        ex.printStackTrace();
-                    }
+                    //uncomment for TCP
+                    //myClient.closeConnection();
+                    //try {
+                    //    myClient.myServer.myHandler.connection.close();
+                    //    myClient.myServer.serverListener.close();
+                    //}
+                    //catch(IOException ex)
+                    //{
+                    //    System.out.println("there was an IO issue closing the connection handler socket for the client's server.");
+                    //    ex.printStackTrace();
+                    //}
                 }
                 if(twoPlayerServer == true) {
-                    //Datagram/UDP
+                    //uncomment for Datagram/UDP
                     //The "end" text is sent in the close method to close the server thread.
-                    //myDatagramServer.myClient.close();//myDatagramClient.close();
+                    myDatagramServer.myClient.close();//myDatagramClient.close();
 
-                    //TCP
-                    myServer.myHandler.myClient.closeConnection();
-                    try {
-                        myServer.myHandler.connection.close();
-                        myServer.serverListener.close();
-                    }
-                    catch(IOException ex)
-                    {
-                        System.out.println("there was an IO issue closing the connection handler socket for the server.");
-                        ex.printStackTrace();
-                    }
+                    //uncomment for  TCP
+                    //myServer.myHandler.myClient.closeConnection();
+                    //try {
+                    //    myServer.myHandler.connection.close();
+                    //    myServer.serverListener.close();
+                    //}
+                    //catch(IOException ex)
+                    //{
+                    //    System.out.println("there was an IO issue closing the connection handler socket for the server.");
+                    //    ex.printStackTrace();
+                    //}
                 }
                 twoPlayerServer = false;
                 twoPlayerClient = false;
@@ -240,10 +241,26 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerServer = true;
                 twoPlayerClient = false;
-                //This is where the datagram server should be created
-                //createDataGramServer();
+                //This is where the datagram server should be created uncomment
+                createDataGramServer();
+                //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
+                boolean echoReceived = false;
+                while(echoReceived == false)
+                {
+
+                    if(myDatagramServer.myClient == null)
+                    {
+
+                    }else {
+                        //Or maybe.startsWith("Testing Connection")?
+                        if (myDatagramServer.myClient.sendEcho("Testing Connection").equals("Testing Connection")) {
+                            echoReceived = true;
+                        }
+                    }
+                }
                 //The Player1 client needs to be created as well.
-                createServer();
+                //This is where the server should be created uncomment
+                //createServer();
                 resetGame();
                 //create();
             }
@@ -256,10 +273,27 @@ public class SnakeGame extends Game {
                 singlePlayerGame = false;
                 twoPlayerClient = true;
                 twoPlayerServer = false;
-                //This is where the datagram client should be created
-                //createDataGramClient();
+                //This is where the datagram client should be created uncomment
+                createDataGramClient();
+                //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
+                boolean echoReceived = false;
+                while(echoReceived == false)
+                {
+
+                    if(myDatagramClient == null)
+                    {
+
+                    }else {
+                        //Or maybe.startsWith("Testing Connection")?
+                        if (myDatagramClient.sendEcho("Testing Connection").equals("Testing Connection")) {
+                            echoReceived = true;
+                        }
+                    }
+                }
+
                 //The Player2 server needs to be created as well.
-                createClient();
+                //This is where the tcp client should be created uncomment
+                //createClient();
                 resetGame();
                 //create();
             }
@@ -312,11 +346,19 @@ public class SnakeGame extends Game {
                     }
                     else if(twoPlayerServer == true)
                     {
-                            moveCellGridTwoSnakesServer();
+                        //uncomment for TCP
+                        //moveCellGridTwoSnakesServer();
+
+                        //uncomment for UDP
+                        moveCellGridTwoSnakesDatagramServer();
                     }
                     else if(twoPlayerClient == true)
                     {
-                            moveCellGridTwoSnakesClient();
+                        //uncomment for TCP
+                        //moveCellGridTwoSnakesClient();
+
+                        //uncomment for UDP
+                        moveCellGridTwoSnakesDatagramClient();
                     }
                 }
                 catch (ArrayIndexOutOfBoundsException e)
@@ -574,7 +616,11 @@ public class SnakeGame extends Game {
         }
     }
     void moveCellGridTwoSnakesDatagramServer()throws Exception {
+        //myServer.myHandler.myClient.serverResponse == null
+        //myDatagramServer.myClient.sendEcho("test").equals("test")
+        if (myDatagramServer.myClient == null) {
 
+        }else {
             //String response;
             if (xDirectionalMovement == 0 && yDirectionalMovement == 1) {
                 myDatagramServer.myClient.sendData("UP");//UP
@@ -623,7 +669,7 @@ public class SnakeGame extends Game {
 
                 myProcessor.moving = false;
             }
-
+        }
 
         if(xPositionP2 > snakeHeadP2.getX()) {
             currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
@@ -742,6 +788,11 @@ public class SnakeGame extends Game {
     }
     void moveCellGridTwoSnakesDatagramClient()throws Exception
     {
+        //myClient.myServer.myHandler.ipAddress == null
+        if(myDatagramClient.myServer == null)
+        {
+
+        }else {
             if (xDirectionalMovement == 0 && yDirectionalMovement == 1) {
                 myDatagramClient.sendData("W");//W
 
@@ -789,35 +840,36 @@ public class SnakeGame extends Game {
 
                 myProcessor.moving = false;
             }
-
-        if(xPositionP2 > snakeHeadP2.getX()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellRight(snakeHeadP2);
-
-            myProcessor.movingP2 = false;
         }
-        if(yPositionP2 > snakeHeadP2.getY()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellUp(snakeHeadP2);
 
-            myProcessor.movingP2 = false;
-        }
-        if(xPositionP2 < snakeHeadP2.getX()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellLeft(snakeHeadP2);
+            if (xPositionP2 > snakeHeadP2.getX()) {
+                currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+                snakeHeadP2.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellRight(snakeHeadP2);
 
-            myProcessor.movingP2 = false;
-        }
-        if(yPositionP2 < snakeHeadP2.getY()) {
-            currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
-            snakeHeadP2.addCoordinateToList(currentCoordinate);
-            playGrid.moveGridCellDown(snakeHeadP2);
+                myProcessor.movingP2 = false;
+            }
+            if (yPositionP2 > snakeHeadP2.getY()) {
+                currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+                snakeHeadP2.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellUp(snakeHeadP2);
 
-            myProcessor.movingP2 = false;
-        }
+                myProcessor.movingP2 = false;
+            }
+            if (xPositionP2 < snakeHeadP2.getX()) {
+                currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+                snakeHeadP2.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellLeft(snakeHeadP2);
+
+                myProcessor.movingP2 = false;
+            }
+            if (yPositionP2 < snakeHeadP2.getY()) {
+                currentCoordinate = new Coordinates(snakeHeadP2.getX(), snakeHeadP2.getY());
+                snakeHeadP2.addCoordinateToList(currentCoordinate);
+                playGrid.moveGridCellDown(snakeHeadP2);
+
+                myProcessor.movingP2 = false;
+            }
     }
 
     public void callRenderMethodBasedOnTime()
