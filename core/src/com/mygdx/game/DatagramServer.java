@@ -15,7 +15,8 @@ import java.util.ArrayList;
  */
 public class DatagramServer extends Thread {
     SnakeGame myGame;
-    int port = 4445;
+    //4446 is the default port of listening for the client's server. 4445 is the default port of listening for the server.
+    int port = 4446;
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[256];
@@ -43,16 +44,17 @@ public class DatagramServer extends Thread {
         this.myGame = myGame;
         if(myGame.twoPlayerServer == true)
         {
+            port = 4445;
             System.out.println("Creating Server's Client");
             createServersClient();
         }
-        if(myGame.twoPlayerClient == true)
-        {
-            port = 4446;
+        //if(myGame.twoPlayerClient == true)
+        //{
+        //   port = 4446;
             //Not sure if the server's client is needed here yet
             //System.out.println("Creating Server's Client");
             //createServersClient();
-        }
+        //}
         System.out.println("DatagramServer constructor");
         try {
             socket = new DatagramSocket(port);
@@ -79,7 +81,7 @@ public class DatagramServer extends Thread {
             } catch (IOException datagramServerRunSocketReceive) {
                 datagramServerRunSocketReceive.printStackTrace();
             }
-            InetAddress address = packet.getAddress();
+            //InetAddress address = packet.getAddress();
             //int port = packet.getPort();
             //Adding lines to test changing the values sent through to the server from the client
 
@@ -143,9 +145,11 @@ public class DatagramServer extends Thread {
 
                 myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
             }
+            //may need received.startsWith rather than received.equals.
             if(received.equals("Testing Connection"))
             {
 
+                InetAddress address = packet.getAddress();
                 int port = packet.getPort();
                 //Adding lines to test changing the values sent through to the server from the client
                 packet = new DatagramPacket(buf, buf.length, address, port);

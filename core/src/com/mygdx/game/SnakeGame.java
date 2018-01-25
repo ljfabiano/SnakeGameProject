@@ -250,10 +250,12 @@ public class SnakeGame extends Game {
 
                     if(myDatagramServer.myClient == null)
                     {
-
+                        System.out.println("server, while loop servers client == null.");
                     }else {
+                        System.out.println("server, while loop before echo sent and received.");
                         //Or maybe.startsWith("Testing Connection")?
                         if (myDatagramServer.myClient.sendEcho("Testing Connection").equals("Testing Connection")) {
+                            System.out.println("server, while loop after echo sent and received.");
                             echoReceived = true;
                         }
                     }
@@ -282,10 +284,12 @@ public class SnakeGame extends Game {
 
                     if(myDatagramClient == null)
                     {
-
+                        System.out.println("client, while loop client == null.");
                     }else {
+                        System.out.println("client, while loop before echo sent and received.");
                         //Or maybe.startsWith("Testing Connection")?
                         if (myDatagramClient.sendEcho("Testing Connection").equals("Testing Connection")) {
+                            System.out.println("client, while loop after echo sent and received.");
                             echoReceived = true;
                         }
                     }
@@ -901,6 +905,7 @@ public class SnakeGame extends Game {
         //myServer = new Server(this);
         //myServer.setConnection();
         myDatagramServer = new DatagramServer(this);
+        myDatagramServer.start();
     }
     public void createClient()
     {

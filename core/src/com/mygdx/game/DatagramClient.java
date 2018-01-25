@@ -13,7 +13,8 @@ public class DatagramClient {
     private DatagramSocket socket;
     private InetAddress address;
     DatagramServer myServer;
-    int port = 4445;
+    //4446 is the default port of listening for the client's server. 4445 is the default port of listening for the server.
+    int portOfServerSocket = 4446;
     private byte[] buf;
 
     public DatagramClient() {
@@ -32,8 +33,8 @@ public class DatagramClient {
     {
         System.out.println("DatagramClient constructor");
         this.myGame = myGame;
-        if(myGame.twoPlayerServer == true) {
-            port = 4446;
+        if(myGame.twoPlayerClient == true) {
+            portOfServerSocket = 4445;
             //not sure if we need the clientsServer here yet
             System.out.println("Creating client's server");
             createClientsServer();
@@ -52,7 +53,7 @@ public class DatagramClient {
     public String sendEcho(String msg) {
         System.out.println("Sending echo from client to server");
         buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portOfServerSocket);
         try {
             socket.send(packet);
             packet = new DatagramPacket(buf, buf.length);
@@ -70,7 +71,7 @@ public class DatagramClient {
         //Need to be sending relevant game data, so crafting the proper packet is important here.
         System.out.println("Sending data from client to server");
         buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portOfServerSocket);
         try {
             socket.send(packet);
             //packet = new DatagramPacket(buf, buf.length);
@@ -86,6 +87,7 @@ public class DatagramClient {
     public void createClientsServer()
     {
         myServer = new DatagramServer(myGame);
+        myServer.start();
         //myServer.setConnection();
         System.out.println("Client's server set connection called, and the server created");
     }
