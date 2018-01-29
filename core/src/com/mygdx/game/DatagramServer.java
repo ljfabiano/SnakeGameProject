@@ -146,9 +146,9 @@ public class DatagramServer extends Thread {
                 myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
             }
             //may need received.startsWith rather than received.equals.
-            if(received.equals("Testing Connection"))
+            if(received.equals("Testing Connection") || received.equals("Testing Connection from player 2 client to player 1 server."))
             {
-
+                System.out.println("if received.equals Testing connection if statement in server run method");
                 InetAddress address = packet.getAddress();
                 int port = packet.getPort();
                 //Adding lines to test changing the values sent through to the server from the client
@@ -156,6 +156,7 @@ public class DatagramServer extends Thread {
 
                 try {
                     socket.send(packet);
+                    System.out.println("packet response sent from server to client");
                 }catch(IOException datagramServerRunSocketSend){
                     datagramServerRunSocketSend.printStackTrace();
                 }

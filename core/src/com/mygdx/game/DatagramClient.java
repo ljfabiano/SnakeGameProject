@@ -55,9 +55,11 @@ public class DatagramClient {
         buf = msg.getBytes();
         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portOfServerSocket);
         try {
+            System.out.println("client: echo sent from client to server");
             socket.send(packet);
             packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
+            System.out.println("client: echo received from server");
         }
         catch(IOException sendEchoMethod){
             sendEchoMethod.printStackTrace();

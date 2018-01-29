@@ -234,8 +234,8 @@ public class SnakeGame extends Game {
             }
         });
         beginTwoPlayerServer.addListener(new ChangeListener() {
-            @Override
-            public void changed (ChangeEvent event, Actor actor) {
+                @Override
+                public void changed (ChangeEvent event, Actor actor) {
                 System.out.println("Begin two player server button pressed");
                 gameStarting = false;
                 singlePlayerGame = false;
@@ -254,7 +254,11 @@ public class SnakeGame extends Game {
                     }else {
                         System.out.println("server, while loop before echo sent and received.");
                         //Or maybe.startsWith("Testing Connection")?
-                        if (myDatagramServer.myClient.sendEcho("Testing Connection").equals("Testing Connection")) {
+                        String serversClient = myDatagramServer.myClient.sendEcho("Testing Connection");
+                        //myDatagramServer.myClient.sendEcho("Testing Connection").equals("Testing Connection")
+                        System.out.println("ServersClient echo Value = " + serversClient);
+                        if (serversClient.equals("Testing Connection")) {
+
                             System.out.println("server, while loop after echo sent and received.");
                             echoReceived = true;
                         }
@@ -288,7 +292,9 @@ public class SnakeGame extends Game {
                     }else {
                         System.out.println("client, while loop before echo sent and received.");
                         //Or maybe.startsWith("Testing Connection")?
-                        if (myDatagramClient.sendEcho("Testing Connection").equals("Testing Connection")) {
+                        String clientEcho = myDatagramClient.sendEcho("Testing Connection from player 2 client to player 1 server.");
+                        System.out.println("Clients echo value = " + clientEcho);
+                        if (clientEcho.equals("Testing Connection from player 2 client to player 1 server.")) {
                             System.out.println("client, while loop after echo sent and received.");
                             echoReceived = true;
                         }
@@ -354,6 +360,7 @@ public class SnakeGame extends Game {
                         //moveCellGridTwoSnakesServer();
 
                         //uncomment for UDP
+                        System.out.println("twoPlayerServer in render method is true");
                         moveCellGridTwoSnakesDatagramServer();
                     }
                     else if(twoPlayerClient == true)
@@ -362,6 +369,7 @@ public class SnakeGame extends Game {
                         //moveCellGridTwoSnakesClient();
 
                         //uncomment for UDP
+                        System.out.println("twoPlayerClient in render method is true");
                         moveCellGridTwoSnakesDatagramClient();
                     }
                 }
@@ -395,6 +403,7 @@ public class SnakeGame extends Game {
                     }
 
                 }
+                System.out.println("drawing snake in render method");
                 ShapeRenderer myShape = new ShapeRenderer();
                 myShape.begin(ShapeRenderer.ShapeType.Filled);
                 myShape.setColor(0, .9f, .1f, 1);
@@ -409,6 +418,7 @@ public class SnakeGame extends Game {
                 }
                 if(twoPlayerGame == true || twoPlayerServer == true|| twoPlayerClient == true)
                 {
+                    System.out.println("I am not a single player game.");
                     myShape.setColor(0, 0, 0, 1);
                     myShape.rect(snakeHeadP2.getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
                     //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
@@ -932,7 +942,6 @@ public class SnakeGame extends Game {
             xPosition = 0;
             yPosition = 0;
             xDirectionalMovement = 0;
-            //xDirectionalMovement = 1;
             yDirectionalMovement = 0;
             playGrid.addCellToGrid(myCell);
         }
@@ -944,29 +953,11 @@ public class SnakeGame extends Game {
             snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
             xPositionP2 = snakeHeadP2.getX();
             yPositionP2 = snakeHeadP2.getY();
-            //xDirectionalMovementP2 = 0;
-            xDirectionalMovementP2 = -1;
+            //xDirectionalMovementP2 = -1;
+            xDirectionalMovementP2 = 0;
             yDirectionalMovementP2 = 0;
             playGrid.addCellToGrid(snakeHeadP2);
         }
-//        if(twoPlayerServer == true)
-//        {
-//            //Initialize second snake
-//            snakeHeadP2 = new Cell("head");
-//            snakeHeadP2.setX(playGrid.coordinateGrid.length - 1);
-//            snakeHeadP2.setY(playGrid.coordinateGrid[0].length - 1);
-//            xPositionP2 = snakeHeadP2.getX();
-//            yPositionP2 = snakeHeadP2.getY();
-////            xDirectionalMovementP2 = 0;
-//            xDirectionalMovementP2 = -1;
-//            yDirectionalMovementP2 = 0;
-//            playGrid.addCellToGrid(snakeHeadP2);
-////            if(myServer == null) {
-////                myServer = new Server(this);
-////                myServer.setConnection();
-////            }
-//
-//        }
         if(twoPlayerClient == true)
         {
             playGrid.setCoordinateGrid();
@@ -975,8 +966,8 @@ public class SnakeGame extends Game {
             myCell.setY(playGrid.coordinateGrid[0].length - 1);
             xPosition = myCell.getX();
             yPosition = myCell.getY();
-            //xDirectionalMovement = 0;
-            xDirectionalMovement = -1;
+            //xDirectionalMovementP2 = -1;
+            xDirectionalMovement = 0;
             yDirectionalMovement = 0;
 
             playGrid.addCellToGrid(myCell);
@@ -987,28 +978,13 @@ public class SnakeGame extends Game {
             xPositionP2 = 0;
             yPositionP2 = 0;
             xDirectionalMovementP2 = 0;
-            //xDirectionalMovementP2 = 1;
             yDirectionalMovementP2 = 0;
 
             playGrid.addCellToGrid(snakeHeadP2);
-
-//            if(myClient == null) {
-//                myClient = new Client(this);
-//                myClient.runClient();
-//            }
         }
         myProcessor.moving = false;
         myProcessor.movingP2 = false;
         //myFood = new Cell("food");
         playGrid.addFoodCellToGrid(myFood);
-//        while(myServer.myHandler.myClient == null)
-//        {
-//
-//        }
-//        if (twoPlayerServer == true) {//&& myGame.myServer.myHandler.myClient != null
-//
-//            myServer.myHandler.myClient.dialogWithServer("x" + myFood.getX());
-//            myServer.myHandler.myClient.dialogWithServer("y" + myFood.getY());
-//        }
     }
 }
