@@ -236,37 +236,63 @@ public class SnakeGame extends Game {
         beginTwoPlayerServer.addListener(new ChangeListener() {
                 @Override
                 public void changed (ChangeEvent event, Actor actor) {
-                System.out.println("Begin two player server button pressed");
-                gameStarting = false;
-                singlePlayerGame = false;
-                twoPlayerServer = true;
-                twoPlayerClient = false;
-                //This is where the datagram server should be created uncomment
-                createDataGramServer();
-                //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
-                boolean echoReceived = false;
+                    System.out.println("Begin two player server button pressed");
+                    gameStarting = false;
+                    singlePlayerGame = false;
+                    twoPlayerServer = true;
+                    twoPlayerClient = false;
+                    //This is where the datagram server should be created uncomment
+                    createDataGramServer();
+                    //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
+                /*boolean echoReceived = false;
+                    int loopNum = 0;
                 while(echoReceived == false)
                 {
 
                     if(myDatagramServer.myClient == null)
                     {
-                        System.out.println("server, while loop servers client == null.");
+                        System.out.println("server p1, while loop servers client == null.");
                     }else {
-                        System.out.println("server, while loop before echo sent and received.");
-                        //Or maybe.startsWith("Testing Connection")?
-                        String serversClient = myDatagramServer.myClient.sendEcho("Testing Connection");
-                        //myDatagramServer.myClient.sendEcho("Testing Connection").equals("Testing Connection")
-                        System.out.println("ServersClient echo Value = " + serversClient);
-                        if (serversClient.equals("Testing Connection")) {
+                        System.out.println("server p1, while loop before echo sent and received.");
+                        //String serversClient = myDatagramServer.myClient.sendEcho("Testing Connection");
+                        //System.out.println("ServersClient echo Value = " + serversClient);
+                        //if (serversClient.equals("Testing Connection")) {
 
-                            System.out.println("server, while loop after echo sent and received.");
-                            echoReceived = true;
+                        //    System.out.println("server, while loop after echo sent and received.");
+                        //    echoReceived = true;
+                        //}
+
+                        //need a new control to determine the new test...
+                        //String serversClientTestConnect = myDatagramServer.myClient.sendEcho("Testing Connection P1");
+                        //System.out.println("Servers test value after a round trip between the two players starting with player 1 = " + serversClientTestConnect);
+                        //if (serversClientTestConnect.equals("Testing Connection P1")) {
+                        //    System.out.println("server p1, while loop after echo sent and received.");
+                        //    echoReceived = true;
+                        //}
+                        myDatagramServer.myClient.sendData("Testing Connection P1");
+                        //if(myDatagramServer.myClient.testConnection == true && myDatagramServer.receivedTestConnection == true) {
+                        //    echoReceived = true;
+                        //}
+                        if(myDatagramServer.myClient.testConnection == true){
+                            System.out.println("Server's Client p1 was able to send test message to client's server p2");
+                            if(myDatagramServer.receivedTestConnection == true){
+                                System.out.println("Server p1 received test message from client p2");
+                                echoReceived = true;
+                            }
                         }
+                        loopNum++;
                     }
-                }
-                //The Player1 client needs to be created as well.
-                //This is where the server should be created uncomment
-                //createServer();
+                    //loopNum++;
+                    if(loopNum == 40){
+                        echoReceived = true;
+                    }
+                }*/
+                    //The Player1 client needs to be created as well.
+                    //This is where the server should be created uncomment
+                    //createServer();
+                    //while (myDatagramServer.myClient.testConnection != true && myDatagramServer.receivedTestConnection != true) {
+
+                    //}
                 resetGame();
                 //create();
             }
@@ -283,23 +309,42 @@ public class SnakeGame extends Game {
                 createDataGramClient();
                 //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
                 boolean echoReceived = false;
-                while(echoReceived == false)
-                {
+                int loopNum = 0;
+                //while(echoReceived == false) {
 
-                    if(myDatagramClient == null)
-                    {
-                        System.out.println("client, while loop client == null.");
-                    }else {
-                        System.out.println("client, while loop before echo sent and received.");
-                        //Or maybe.startsWith("Testing Connection")?
-                        String clientEcho = myDatagramClient.sendEcho("Testing Connection from player 2 client to player 1 server.");
-                        System.out.println("Clients echo value = " + clientEcho);
-                        if (clientEcho.equals("Testing Connection from player 2 client to player 1 server.")) {
-                            System.out.println("client, while loop after echo sent and received.");
-                            echoReceived = true;
+                    if (myDatagramClient == null) {
+                        System.out.println("client p2, while loop client == null.");
+                    } else {
+                        System.out.println("client p2, while loop before echo sent and received.");
+                        //String clientEcho = myDatagramClient.sendEcho("Testing Connection from player 2 client to player 1 server.");
+                        //System.out.println("Clients echo value = " + clientEcho);
+                        //if (clientEcho.equals("Testing Connection from player 2 client to player 1 server.")) {
+                        //    System.out.println("client, while loop after echo sent and received.");
+                        //   echoReceived = true;
+                        //}
+
+                        //need a new control to determine the new test...
+                        //String clientTestConnect = myDatagramClient.sendEcho("Testing Connection P2");
+                        //System.out.println("Clients test value after a round trip between the two players starting with player 2 = " + clientTestConnect);
+                        //if (clientTestConnect.equals("Testing Connection P2")) {
+                        //    System.out.println("client p2, while loop after echo sent and received.");
+                        //   echoReceived = true;
+                        //}
+                        myDatagramClient.initializeConnection("Testing Connection P2");
+                        if (myDatagramClient.testConnection == true) {
+                            System.out.println("Client p2 was able to send test message to server p1");
+                            if (myDatagramClient.myServer.receivedTestConnection == true) {
+                                System.out.println("Client's server p2 received test message from server's client p1");
+                                echoReceived = true;
+                            }
                         }
+                        loopNum++;
                     }
-                }
+                    //loopNum++;
+                    if (loopNum == 40) {
+                        echoReceived = true;
+                    }
+                //}
 
                 //The Player2 server needs to be created as well.
                 //This is where the tcp client should be created uncomment
@@ -360,7 +405,7 @@ public class SnakeGame extends Game {
                         //moveCellGridTwoSnakesServer();
 
                         //uncomment for UDP
-                        System.out.println("twoPlayerServer in render method is true");
+                        //System.out.println("twoPlayerServer in render method is true");
                         moveCellGridTwoSnakesDatagramServer();
                     }
                     else if(twoPlayerClient == true)
@@ -369,7 +414,7 @@ public class SnakeGame extends Game {
                         //moveCellGridTwoSnakesClient();
 
                         //uncomment for UDP
-                        System.out.println("twoPlayerClient in render method is true");
+                        //System.out.println("twoPlayerClient in render method is true");
                         moveCellGridTwoSnakesDatagramClient();
                     }
                 }
@@ -403,7 +448,7 @@ public class SnakeGame extends Game {
                     }
 
                 }
-                System.out.println("drawing snake in render method");
+                //System.out.println("drawing snake in render method");
                 ShapeRenderer myShape = new ShapeRenderer();
                 myShape.begin(ShapeRenderer.ShapeType.Filled);
                 myShape.setColor(0, .9f, .1f, 1);
@@ -418,7 +463,7 @@ public class SnakeGame extends Game {
                 }
                 if(twoPlayerGame == true || twoPlayerServer == true|| twoPlayerClient == true)
                 {
-                    System.out.println("I am not a single player game.");
+                    //System.out.println("I am not a single player game.");
                     myShape.setColor(0, 0, 0, 1);
                     myShape.rect(snakeHeadP2.getX() * snakeHeadP2.getCellSize(), snakeHeadP2.getY() * snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize(), snakeHeadP2.getCellSize());
                     //this is causing a tail to appear, but it is not following the head, and it is continuously growing along the x/y axis' at the same rate when the user moves along the x axis
@@ -944,6 +989,7 @@ public class SnakeGame extends Game {
             xDirectionalMovement = 0;
             yDirectionalMovement = 0;
             playGrid.addCellToGrid(myCell);
+            playGrid.addFoodCellToGrid(myFood);
         }
         if(twoPlayerGame == true || twoPlayerServer == true)
         {
@@ -985,6 +1031,6 @@ public class SnakeGame extends Game {
         myProcessor.moving = false;
         myProcessor.movingP2 = false;
         //myFood = new Cell("food");
-        playGrid.addFoodCellToGrid(myFood);
+        //playGrid.addFoodCellToGrid(myFood);
     }
 }

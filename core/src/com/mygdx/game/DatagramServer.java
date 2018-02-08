@@ -16,11 +16,12 @@ import java.util.ArrayList;
 public class DatagramServer extends Thread {
     SnakeGame myGame;
     //4446 is the default port of listening for the client's server. 4445 is the default port of listening for the server.
-    int port = 4446;
+    int port;
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[256];
     DatagramClient myClient;
+    boolean receivedTestConnection;
 
     //Extras to prevent the errors in the sample method from the connectionHandler class
     //Socket connection;
@@ -47,6 +48,8 @@ public class DatagramServer extends Thread {
             port = 4445;
             System.out.println("Creating Server's Client");
             createServersClient();
+        }else if(myGame.twoPlayerClient == true){
+            port = 4446;
         }
         //if(myGame.twoPlayerClient == true)
         //{
@@ -146,7 +149,7 @@ public class DatagramServer extends Thread {
                 myGame.playGrid.coordinateGrid[myGame.myFood.getX()][myGame.myFood.getY()] = myGame.myFood;
             }
             //may need received.startsWith rather than received.equals.
-            if(received.equals("Testing Connection") || received.equals("Testing Connection from player 2 client to player 1 server."))
+            /*if(received.equals("Testing Connection") || received.equals("Testing Connection from player 2 client to player 1 server."))
             {
                 System.out.println("if received.equals Testing connection if statement in server run method");
                 InetAddress address = packet.getAddress();
@@ -161,6 +164,42 @@ public class DatagramServer extends Thread {
                     datagramServerRunSocketSend.printStackTrace();
                 }
 
+            }*/
+
+            if(received.startsWith("Testing Connection P1"))
+            {
+                System.out.println("P2 server receiving a message from P1 client to establish connection.");
+                //InetAddress address = packet.getAddress();
+                //int port = packet.getPort();
+                //Adding lines to test changing the values sent through to the server from the client
+                //packet = new DatagramPacket(buf, buf.length, address, port);
+                //may need to create a copy of the instance of the client when instantiating this server class for player 2, or just use the
+                //myGame.myDatagramClient as the game is already passed as a variable when instantiated.
+                //myGame.
+                //myClient.sendData(received);
+                //myGame.myDatagramClient.sendData(received);
+                //myGame.myDatagramClient.setTestConnection(true);
+                myGame.myDatagramClient.initializeConnection("P1 and P2 connections successful");
+                receivedTestConnection = true;
+            }
+
+            if(received.startsWith("Testing Connection P2"))
+            {
+                System.out.println("P1 server receiving a message from P2 client to establish connection.");
+                //InetAddress address = packet.getAddress();
+                //int port = packet.getPort();
+                //Adding lines to test changing the values sent through to the server from the client
+                //myGame.
+                //myClient.sendData(received);
+                //myClient.setTestConnection(true);
+                //myClient.initializeConnection(received);
+                myClient.initializeConnection("Testing Connection P1");
+                receivedTestConnection = true;
+            }
+            if(received.startsWith("P1 and P2 connections successful")) {
+                System.out.println("P1 and P2 connections successful starting from this end.");
+                //Added for control for the server snake game rendering/resetting the game.
+                myGame.resetGame();
             }
 
             if (received.startsWith("end")) {//Changed from received.equals to received.startswith

@@ -14,8 +14,9 @@ public class DatagramClient {
     private InetAddress address;
     DatagramServer myServer;
     //4446 is the default port of listening for the client's server. 4445 is the default port of listening for the server.
-    int portOfServerSocket = 4446;
+    int portOfServerSocket;
     private byte[] buf;
+    boolean testConnection;
 
     public DatagramClient() {
         System.out.println("DatagramClient constructor");
@@ -38,6 +39,8 @@ public class DatagramClient {
             //not sure if we need the clientsServer here yet
             System.out.println("Creating client's server");
             createClientsServer();
+        }else if(myGame.twoPlayerServer == true) {
+            portOfServerSocket = 4446;
         }
         try {
             socket = new DatagramSocket();
@@ -48,6 +51,16 @@ public class DatagramClient {
             echoClientConstructor.printStackTrace();
         }
 
+
+    }
+
+    public void setTestConnection(boolean testConnectionVal) {
+        testConnection = testConnectionVal;
+    }
+
+    public void initializeConnection(String msg) {
+        sendData(msg);
+        testConnection = true;
     }
 
     public String sendEcho(String msg) {
