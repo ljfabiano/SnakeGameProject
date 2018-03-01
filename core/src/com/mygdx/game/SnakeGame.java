@@ -246,6 +246,7 @@ public class SnakeGame extends Game {
                     while(myDatagramServer.receivedP1IPAddress == false)//this needs to be changed as we are only currently updating the
                         // receivedp1address if the user is(p2), so this needs to change to be an effective measure of of state by adding another
                         // variable, or by actually updating the variable in the serve player as well?
+                    //need to add an updated note to github on next commit to track what has been done.
                     {
                         myDatagramServer.myClient.connectionInfoMulticast();
                         try {
