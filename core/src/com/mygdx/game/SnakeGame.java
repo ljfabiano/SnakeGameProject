@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SnakeGame extends Game {
 	Game game;
@@ -237,12 +238,30 @@ public class SnakeGame extends Game {
                 @Override
                 public void changed (ChangeEvent event, Actor actor) {
                     System.out.println("Begin two player server button pressed");
-                    gameStarting = false;
                     singlePlayerGame = false;
                     twoPlayerServer = true;
                     twoPlayerClient = false;
-                    //This is where the datagram server should be created uncomment
                     createDataGramServer();
+                    //loop to start sending the ip address of the server(this machine's ip address) on multicast to group
+                    while(myDatagramServer.receivedP1IPAddress == false)//this needs to be changed as we are only currently updating the
+                        // receivedp1address if the user is(p2), so this needs to change to be an effective measure of of state by adding another
+                        // variable, or by actually updating the variable in the serve player as well?
+                    {
+                        myDatagramServer.myClient.connectionInfoMulticast();
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
+                        }catch(InterruptedException serverSendInfo)
+                        {
+                            serverSendInfo.printStackTrace();
+                        }
+                    }
+                    gameStarting = false;
+                    //singlePlayerGame = false;
+                    //twoPlayerServer = true;
+                    //twoPlayerClient = false;
+
+                    //This is where the datagram server should be created uncomment
+                    //createDataGramServer();
                     //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
                 /*boolean echoReceived = false;
                     int loopNum = 0;
@@ -301,15 +320,15 @@ public class SnakeGame extends Game {
             @Override
             public void changed (ChangeEvent event, Actor actor) {
                 System.out.println("Begin two player client button pressed");
-                gameStarting = false;
+                //gameStarting = false;
                 singlePlayerGame = false;
                 twoPlayerClient = true;
                 twoPlayerServer = false;
                 //This is where the datagram client should be created uncomment
                 createDataGramClient();
                 //add a loop that keeps calling the echo method until the desired received echo is caught. This is for the datagram server's client.
-                boolean echoReceived = false;
-                int loopNum = 0;
+                //boolean echoReceived = false;
+                //int loopNum = 0;
                 //while(echoReceived == false) {
 
                     if (myDatagramClient == null) {
@@ -335,17 +354,18 @@ public class SnakeGame extends Game {
                             System.out.println("Client p2 was able to send test message to server p1");
                             if (myDatagramClient.myServer.receivedTestConnection == true) {
                                 System.out.println("Client's server p2 received test message from server's client p1");
-                                echoReceived = true;
+                                //echoReceived = true;
                             }
                         }
-                        loopNum++;
+                        //loopNum++;
                     }
                     //loopNum++;
-                    if (loopNum == 40) {
-                        echoReceived = true;
-                    }
+                    //if (loopNum == 40) {
+                    //    echoReceived = true;
+                    //}
                 //}
 
+                gameStarting = false;
                 //The Player2 server needs to be created as well.
                 //This is where the tcp client should be created uncomment
                 //createClient();

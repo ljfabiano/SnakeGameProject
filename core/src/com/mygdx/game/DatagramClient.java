@@ -1,9 +1,7 @@
 package com.mygdx.game;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.*;
 
 /**
  * Created by jfabiano on 1/8/2018.
@@ -11,7 +9,21 @@ import java.net.InetAddress;
 public class DatagramClient {
     SnakeGame myGame;
     private DatagramSocket socket;
+    private MulticastSocket multiSocket;
     private InetAddress address;
+    private InetAddress otherAddress;
+    private InetAddress group;
+    private InetAddress serverAddress;
+
+    //private InetAddress serverAddress;
+    //code for the multicast socket to initially send the server players ip address to any client players server that is listening in the ip group
+    //multicast ips are: 224.0.0.0 to 239.255.255.255, but dont use 224.0.0.0 as it is reserved
+    //private InetAddress group = InetAddress.getByName("203.0.113.0");
+    //MulticastSocket socket = new MulticastSocket(4446);
+    //InetAddress group = InetAddress.getByName("203.0.113.0");
+    //socket.joinGroup(group);
+    //socket.leaveGroup(group);
+
     DatagramServer myServer;
     //4446 is the default port of listening for the client's server. 4445 is the default port of listening for the server.
     int portOfServerSocket;
@@ -24,9 +36,21 @@ public class DatagramClient {
             socket = new DatagramSocket();
 
             address = InetAddress.getByName("localhost");
+            System.out.println("localhost IP address: " + address.toString());
+
+            otherAddress = InetAddress.getLocalHost();
+            System.out.println("other IP address: " + otherAddress.toString());
+
+
         }
-        catch(IOException echoClientConstructor) {
-            echoClientConstructor.printStackTrace();
+        catch(IOException datagramClientConstructor) {
+            datagramClientConstructor.printStackTrace();
+        }
+        try {
+            group = InetAddress.getByName("228.5.6.7");
+        }
+        catch(UnknownHostException datagramClientConstructor){
+            datagramClientConstructor.printStackTrace();
         }
     }
 
@@ -39,19 +63,48 @@ public class DatagramClient {
             //not sure if we need the clientsServer here yet
             System.out.println("Creating client's server");
             createClientsServer();
+
+            //try {
+            //    multiSocket = new MulticastSocket(portOfServerSocket);
+            //    System.out.println("multiSocket IP address: " + multiSocket.toString());
+
+            //    multiSocket.joinGroup(group);
+            //}
+            //catch(IOException datagramClientConstructor) {
+            //    datagramClientConstructor.printStackTrace();
+            //}
+
         }else if(myGame.twoPlayerServer == true) {
             portOfServerSocket = 4446;
         }
+
         try {
             socket = new DatagramSocket();
 
             address = InetAddress.getByName("localhost");
+            System.out.println("localhost IP address: " + address.toString());
+
+            otherAddress = InetAddress.getLocalHost();
+            System.out.println("other IP address: " + otherAddress.toString());
+
         }
         catch(IOException echoClientConstructor) {
             echoClientConstructor.printStackTrace();
         }
+        try {
+            group = InetAddress.getByName("228.5.6.7");
+        }
+        catch(UnknownHostException datagramClientConstructor){
+            datagramClientConstructor.printStackTrace();
+        }
+    }
 
+    public InetAddress getServerAddress() {
+        return serverAddress;
+    }
 
+    public void setServerAddress(InetAddress serverAddress) {
+        this.serverAddress = serverAddress;
     }
 
     public void setTestConnection(boolean testConnectionVal) {
@@ -61,6 +114,22 @@ public class DatagramClient {
     public void initializeConnection(String msg) {
         sendData(msg);
         testConnection = true;
+    }
+
+    public void connectionInfoMulticast() {
+        //sendData(msg);
+        //testConnection = true;
+        //buf = msg.getBytes();
+        buf = otherAddress.toString().getBytes();
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, group, portOfServerSocket);
+        try {
+            socket.send(packet);
+            //packet = new DatagramPacket(buf, buf.length);
+            //socket.receive(packet);
+        }
+        catch(IOException sendDataMethod){
+            sendDataMethod.printStackTrace();
+        }
     }
 
     public String sendEcho(String msg) {
@@ -86,7 +155,13 @@ public class DatagramClient {
         //Need to be sending relevant game data, so crafting the proper packet is important here.
         System.out.println("Sending data from client to server");
         buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portOfServerSocket);
+        DatagramPacket packet;
+        if(myGame.twoPlayerClient == true) {
+            packet = new DatagramPacket(buf, buf.length, serverAddress, portOfServerSocket);
+        }else{
+            //packet = new DatagramPacket(buf, buf.length, address, portOfServerSocket);
+            packet = new DatagramPacket(buf, buf.length, otherAddress, portOfServerSocket);
+        }
         try {
             socket.send(packet);
             //packet = new DatagramPacket(buf, buf.length);
@@ -112,5 +187,14 @@ public class DatagramClient {
         sendData("end");
         System.out.println("Closing client socket");
         socket.close();
+        //if(myGame.twoPlayerClient) {
+
+        //    try {
+        //        multiSocket.leaveGroup(group);
+        //    } catch (IOException datagramClientClose) {
+        //       datagramClientClose.printStackTrace();
+        //    }
+        //    multiSocket.close();
+        //}
     }
 }
